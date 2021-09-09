@@ -9,8 +9,6 @@ async function game() {
     for (const item of globalDictionary)
         add(item, 0, root)
     
-    console.log(globalDictionary)
-    console.log(root)
 }
 
 async function getDictionay() {
@@ -22,14 +20,8 @@ async function getDictionay() {
     })
 
     let grid = setUpGrid()
-
-    console.log(grid)
+    //next lets find all possible words with the letters that are given using the trieTree
 }
-
-// const alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-// const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]
-
 
 //set up gridNodes with their respective divs in an inner array length 2
 function setUpGrid() {

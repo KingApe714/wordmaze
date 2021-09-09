@@ -1,19 +1,8 @@
 .game-board-container {
-    /* display: flex;
-    flex-direction: column; */
     position: relative;
-    /* border: 1px solid black; */
-    /* width: fit-content;
-    height: fit-content; */
 }
-
-/* .game-board-row {
-    display: flex;
-    flex-direction: row;
-    border: 1px solid blue;
-} */
-
 .game-tile {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
