@@ -1,4 +1,5 @@
 import { trieNode, add } from './trie.js';
+import { gridNode } from './gridNode.js'
 
 let globalDictionary = null;
 
@@ -24,16 +25,27 @@ async function getDictionay() {
 
 //set up gridNodes with their respective divs in an inner array length 2
 function setUpGrid() {
+    const grid = []
     const gameBoardContainer = document.querySelector('.game-board-container')
     for (let i = 0; i < 4; i++) {
+        let row = []
         for (let j = 0; j < 4; j++) {
+            let cell = []
+
             let tile = document.createElement('div')
             tile.className = "game-tile"
             tile.style.left = j * 100 + "px";
             tile.style.top = i * 100 + "px";
             gameBoardContainer.appendChild(tile)
+
+            cell.push(tile)
+            cell.push(new gridNode('L', `${i},${j}`))
+            row.push(cell)
         }
+        grid.push(row)
     }
+
+    console.log(grid)
 }
 
 export default game
