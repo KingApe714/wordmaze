@@ -23,6 +23,11 @@ async function getDictionay() {
     setUpGrid()
 }
 
+// const alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+// const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]
+
+
 //set up gridNodes with their respective divs in an inner array length 2
 function setUpGrid() {
     const grid = []
@@ -31,15 +36,17 @@ function setUpGrid() {
         let row = []
         for (let j = 0; j < 4; j++) {
             let cell = []
-
             let tile = document.createElement('div')
+            let letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)]
+
             tile.className = "game-tile"
             tile.style.left = j * 100 + "px";
             tile.style.top = i * 100 + "px";
+            tile.innerHTML = letter
             gameBoardContainer.appendChild(tile)
 
             cell.push(tile)
-            cell.push(new gridNode('L', `${i},${j}`))
+            cell.push(new gridNode(letter, `${i},${j}`))
             row.push(cell)
         }
         grid.push(row)
