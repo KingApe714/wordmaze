@@ -1,8 +1,15 @@
+import { trieNode, add } from './trie.js';
+
 let globalDictionary = null;
 
 async function game() {
     await getDictionay()
+    const root = new trieNode(null);
+    for (const item of globalDictionary)
+        add(item, 0, root)
+    
     console.log(globalDictionary)
+    console.log(root)
 }
 
 async function getDictionay() {
