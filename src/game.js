@@ -20,7 +20,10 @@ async function getDictionay() {
     globalDictionary = data.split(/\r?\n/).filter(word => {
         return word.length > 2
     })
-    setUpGrid()
+
+    let grid = setUpGrid()
+
+    console.log(grid)
 }
 
 // const alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -32,6 +35,18 @@ async function getDictionay() {
 function setUpGrid() {
     const grid = []
     const gameBoardContainer = document.querySelector('.game-board-container')
+    //set up neighbor check
+    const nCheck = [
+        [-1, -1],
+        [-1, 0],
+        [-1, 1],
+        [1, -1],
+        [1, 0],
+        [1, 1],
+        [0, 1],
+        [0, -1]
+    ]
+
     for (let i = 0; i < 4; i++) {
         let row = []
         for (let j = 0; j < 4; j++) {
@@ -52,7 +67,21 @@ function setUpGrid() {
         grid.push(row)
     }
 
-    console.log(grid)
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[0].length; j++) {
+
+            //set up neighbors
+            nCheck.forEach(n => {
+                let x = n[0] + i;
+                let y = n[1] + j;
+                //handle edge cases
+                if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
+                    grid[i][j][1].neighbors.push(grid[x][y])
+                }
+            })
+        }
+    }
+    return grid
 }
 
 export default game
