@@ -1,18 +1,20 @@
 .game-board-container {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
-    width: fit-content;
-    height: fit-content;
+    /* display: flex;
+    flex-direction: column; */
+    position: relative;
+    /* border: 1px solid black; */
+    /* width: fit-content;
+    height: fit-content; */
 }
 
-.game-board-row {
+/* .game-board-row {
     display: flex;
     flex-direction: row;
     border: 1px solid blue;
-}
+} */
 
 .game-tile {
+    position: absolute;
     width: 100px;
     height: 100px;
     border: 1px solid red;

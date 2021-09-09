@@ -19,7 +19,21 @@ async function getDictionay() {
     globalDictionary = data.split(/\r?\n/).filter(word => {
         return word.length > 2
     })
+    setUpGrid()
+}
 
+//set up gridNodes with their respective divs in an inner array length 2
+function setUpGrid() {
+    const gameBoardContainer = document.querySelector('.game-board-container')
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            let tile = document.createElement('div')
+            tile.className = "game-tile"
+            tile.style.left = j * 100 + "px";
+            tile.style.top = i * 100 + "px";
+            gameBoardContainer.appendChild(tile)
+        }
+    }
 }
 
 export default game
