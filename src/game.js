@@ -41,6 +41,8 @@ function findWords(cell, tree) {
         let ele = queue.shift();
         for (let i = 0; i < ele[1][1].neighbors.length; i++) {
             if (ele[0].complete) {
+                console.log('finished word')
+                console.log(ele[0])
                 let currentWord = fetchWord(ele[0])
                 if (!words.includes(currentWord)) {
                     words.push(currentWord)
@@ -57,11 +59,14 @@ function findWords(cell, tree) {
                 // console.log(subTree)
                 if (subTree.map[char]) {
                     subTree = subTree.map[char];
-                    // console.log(subTree)
+                    console.log(char)
+                    console.log(subTree)
                     //I just need to give it the next cell
                     queue.push([subTree, ele[1][1].neighbors[i]])
                 }
             }
+            console.log('visitedCells')
+            console.log(visitedCells)
         }
     }
     console.log(cell[1].coordinates)
