@@ -23,15 +23,16 @@ async function game() {
     const gameWords = [];
     for (let x = 0; x < grid.length; x++) {
         for (let y = 0; y < grid[0].length; y++) {
-            findWords(grid[x][y], root)
+            console.log(`checking for ${grid[x][y][1].ch} at ${grid[x][y][1].coordinates}`)
+            findWords(grid[x][y], root.map[grid[x][y][1].ch])
         }
     }
 }
     
 
-function findWords(cell, root) {
+function findWords(cell, tree) {
     const words = [];
-    const queue = [[root, cell]];
+    const queue = [[tree, cell]];
     const visitedCells = [cell];
 
     //for ele, tree is position 0 and cell is position 1
@@ -46,22 +47,25 @@ function findWords(cell, root) {
                 }
             }
             if (!visitedCells.includes(ele[1][1].neighbors[i])) {
-                visitedCells.push(ele[1][1])
+                visitedCells.push(ele[1][1].neighbors[i])
                 //grab the char of the current neighbor
-                console.log(`${ele[1][1].coordinates} ${ele[1][1].ch}`)
-                console.log(ele[1][1].neighbors[i][1].ch)
+                // console.log(`${ele[1][1].coordinates} ${ele[1][1].ch}`)
+                // console.log(ele[1][1].neighbors[i][1].ch)
                 let char = ele[1][1].neighbors[i][1].ch
+                // console.log(char)
                 let subTree = ele[0]
+                // console.log(subTree)
                 if (subTree.map[char]) {
                     subTree = subTree.map[char];
+                    // console.log(subTree)
                     //I just need to give it the next cell
                     queue.push([subTree, ele[1][1].neighbors[i]])
                 }
             }
         }
     }
-    // console.log(cell[1].coordinates)
-    // console.log(words)
+    console.log(cell[1].coordinates)
+    console.log(words)
 }
 
 function fetchWord(currentNode) {
