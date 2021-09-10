@@ -3,24 +3,41 @@ import { gridNode } from './gridNode.js'
 
 let globalDictionary = null;
 
+async function getDictionay() {
+    const response = await fetch('dictionary.txt');
+    const data = await response.text();
+    globalDictionary = data.split(/\r?\n/).filter(word => {
+        return word.length > 2
+    })
+}
+
 async function game() {
     await getDictionay()
     const root = new trieNode(null);
     for (const item of globalDictionary)
         add(item, 0, root)
     
-}
-
-async function getDictionay() {
-    const response = await fetch('dictionary.txt');
-    const data = await response.text();
-
-    globalDictionary = data.split(/\r?\n/).filter(word => {
-        return word.length > 2
-    })
-
     let grid = setUpGrid()
+
     //next lets find all possible words with the letters that are given using the trieTree
+    const gameWords = [];
+    for (let x = 0; x < grid.length; x++) {
+        for (let y = 0; y < grid[0].length; y++) {
+            findWords(grid[x][y], root)
+        }
+    }
+}
+    
+
+function findWords(cell, root) {
+    const words = [];
+    //I need to loop through all of the neighbors to find words
+    console.log(cell[1])
+
+    cell[1].neighbors.forEach(n => {
+        
+    })
+    if (cell[1].coordinates === '3,3') console.log(root)
 }
 
 //set up gridNodes with their respective divs in an inner array length 2
