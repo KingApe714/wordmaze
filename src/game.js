@@ -21,12 +21,14 @@ async function game() {
 
     //next lets find all possible words with the letters that are given using the trieTree
     const gameWords = [];
-    for (let x = 0; x < grid.length; x++) {
-        for (let y = 0; y < grid[0].length; y++) {
-            console.log(`checking for ${grid[x][y][1].ch} at ${grid[x][y][1].coordinates}`)
-            findWords(grid[x][y], root.map[grid[x][y][1].ch])
-        }
-    }
+    // for (let x = 0; x < grid.length; x++) {
+    //     for (let y = 0; y < grid[0].length; y++) {
+    //         console.log(`checking for ${grid[x][y][1].ch} at ${grid[x][y][1].coordinates}`)
+    //         findWords(grid[x][y], root.map[grid[x][y][1].ch])
+    //     }
+    // }
+
+    findWords(grid[0][0], root.map[grid[0][0][1].ch])
 }
     
 
@@ -38,6 +40,8 @@ function findWords(cell, tree) {
     //for ele, tree is position 0 and cell is position 1
     //for cell tile is position 0 and node is position 1
     while (queue.length) {
+        // console.log(queue)
+        debugger
         let ele = queue.shift();
         for (let i = 0; i < ele[1][1].neighbors.length; i++) {
             if (ele[0].complete) {
@@ -65,8 +69,8 @@ function findWords(cell, tree) {
                     queue.push([subTree, ele[1][1].neighbors[i]])
                 }
             }
-            console.log('visitedCells')
-            console.log(visitedCells)
+            // console.log('visitedCells')
+            // console.log(visitedCells)
         }
     }
     console.log(cell[1].coordinates)
