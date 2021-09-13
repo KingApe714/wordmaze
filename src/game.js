@@ -21,24 +21,25 @@ async function game() {
 
     //next lets find all possible words with the letters that are given using the trieTree
     const gameWords = [];
-    // for (let x = 0; x < grid.length; x++) {
-    //     for (let y = 0; y < grid[0].length; y++) {
-    //         console.log(`checking for ${grid[x][y][1].ch} at ${grid[x][y][1].coordinates}`)
-    //         findWords(grid[x][y], root.map[grid[x][y][1].ch])
-    //     }
-    // }
+    for (let x = 0; x < grid.length; x++) {
+        for (let y = 0; y < grid[0].length; y++) {
+            console.log(`checking for ${grid[x][y].ch} at ${grid[x][y].coordinates}`)
+            findWords(grid[x][y], root.map[grid[x][y].ch])
+        }
+    }
 
-    findWords(grid[0][0], root.map[grid[0][0].ch])
+    // findWords(grid[0][0], root.map[grid[0][0].ch])
 }
     
 
 function findWords(gridNode, tree) {
     const words = [];
-    const queue = [[tree, gridNode]];
-    const visitedCells = [gridNode];
+    //pos 2 of all queued is the array of visited cells for that particular gridNode
+    const queue = [[tree, gridNode, [gridNode]]];
+    // const visitedCells = [gridNode];
 
     while (queue.length) {
-        debugger
+        // debugger
         let ele = queue.shift();
         for (let i = 0; i < ele[1].neighbors.length; i++) {
             if (ele[0].complete) {
@@ -47,19 +48,20 @@ function findWords(gridNode, tree) {
                     words.push(currentWord)
                 }
             }
-            //the visited cells function is breaking the functionality!!
-            if (!visitedCells.includes(ele[1].neighbors[i])) {
-                visitedCells.push(ele[1].neighbors[i])
+
+            if (!ele[2].includes(ele[1].neighbors[i])) {
+                ele[2].push(ele[1].neighbors[i])
                 let char = ele[1].neighbors[i].ch
                 let subTree = ele[0]
                 if (subTree.map[char]) {
                     subTree = subTree.map[char];
                     //I just need to give it the next gridNode
-                    queue.push([subTree, ele[1].neighbors[i]])
+                    queue.push([subTree, ele[1].neighbors[i], ele[2]])
                 }
             }
         }
     }
+    console.log(words)
 }
 
 export default game

@@ -3,7 +3,7 @@ export function gridNode(coordinates) {
     this.coordinates = coordinates;
 
     this.tile = document.createElement('div')
-    let letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)]
+    let letter = "AABCDEEFGHIIJKLMNOOPQRSSTUUVWXYZ"[Math.floor(Math.random() * 32)]
     this.ch = letter;
     this.tile.className = "game-tile";
     this.tile.innerHTML = `${letter} [${coordinates}]`;
