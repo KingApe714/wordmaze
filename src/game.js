@@ -1,5 +1,5 @@
-import { trieNode, add } from './trie.js';
-import { gridNode } from './gridNode.js'
+import { trieNode, add, fetchWord } from './trie.js';
+import { gridNode, setUpGrid } from './gridNode.js'
 
 let globalDictionary = null;
 
@@ -28,22 +28,22 @@ async function game() {
     //     }
     // }
 
-    findWords(grid[0][0], root.map[grid[0][0][1].ch])
+    findWords(grid[0][0], root.map[grid[0][0].ch])
 }
     
 
-function findWords(cell, tree) {
+function findWords(gridNode, tree) {
     const words = [];
-    const queue = [[tree, cell]];
-    const visitedCells = [cell];
+    const queue = [[tree, gridNode]];
+    const visitedCells = [gridNode];
 
-    //for ele, tree is position 0 and cell is position 1
-    //for cell tile is position 0 and node is position 1
+    //for ele, tree is position 0 and gridNode is position 1
+    //for gridNode tile is position 0 and node is position 1
     while (queue.length) {
         // console.log(queue)
         debugger
         let ele = queue.shift();
-        for (let i = 0; i < ele[1][1].neighbors.length; i++) {
+        for (let i = 0; i < ele[1].neighbors.length; i++) {
             if (ele[0].complete) {
                 console.log('finished word')
                 console.log(ele[0])
@@ -52,12 +52,12 @@ function findWords(cell, tree) {
                     words.push(currentWord)
                 }
             }
-            if (!visitedCells.includes(ele[1][1].neighbors[i])) {
-                visitedCells.push(ele[1][1].neighbors[i])
+            if (!visitedCells.includes(ele[1].neighbors[i])) {
+                visitedCells.push(ele[1].neighbors[i])
                 //grab the char of the current neighbor
                 // console.log(`${ele[1][1].coordinates} ${ele[1][1].ch}`)
                 // console.log(ele[1][1].neighbors[i][1].ch)
-                let char = ele[1][1].neighbors[i][1].ch
+                let char = ele[1].neighbors[i].ch
                 // console.log(char)
                 let subTree = ele[0]
                 // console.log(subTree)
@@ -65,80 +65,16 @@ function findWords(cell, tree) {
                     subTree = subTree.map[char];
                     console.log(char)
                     console.log(subTree)
-                    //I just need to give it the next cell
-                    queue.push([subTree, ele[1][1].neighbors[i]])
+                    //I just need to give it the next gridNode
+                    queue.push([subTree, ele[1].neighbors[i]])
                 }
             }
             // console.log('visitedCells')
             // console.log(visitedCells)
         }
     }
-    console.log(cell[1].coordinates)
+    console.log(gridNode.coordinates)
     console.log(words)
-}
-
-function fetchWord(currentNode) {
-    let nodeCheck = currentNode;
-    let word = '';
-    while(nodeCheck.parent !== null) {
-        word = nodeCheck.ch + word;
-        nodeCheck = nodeCheck.parent;
-    }
-    
-    return word;
-}
-
-//set up gridNodes with their respective divs in an inner array length 2
-function setUpGrid() {
-    const grid = []
-    const gameBoardContainer = document.querySelector('.game-board-container')
-    //set up neighbor check
-    const nCheck = [
-        [-1, -1],
-        [-1, 0],
-        [-1, 1],
-        [1, -1],
-        [1, 0],
-        [1, 1],
-        [0, 1],
-        [0, -1]
-    ]
-
-    for (let i = 0; i < 4; i++) {
-        let row = []
-        for (let j = 0; j < 4; j++) {
-            let cell = []
-            let tile = document.createElement('div')
-            let letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)]
-
-            tile.className = "game-tile"
-            tile.style.left = j * 100 + "px";
-            tile.style.top = i * 100 + "px";
-            tile.innerHTML = `${letter} [${i},${j}]`
-            gameBoardContainer.appendChild(tile)
-
-            cell.push(tile)
-            cell.push(new gridNode(letter, `${i},${j}`))
-            row.push(cell)
-        }
-        grid.push(row)
-    }
-
-    for (let i = 0; i < grid.length; i++) {
-        for (let j = 0; j < grid[0].length; j++) {
-
-            //set up neighbors
-            nCheck.forEach(n => {
-                let x = n[0] + i;
-                let y = n[1] + j;
-                //handle edge cases
-                if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
-                    grid[i][j][1].neighbors.push(grid[x][y])
-                }
-            })
-        }
-    }
-    return grid
 }
 
 export default game

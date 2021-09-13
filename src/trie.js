@@ -30,3 +30,14 @@ export function search(str, i, root) {
     
     return search(str, i+1, root.map[str[i]]);
 }
+
+export function fetchWord(currentNode) {
+    let nodeCheck = currentNode;
+    let word = '';
+    while(nodeCheck.parent !== null) {
+        word = nodeCheck.ch + word;
+        nodeCheck = nodeCheck.parent;
+    }
+    
+    return word;
+}
