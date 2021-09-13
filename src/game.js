@@ -37,44 +37,29 @@ function findWords(gridNode, tree) {
     const queue = [[tree, gridNode]];
     const visitedCells = [gridNode];
 
-    //for ele, tree is position 0 and gridNode is position 1
-    //for gridNode tile is position 0 and node is position 1
     while (queue.length) {
-        // console.log(queue)
         debugger
         let ele = queue.shift();
         for (let i = 0; i < ele[1].neighbors.length; i++) {
             if (ele[0].complete) {
-                console.log('finished word')
-                console.log(ele[0])
                 let currentWord = fetchWord(ele[0])
                 if (!words.includes(currentWord)) {
                     words.push(currentWord)
                 }
             }
+            //the visited cells function is breaking the functionality!!
             if (!visitedCells.includes(ele[1].neighbors[i])) {
                 visitedCells.push(ele[1].neighbors[i])
-                //grab the char of the current neighbor
-                // console.log(`${ele[1][1].coordinates} ${ele[1][1].ch}`)
-                // console.log(ele[1][1].neighbors[i][1].ch)
                 let char = ele[1].neighbors[i].ch
-                // console.log(char)
                 let subTree = ele[0]
-                // console.log(subTree)
                 if (subTree.map[char]) {
                     subTree = subTree.map[char];
-                    console.log(char)
-                    console.log(subTree)
                     //I just need to give it the next gridNode
                     queue.push([subTree, ele[1].neighbors[i]])
                 }
             }
-            // console.log('visitedCells')
-            // console.log(visitedCells)
         }
     }
-    console.log(gridNode.coordinates)
-    console.log(words)
 }
 
 export default game

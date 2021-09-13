@@ -1,5 +1,3 @@
-
-
 export function gridNode(coordinates) {
     this.neighbors = [];
     this.coordinates = coordinates;
@@ -8,7 +6,7 @@ export function gridNode(coordinates) {
     let letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)]
     this.ch = letter;
     this.tile.className = "game-tile";
-    this.tile.innerHTML = letter;
+    this.tile.innerHTML = `${letter} [${coordinates}]`;
 }
 
 export function setUpGrid() {
@@ -29,22 +27,10 @@ export function setUpGrid() {
     for (let i = 0; i < 4; i++) {
         let row = []
         for (let j = 0; j < 4; j++) {
-            let cell = []
-            let tile = document.createElement('div')
-            let letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)]
-
-            // tile.className = "game-tile"
-            // tile.style.left = j * 100 + "px";
-            // tile.style.top = i * 100 + "px";
-            // tile.innerHTML = `${letter} [${i},${j}]`
             let gNode = new gridNode(`${i},${j}`)
             gNode.tile.style.left = j * 100 + "px";
             gNode.tile.style.top = i * 100 + "px";
-            gNode.tile.innerHTML += `[${i},${j}]`
             gameBoardContainer.appendChild(gNode.tile)
-
-            cell.push(tile)
-            cell.push(new gridNode(`${i},${j}`))
             row.push(gNode)
         }
         grid.push(row)
