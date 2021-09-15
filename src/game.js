@@ -36,7 +36,6 @@ function findWords(gridNode, tree) {
     const words = [];
     //pos 2 of all queued is the array of visited cells for that particular gridNode
     const queue = [[tree, gridNode, [gridNode]]];
-    // const visitedCells = [gridNode];
 
     while (queue.length) {
         // debugger
