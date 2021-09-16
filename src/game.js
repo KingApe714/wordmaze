@@ -1,6 +1,6 @@
 import { trieNode, add, fetchWord } from './trie.js';
 import { gridNode, setUpGrid, findWords } from './gridNode.js'
-import { modal } from './modal.js'
+import { modal, timer } from './util.js'
 
 let globalDictionary = null;
 
@@ -19,6 +19,7 @@ async function game() {
         add(item, 0, root)
     
     modal()
+    timer()
     let grid = setUpGrid()
 
     //next lets find all possible words with the letters that are given using the trieTree
