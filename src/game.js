@@ -41,8 +41,8 @@ async function game() {
 function findWords(gridNode, tree) {
     //gridNode could be my Adam
     const words = [];
-    //pos 2 of all queued is the array of visited cells for that particular gridNode
-    const queue = [[tree, gridNode, [gridNode]]];
+    //pos 2 of all queued is the path from original gridNode to currentNode
+    const queue = [[tree, gridNode, [gridNode], gridNode.ancestory]];
 
     while (queue.length) {
         let ele = queue.shift();
