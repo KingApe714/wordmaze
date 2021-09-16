@@ -1,3 +1,5 @@
+import { fetchWord } from "./trie";
+
 export function gridNode(coordinates) {
     this.neighbors = [];
     this.coordinates = coordinates;
@@ -105,4 +107,56 @@ export function setUpGrid() {
         }
     }
     return grid
+}
+
+export function findWords(gridNode, tree) {
+    //gridNode could be my Adam
+    const words = [];
+    //pos 2 of all queued is the path from original gridNode to currentNode
+    //use pos 2 to key into ancestory to set up next nodes
+    const queue = [[tree, gridNode, [gridNode]]];
+
+    while (queue.length) {
+        let ele = queue.shift();
+        if (ele[0].complete) {
+            let currentWord = fetchWord(ele[0])
+            if (!words.includes(currentWord)) {
+                words.push(currentWord)
+            }
+        }
+        let visitedNodes = ele[2].slice()
+        for (let i = 0; i < ele[1].neighbors.length; i++) {
+            if (!visitedNodes.includes(ele[1].neighbors[i]) &&
+                !ele[2].includes(ele[1].neighbors[i])) {
+
+                let path = ele[2].slice()
+                path.push(ele[1].neighbors[i])
+                visitedNodes.push(ele[1].neighbors[i])
+
+                let char = ele[1].neighbors[i].ch
+                let subTree = ele[0]
+                if (subTree.map[char]) {
+                    subTree = subTree.map[char];
+                    
+                    let currentNode = gridNode.ancestory
+                    //key into ancestory until at the right position
+                    for (let x = 1; x < ele[2].length; x++) {
+                        if (currentNode.children[ele[2][x].coordinates]) {
+                            currentNode = currentNode.children[ele[2][x].coordinates]
+                        }
+                    }
+                    currentNode.children[ele[1].neighbors[i].coordinates] = {
+                        node: ele[1].neighbors[i],
+                        complete: subTree.complete,
+                        children: {}
+                    }
+
+                    queue.push([subTree, ele[1].neighbors[i], path])
+                }
+            }
+        }
+    }
+    console.log(words)
+    console.log(gridNode.ancestory)
+    return words
 }

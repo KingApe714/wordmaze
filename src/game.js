@@ -1,5 +1,6 @@
 import { trieNode, add, fetchWord } from './trie.js';
-import { gridNode, setUpGrid } from './gridNode.js'
+import { gridNode, setUpGrid, findWords } from './gridNode.js'
+import { modal } from './modal.js'
 
 let globalDictionary = null;
 
@@ -17,6 +18,7 @@ async function game() {
     for (const item of globalDictionary)
         add(item, 0, root)
     
+    modal()
     let grid = setUpGrid()
 
     //next lets find all possible words with the letters that are given using the trieTree
@@ -38,56 +40,6 @@ async function game() {
 }
     
 
-function findWords(gridNode, tree) {
-    //gridNode could be my Adam
-    const words = [];
-    //pos 2 of all queued is the path from original gridNode to currentNode
-    //use pos 2 to key into ancestory to set up next nodes
-    const queue = [[tree, gridNode, [gridNode]]];
 
-    while (queue.length) {
-        let ele = queue.shift();
-        if (ele[0].complete) {
-            let currentWord = fetchWord(ele[0])
-            if (!words.includes(currentWord)) {
-                words.push(currentWord)
-            }
-        }
-        let visitedNodes = ele[2].slice()
-        for (let i = 0; i < ele[1].neighbors.length; i++) {
-            if (!visitedNodes.includes(ele[1].neighbors[i]) &&
-                !ele[2].includes(ele[1].neighbors[i])) {
-
-                let path = ele[2].slice()
-                path.push(ele[1].neighbors[i])
-                visitedNodes.push(ele[1].neighbors[i])
-
-                let char = ele[1].neighbors[i].ch
-                let subTree = ele[0]
-                if (subTree.map[char]) {
-                    subTree = subTree.map[char];
-                    
-                    // debugger
-                    let currentNode = gridNode.ancestory
-                    for (let x = 1; x < ele[2].length; x++) {
-                        if (currentNode.children[ele[2][x].coordinates]) {
-                            currentNode = currentNode.children[ele[2][x].coordinates]
-                        }
-                    }
-                    currentNode.children[ele[1].neighbors[i].coordinates] = {
-                        node: ele[1].neighbors[i],
-                        complete: subTree.complete,
-                        children: {}
-                    }
-
-                    queue.push([subTree, ele[1].neighbors[i], path])
-                }
-            }
-        }
-    }
-    console.log(words)
-    console.log(gridNode.ancestory)
-    return words
-}
 
 export default game
