@@ -44,6 +44,19 @@ export function setUpGrid() {
         console.log("mouse is down")
     })
 
+    gameBoardContainer.addEventListener("mouseup", () => {
+
+        word = ""
+
+        for (let i = 0; i < grid.length; i++) {
+            for (let j = 0; j < grid[0].length; j++) {
+                let gNode = grid[i][j];
+                gNode.tile.style.backgroundColor = "white";
+                gNode.selected = false
+            }
+        }
+    })
+
     for (let i = 0; i < 4; i++) {
         let row = []
         for (let j = 0; j < 4; j++) {
@@ -56,6 +69,7 @@ export function setUpGrid() {
                 mouseDown = true;
                 if (!gNode.selected) {
                     word = gNode.ch
+                    gNode.tile.style.backgroundColor = "blue";
                 }
                 gNode.selected = true;
             })
@@ -65,6 +79,7 @@ export function setUpGrid() {
                 if (mouseDown) {
                     if (!gNode.selected) {
                         word += gNode.ch
+                        gNode.tile.style.backgroundColor = "blue";
                     }
                     gNode.selected = true
                     console.log(word)
