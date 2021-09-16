@@ -31,12 +31,35 @@ export function setUpGrid() {
         [-1, 0]
     ]
 
+    let mouseDown = false;
+    gameBoardContainer.addEventListener("mousedown", () => {
+        mouseDown = true;
+        console.log("mouse is down")
+    })
+
     for (let i = 0; i < 4; i++) {
         let row = []
         for (let j = 0; j < 4; j++) {
             let gNode = new gridNode(`${i},${j}`)
             gNode.tile.style.left = j * 100 + "px";
             gNode.tile.style.top = i * 100 + "px";
+
+            //when I mousedown then I'm using this as my first tile
+            gNode.tile.addEventListener("mousedown", () => {
+                mouseDown = true;
+            })
+
+            //when I mousemove I am building potential words
+            gNode.tile.addEventListener("mousemove", () => {
+                if (mouseDown) {
+                    console.log(gNode.ch)
+                }
+            })
+
+            gNode.tile.addEventListener("mouseup", () => {
+                mouseDown = false;
+            })
+
             gameBoardContainer.appendChild(gNode.tile)
             row.push(gNode)
         }
