@@ -1,7 +1,11 @@
 export function gridNode(coordinates) {
     this.neighbors = [];
     this.coordinates = coordinates;
-    this.ancestory = {};
+    this.ancestory = {
+        node: this,
+        complete: false,
+        children: {}
+    };
 
     this.tile = document.createElement('div')
     let letter = "AABCDEEFGHIIJKLMNOOPQRSSTUUVWXYZ"[Math.floor(Math.random() * 32)]
@@ -15,14 +19,14 @@ export function setUpGrid() {
     const gameBoardContainer = document.querySelector('.game-board-container')
     //set up neighbor check
     const nCheck = [
-        [-1, -1],
-        [-1, 0],
         [-1, 1],
-        [1, -1],
-        [1, 0],
-        [1, 1],
         [0, 1],
-        [0, -1]
+        [1, 1],
+        [1, 0],
+        [1, -1],
+        [0, -1],
+        [-1, -1],
+        [-1, 0]
     ]
 
     for (let i = 0; i < 4; i++) {

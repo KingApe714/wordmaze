@@ -42,7 +42,8 @@ function findWords(gridNode, tree) {
     //gridNode could be my Adam
     const words = [];
     //pos 2 of all queued is the path from original gridNode to currentNode
-    const queue = [[tree, gridNode, [gridNode], gridNode.ancestory]];
+    //use pos 2 to key into ancestory to set up next nodes
+    const queue = [[tree, gridNode, [gridNode]]];
 
     while (queue.length) {
         let ele = queue.shift();
@@ -65,12 +66,27 @@ function findWords(gridNode, tree) {
                 let subTree = ele[0]
                 if (subTree.map[char]) {
                     subTree = subTree.map[char];
+                    
+                    // debugger
+                    let currentNode = gridNode.ancestory
+                    for (let x = 1; x < ele[2].length; x++) {
+                        if (currentNode.children[ele[2][x].coordinates]) {
+                            currentNode = currentNode.children[ele[2][x].coordinates]
+                        }
+                    }
+                    currentNode.children[ele[1].neighbors[i].coordinates] = {
+                        node: ele[1].neighbors[i],
+                        complete: subTree.complete,
+                        children: {}
+                    }
+
                     queue.push([subTree, ele[1].neighbors[i], path])
                 }
             }
         }
     }
     console.log(words)
+    console.log(gridNode.ancestory)
     return words
 }
 
