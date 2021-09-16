@@ -24,43 +24,54 @@ async function game() {
     for (let x = 0; x < grid.length; x++) {
         for (let y = 0; y < grid[0].length; y++) {
             console.log(`checking for ${grid[x][y].ch} at ${grid[x][y].coordinates}`)
-            findWords(grid[x][y], root.map[grid[x][y].ch])
+            findWords(grid[x][y], root.map[grid[x][y].ch]).forEach(word => {
+                if (!gameWords.includes(word)) {
+                    gameWords.push(word)
+                }
+            })
         }
     }
 
+    console.log(gameWords)
+    // console.log("checking for [0][0]")
     // findWords(grid[0][0], root.map[grid[0][0].ch])
 }
     
 
 function findWords(gridNode, tree) {
+    //gridNode could be my Adam
     const words = [];
     //pos 2 of all queued is the array of visited cells for that particular gridNode
     const queue = [[tree, gridNode, [gridNode]]];
 
     while (queue.length) {
-        // debugger
         let ele = queue.shift();
-        for (let i = 0; i < ele[1].neighbors.length; i++) {
-            if (ele[0].complete) {
-                let currentWord = fetchWord(ele[0])
-                if (!words.includes(currentWord)) {
-                    words.push(currentWord)
-                }
+        if (ele[0].complete) {
+            let currentWord = fetchWord(ele[0])
+            if (!words.includes(currentWord)) {
+                words.push(currentWord)
             }
+        }
+        let visitedNodes = ele[2].slice()
+        for (let i = 0; i < ele[1].neighbors.length; i++) {
+            if (!visitedNodes.includes(ele[1].neighbors[i]) &&
+                !ele[2].includes(ele[1].neighbors[i])) {
 
-            if (!ele[2].includes(ele[1].neighbors[i])) {
-                ele[2].push(ele[1].neighbors[i])
+                let path = ele[2].slice()
+                path.push(ele[1].neighbors[i])
+                visitedNodes.push(ele[1].neighbors[i])
+
                 let char = ele[1].neighbors[i].ch
                 let subTree = ele[0]
                 if (subTree.map[char]) {
                     subTree = subTree.map[char];
-                    //I just need to give it the next gridNode
-                    queue.push([subTree, ele[1].neighbors[i], ele[2]])
+                    queue.push([subTree, ele[1].neighbors[i], path])
                 }
             }
         }
     }
     console.log(words)
+    return words
 }
 
 export default game
