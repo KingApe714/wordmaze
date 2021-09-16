@@ -10,10 +10,16 @@ export function gridNode(coordinates) {
     };
 
     this.tile = document.createElement('div')
+    this.tile.className = "game-tile";
     let letter = "AABCDEEFGHIIJKLMNOOPQRSSTUUVWXYZ"[Math.floor(Math.random() * 32)]
     this.ch = letter;
-    this.tile.className = "game-tile";
-    this.tile.innerHTML = `${letter} [${coordinates}]`;
+
+    this.innerTile = document.createElement('div')
+    this.innerTile.className = "inner-game-tile"
+    this.innerTile.innerHTML = `${letter} [${coordinates}]`;
+    this.tile.appendChild(this.innerTile)
+
+    this.selected = false;
 }
 
 export function setUpGrid() {
@@ -32,6 +38,7 @@ export function setUpGrid() {
     ]
 
     let mouseDown = false;
+    let word = ""
     gameBoardContainer.addEventListener("mousedown", () => {
         mouseDown = true;
         console.log("mouse is down")
@@ -45,19 +52,28 @@ export function setUpGrid() {
             gNode.tile.style.top = i * 100 + "px";
 
             //when I mousedown then I'm using this as my first tile
-            gNode.tile.addEventListener("mousedown", () => {
+            gNode.innerTile.addEventListener("mousedown", () => {
                 mouseDown = true;
+                if (!gNode.selected) {
+                    word = gNode.ch
+                }
+                gNode.selected = true;
             })
 
             //when I mousemove I am building potential words
-            gNode.tile.addEventListener("mousemove", () => {
+            gNode.innerTile.addEventListener("mousemove", () => {
                 if (mouseDown) {
-                    console.log(gNode.ch)
+                    if (!gNode.selected) {
+                        word += gNode.ch
+                    }
+                    gNode.selected = true
+                    console.log(word)
                 }
             })
 
-            gNode.tile.addEventListener("mouseup", () => {
+            gNode.innerTile.addEventListener("mouseup", () => {
                 mouseDown = false;
+                gNode.selected = false;
             })
 
             gameBoardContainer.appendChild(gNode.tile)

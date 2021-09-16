@@ -12,6 +12,17 @@
     border: 1px solid red;
 }
 
+.inner-game-tile {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* for testing */
+    border: 1px solid black;
+}
+
 .modal-bg {
     position: fixed;
     top: 0;
