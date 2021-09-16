@@ -39,14 +39,20 @@ export function setUpGrid() {
 
     let mouseDown = false;
     let word = ""
+    let selectedNodes = [];
+    let nodeAdam = null;
+
     gameBoardContainer.addEventListener("mousedown", () => {
         mouseDown = true;
         console.log("mouse is down")
+        return false;
     })
-
+    
     gameBoardContainer.addEventListener("mouseup", () => {
-
-        word = ""
+        
+        word = "";
+        selectedNodes = [];
+        nodeAdam = null;
 
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[0].length; j++) {
@@ -69,7 +75,10 @@ export function setUpGrid() {
                 mouseDown = true;
                 if (!gNode.selected) {
                     word = gNode.ch
+                    selectedNodes.push(gNode)
                     gNode.tile.style.backgroundColor = "blue";
+
+                    nodeAdam = gNode.ancestory
                 }
                 gNode.selected = true;
             })
@@ -79,7 +88,20 @@ export function setUpGrid() {
                 if (mouseDown) {
                     if (!gNode.selected) {
                         word += gNode.ch
+                        selectedNodes.push(gNode)
                         gNode.tile.style.backgroundColor = "blue";
+
+                        if (nodeAdam.children[gNode.coordinates]) {
+                            nodeAdam = nodeAdam.children[gNode.coordinates]
+                        }
+
+                        console.log(nodeAdam)
+
+                        if (nodeAdam.complete) {
+                            selectedNodes.forEach(node => {
+                                node.tile.style.backgroundColor = "yellow"
+                            })
+                        }
                     }
                     gNode.selected = true
                     console.log(word)
