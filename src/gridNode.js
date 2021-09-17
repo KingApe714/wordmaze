@@ -91,15 +91,21 @@ export function setUpGrid() {
                         selectedNodes.push(gNode)
                         gNode.tile.style.backgroundColor = "blue";
 
-                        if (nodeAdam.children[gNode.coordinates]) {
+                        if (nodeAdam && nodeAdam.children[gNode.coordinates]) {
                             nodeAdam = nodeAdam.children[gNode.coordinates]
+                        } else {
+                            nodeAdam = null
                         }
 
                         console.log(nodeAdam)
 
-                        if (nodeAdam.complete) {
+                        if (nodeAdam && nodeAdam.complete) {
                             selectedNodes.forEach(node => {
                                 node.tile.style.backgroundColor = "yellow"
+                            })
+                        } else {
+                            selectedNodes.forEach(node => {
+                                node.tile.style.backgroundColor = "blue"
                             })
                         }
                     }
