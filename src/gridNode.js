@@ -3,12 +3,7 @@ import { fetchWord } from "./trie";
 export function gridNode(coordinates) {
     this.neighbors = [];
     this.coordinates = coordinates;
-    this.ancestory = {
-        node: this,
-        complete: false,
-        children: {},
-        parent: null
-    };
+    this.ancestory = new ancestoryNode(this);
 
     this.tile = document.createElement('div')
     this.tile.className = "game-tile";
@@ -21,6 +16,13 @@ export function gridNode(coordinates) {
     this.tile.appendChild(this.innerTile)
 
     this.selected = false;
+}
+
+export function ancestoryNode(node) {
+    this.node = node;
+    this.complete = false;
+    this.children = {};
+    this.parent = null;
 }
 
 export function setUpGrid() {
@@ -86,21 +88,24 @@ export function setUpGrid() {
 
             //when I mousemove I am building potential words
             gNode.innerTile.addEventListener("mousemove", () => {
+                let unbrokenWord = true;
                 if (mouseDown) {
                     if (!gNode.selected) {
                         word += gNode.ch
                         selectedNodes.push(gNode)
                         gNode.tile.style.backgroundColor = "blue";
 
-                        if (nodeAdam && nodeAdam.children[gNode.coordinates]) {
+                        if (unbrokenWord && nodeAdam.children[gNode.coordinates]) {
                             nodeAdam = nodeAdam.children[gNode.coordinates]
+                        } else if (unbrokenWord && nodeAdam.parent === gNode){
+                            console.log("we're here")
                         } else {
-                            nodeAdam = null
+                            unbrokenWord = false;
                         }
 
                         console.log(nodeAdam)
 
-                        if (nodeAdam && nodeAdam.complete) {
+                        if (unbrokenWord && nodeAdam.complete) {
                             selectedNodes.forEach(node => {
                                 node.tile.style.backgroundColor = "yellow"
                             })
@@ -223,17 +228,20 @@ export function findWords(gridNode, tree) {
                     
                     let currentNode = gridNode.ancestory
                     //key into ancestory until at the right position
-                    for (let x = 1; x < ele[2].length; x++) {
+                    for (let x = 0; x < ele[2].length; x++) {
+                        // console.log(currentNode)
+                        // debugger
                         if (currentNode.children[ele[2][x].coordinates]) {
                             currentNode = currentNode.children[ele[2][x].coordinates]
                         }
                     }
-                    currentNode.children[ele[1].neighbors[i].coordinates] = {
-                        node: ele[1].neighbors[i],
-                        complete: subTree.complete,
-                        children: {},
-                        parent: ele[1]
-                    }
+
+                    // debugger
+                    currentNode.children[ele[1].neighbors[i].coordinates] = new ancestoryNode(ele[1].neighbors[i])
+                    currentNode.children[ele[1].neighbors[i].coordinates].complete = subTree.complete
+                    currentNode.children[ele[1].neighbors[i].coordinates].parent = ele[1]
+
+                    // console.log(currentNode.children[ele[1].neighbors[i].coordinates])
 
                     queue.push([subTree, ele[1].neighbors[i], path])
                 }
