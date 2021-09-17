@@ -97,8 +97,6 @@ export function setUpGrid() {
 
                         if (unbrokenWord && nodeAdam.children[gNode.coordinates]) {
                             nodeAdam = nodeAdam.children[gNode.coordinates]
-                        } else if (unbrokenWord && nodeAdam.parent === gNode){
-                            console.log("we're here")
                         } else {
                             unbrokenWord = false;
                         }
@@ -113,6 +111,18 @@ export function setUpGrid() {
                             selectedNodes.forEach(node => {
                                 node.tile.style.backgroundColor = "blue"
                             })
+                        }
+                    } else {
+                        //so I know that gNode is selected here
+                        //I need to know if you've left and come back..
+                        let lastNode = selectedNodes[selectedNodes.length - 1];
+                        if (lastNode !== gNode) {
+                            lastNode.tile.style.backgroundColor = "white";
+                            selectedNodes.pop()
+                            word = word.slice(0, -1)
+                            if (unbrokenWord) {
+                                nodeAdam = nodeAdam.parent
+                            }
                         }
                     }
                     gNode.selected = true
@@ -239,7 +249,7 @@ export function findWords(gridNode, tree) {
                     // debugger
                     currentNode.children[ele[1].neighbors[i].coordinates] = new ancestoryNode(ele[1].neighbors[i])
                     currentNode.children[ele[1].neighbors[i].coordinates].complete = subTree.complete
-                    currentNode.children[ele[1].neighbors[i].coordinates].parent = ele[1]
+                    currentNode.children[ele[1].neighbors[i].coordinates].parent = ele[1].ancestory
 
                     // console.log(currentNode.children[ele[1].neighbors[i].coordinates])
 
