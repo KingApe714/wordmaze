@@ -6,7 +6,8 @@ export function gridNode(coordinates) {
     this.ancestory = {
         node: this,
         complete: false,
-        children: {}
+        children: {},
+        parent: null
     };
 
     this.tile = document.createElement('div')
@@ -230,7 +231,8 @@ export function findWords(gridNode, tree) {
                     currentNode.children[ele[1].neighbors[i].coordinates] = {
                         node: ele[1].neighbors[i],
                         complete: subTree.complete,
-                        children: {}
+                        children: {},
+                        parent: ele[1]
                     }
 
                     queue.push([subTree, ele[1].neighbors[i], path])
