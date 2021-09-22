@@ -188,10 +188,11 @@ export function setUpTiles(grid) {
                                             rootNode = rootNode.children[selectedNodes[j].coordinates]
                                             console.log('now rootNode')
                                             console.log(rootNode)
-                                            nodeAdam = rootNode.children[selectedNodes[j].coordinates]
+                                            // nodeAdam = rootNode.children[selectedNodes[j].coordinates]
                                             console.log(nodeAdam)
                                         }
                                     }
+                                    nodeAdam = rootNode
                                     break
                                 }
                             }
