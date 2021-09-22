@@ -98,6 +98,7 @@ export function setUpTiles(grid) {
     let word = ""
     let selectedNodes = [];
     let nodeAdam = null;
+    let rootNode = null;
     
     gameBoardContainer.addEventListener("mousedown", () => {
         mouseDown = true;
@@ -132,6 +133,7 @@ export function setUpTiles(grid) {
                     gNode.tile.style.backgroundColor = "blue";
 
                     nodeAdam = grid[i][j]
+                    rootNode = grid[i][j]
                 }
                 gNode.selected = true;
             })
@@ -169,8 +171,30 @@ export function setUpTiles(grid) {
                         lastNode = selectedNodes[selectedNodes.length - 1];
                         if (lastNode !== gNode) {
                             lastNode.tile.style.backgroundColor = "white";
-                            selectedNodes.pop()
-                            word = word.slice(0, -1)
+                            for (let i = selectedNodes.length - 1; i >= 0; i--) {
+                                if (selectedNodes[i] !== gNode) {
+                                    lastNode = selectedNodes.pop()
+                                    lastNode.tile.style.backgroundColor = "white";
+                                    word = word.slice(0, -1)
+                                } else {
+                                    //I know that I've intercepted the path here
+                                    //I could traverse from nodeAdam all the way to this node.
+                                    //I know that pos 0 in selectedNodes is nodeAdam
+                                    for (let j = 0; j < selectedNodes.length; j++) {
+                                        console.log('rootNode')
+                                        console.log(rootNode)
+                                        console.log(selectedNodes[j].coordinates)
+                                        if (rootNode.children[selectedNodes[j].coordinates]) {
+                                            rootNode = rootNode.children[selectedNodes[j].coordinates]
+                                            console.log('now rootNode')
+                                            console.log(rootNode)
+                                            nodeAdam = rootNode.children[selectedNodes[j].coordinates]
+                                            console.log(nodeAdam)
+                                        }
+                                    }
+                                    break
+                                }
+                            }
                             console.log(selectedNodes)
                             console.log(word)
                             console.log(nodeAdam)
