@@ -40,7 +40,7 @@ export function setUpGrid(root) {
         [-1, 0]
     ]
 
-    //set up gridNodes on gameBoard
+    //set up gridNodes for gameBoard
     for (let i = 0; i < 4; i++) {
         let row = []
         for (let j = 0; j < 4; j++) {
@@ -71,12 +71,11 @@ export function setUpGrid(root) {
     const gameWords = []
 
     const newGrid = []
-    console.log(grid)
 
     for (let x = 0; x < grid.length; x++) {
         let row = [];
         for (let y = 0; y < grid[0].length; y++) {
-            console.log(`checking for ${grid[x][y].ch} at ${grid[x][y].coordinates}`)
+            // console.log(`checking for ${grid[x][y].ch} at ${grid[x][y].coordinates}`)
             let arr = findWords(grid[x][y], root.map[grid[x][y].ch])
             row.push(arr[1])
             arr[0].forEach(word => {
@@ -87,16 +86,13 @@ export function setUpGrid(root) {
         }
         newGrid.push(row)
     }
-
-    console.log(newGrid)
-
     console.log(gameWords)
     
     return setUpTiles(newGrid)
 }
 
 export function setUpTiles(grid) {
-    //this is grid is a grid full of ancestory nodes
+    //this grid is a grid full of ancestory nodes
     const gameBoardContainer = document.querySelector('.game-board-container')
     let mouseDown = false;
     let word = ""
@@ -105,7 +101,6 @@ export function setUpTiles(grid) {
     
     gameBoardContainer.addEventListener("mousedown", () => {
         mouseDown = true;
-        console.log("mouse is down")
         return false;
     })
     
@@ -132,7 +127,7 @@ export function setUpTiles(grid) {
             gNode.innerTile.addEventListener("mousedown", () => {
                 mouseDown = true;
                 if (!gNode.selected) {
-                    word = gNode.ch
+                    word += gNode.ch
                     selectedNodes.push(gNode)
                     gNode.tile.style.backgroundColor = "blue";
 
@@ -143,22 +138,22 @@ export function setUpTiles(grid) {
 
             //when I mousemove I am building potential words
             gNode.innerTile.addEventListener("mousemove", () => {
-                let unbrokenWord = true;
+                let lastNode
                 if (mouseDown) {
+                    //I know that I'm mousing over the node...
                     if (!gNode.selected) {
-                        word += gNode.ch
+                        word += gNode.ch;
                         selectedNodes.push(gNode)
-                        gNode.tile.style.backgroundColor = "blue";
-
-                        if (unbrokenWord && nodeAdam.children[gNode.coordinates]) {
+                        gNode.tile.style.backgroundColor = "blue"
+                        
+                        if (nodeAdam.children[gNode.coordinates]) {
                             nodeAdam = nodeAdam.children[gNode.coordinates]
-                        } else {
-                            unbrokenWord = false;
                         }
-
+                        
                         console.log(nodeAdam)
-
-                        if (unbrokenWord && nodeAdam.complete) {
+                        lastNode = selectedNodes[selectedNodes.length - 1];
+                        
+                        if (lastNode === nodeAdam.node && nodeAdam.complete) {
                             selectedNodes.forEach(node => {
                                 node.tile.style.backgroundColor = "yellow"
                             })
@@ -166,26 +161,89 @@ export function setUpTiles(grid) {
                             selectedNodes.forEach(node => {
                                 node.tile.style.backgroundColor = "blue"
                             })
-                        }
+                        } 
                     } else {
-                        //so I know that gNode is selected here
-                        //I need to know if you've left and come back..
-                        let lastNode = selectedNodes[selectedNodes.length - 1];
+                        //I know that this node has been selected and I've come back to it somehow
+                        //I need to check to see if this node is the last node in selectedNodes
+                        //if not then I must pop off the last node
+                        lastNode = selectedNodes[selectedNodes.length - 1];
                         if (lastNode !== gNode) {
                             lastNode.tile.style.backgroundColor = "white";
                             selectedNodes.pop()
                             word = word.slice(0, -1)
-                            if (unbrokenWord) {
+                            console.log(selectedNodes)
+                            console.log(word)
+                            console.log(nodeAdam)
+                            //in here I know I've come back to a previously selected node
+                            //now I need to know if this cell is equal to nodeAdam
+                            //or if it is equal to nodeAdams parent
+                            if (gNode === nodeAdam.parent.node) {
                                 nodeAdam = nodeAdam.parent
-                                console.log(nodeAdam)
-                                if (nodeAdam.complete) {
-                                    selectedNodes.forEach(node => {
-                                        node.tile.style.backgroundColor = "yellow"
-                                    })
-                                }
                             }
+
+                            if (gNode === nodeAdam.node && nodeAdam.complete) {
+                                selectedNodes.forEach(node => {
+                                    node.tile.style.backgroundColor = "yellow"
+                                })
+                            } else {
+                                selectedNodes.forEach(node => {
+                                    node.tile.style.backgroundColor = "blue"
+                                })
+                            }
+
+                            console.log(nodeAdam)
                         }
                     }
+
+                    // if (!gNode.selected) {
+                    //     word += gNode.ch
+                    //     selectedNodes.push(gNode)
+                    //     gNode.tile.style.backgroundColor = "blue";
+
+                    //     if (unbrokenWord && nodeAdam.children[gNode.coordinates]) {
+                    //         nodeAdam = nodeAdam.children[gNode.coordinates]
+                    //     } else {
+                    //         unbrokenWord = false;
+                    //     }
+
+                    //     console.log(nodeAdam)
+
+                    //     if (unbrokenWord && nodeAdam.complete) {
+                    //         selectedNodes.forEach(node => {
+                    //             node.tile.style.backgroundColor = "yellow"
+                    //         })
+                    //     } else {
+                    //         selectedNodes.forEach(node => {
+                    //             node.tile.style.backgroundColor = "blue"
+                    //         })
+                    //     }
+                    // } else {
+                    //     //so I know that gNode is selected here
+                    //     //I need to know if you've left and come back..
+                    //     let lastNode = selectedNodes[selectedNodes.length - 1];
+                    //     if (lastNode !== gNode) {
+                    //         lastNode.tile.style.backgroundColor = "white";
+                    //         selectedNodes.pop()
+                    //         word = word.slice(0, -1)
+                    //         //this condition is breaking my logic
+                    //         if (unbrokenWord) {
+                    //             if (gNode === nodeAdam.parent.node) {
+                    //                 console.log("this is the part!")
+                    //                 nodeAdam = nodeAdam.parent
+                    //             }
+                    //             console.log(nodeAdam)
+                    //             if (nodeAdam.complete) {
+                    //                 selectedNodes.forEach(node => {
+                    //                     node.tile.style.backgroundColor = "yellow"
+                    //                 })
+                    //             } else {
+                    //                 selectedNodes.forEach(node => {
+                    //                     node.tile.style.backgroundColor = "blue"
+                    //                 })
+                    //             }
+                    //         }
+                    //     }
+                    // }
                     gNode.selected = true
                     console.log(word)
                 }
@@ -256,7 +314,7 @@ export function findWords(gridNode, tree) {
             }
         }
     }
-    console.log(words)
-    console.log(rootAncNode)
+    // console.log(words)
+    // console.log(rootAncNode)
     return [words, rootAncNode]
 }
