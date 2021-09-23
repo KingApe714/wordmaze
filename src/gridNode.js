@@ -97,7 +97,6 @@ export function setUpTiles(grid) {
     let word = ""
     let selectedNodes = [];
     let nodeAdam = null;
-    let rootNode = null;
     
     gameBoardContainer.addEventListener("mousedown", () => {
         mouseDown = true;
@@ -119,7 +118,6 @@ export function setUpTiles(grid) {
         }
     })
     for (let i = 0; i < 4; i++) {
-        // let row = []
         for (let j = 0; j < 4; j++) {
             let gNode = grid[i][j].node
 
@@ -132,7 +130,6 @@ export function setUpTiles(grid) {
                     gNode.tile.style.backgroundColor = "blue";
 
                     nodeAdam = grid[i][j]
-                    rootNode = grid[i][j]
                 }
                 gNode.selected = true;
             })
