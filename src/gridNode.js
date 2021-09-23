@@ -143,12 +143,13 @@ export function setUpTiles(grid) {
                 let lastNode
                 if (mouseDown) {
                     //I know that I'm mousing over the node...
+                    //I need to handle the case where I mouse over a word that breaks 
                     if (!gNode.selected) {
                         word += gNode.ch;
                         selectedNodes.push(gNode)
                         gNode.tile.style.backgroundColor = "blue"
                         
-                        if (nodeAdam.children[gNode.coordinates]) {
+                        if (nodeAdam && nodeAdam.children[gNode.coordinates]) {
                             nodeAdam = nodeAdam.children[gNode.coordinates]
                         }
                         
@@ -168,45 +169,23 @@ export function setUpTiles(grid) {
                         //I know that this node has been selected and I've come back to it somehow
                         //I need to check to see if this node is the last node in selectedNodes
                         //if not then I must pop off the last node
-                        lastNode = selectedNodes[selectedNodes.length - 1];
-                        if (lastNode !== gNode) {
-                            lastNode.tile.style.backgroundColor = "white";
+                        if (selectedNodes.includes(gNode)) {
+                            let currentNode
                             for (let i = selectedNodes.length - 1; i >= 0; i--) {
-                                if (selectedNodes[i] !== gNode) {
-                                    lastNode = selectedNodes.pop()
-                                    lastNode.tile.style.backgroundColor = "white";
-                                    word = word.slice(0, -1)
-                                } else {
-                                    //I know that I've intercepted the path here
-                                    //I could traverse from nodeAdam all the way to this node.
-                                    //I know that pos 0 in selectedNodes is nodeAdam
-                                    for (let j = 0; j < selectedNodes.length; j++) {
-                                        console.log('rootNode')
-                                        console.log(rootNode)
-                                        console.log(selectedNodes[j].coordinates)
-                                        if (rootNode.children[selectedNodes[j].coordinates]) {
-                                            rootNode = rootNode.children[selectedNodes[j].coordinates]
-                                            console.log('now rootNode')
-                                            console.log(rootNode)
-                                            // nodeAdam = rootNode.children[selectedNodes[j].coordinates]
-                                            console.log(nodeAdam)
-                                        }
-                                    }
-                                    nodeAdam = rootNode
+                                currentNode = selectedNodes[i];
+                                if (currentNode === gNode) {
                                     break
+                                } else {
+                                    currentNode.tile.style.backgroundColor = "white";
+                                    word = word.slice(0, word.length - 1)
+                                    selectedNodes.pop();
                                 }
                             }
-                            console.log(selectedNodes)
-                            console.log(word)
-                            console.log(nodeAdam)
-                            //in here I know I've come back to a previously selected node
-                            //now I need to know if this cell is equal to nodeAdam
-                            //or if it is equal to nodeAdams parent
-                            if (gNode === nodeAdam.parent.node) {
+                            if (nodeAdam.parent && currentNode === nodeAdam.parent.node) {
                                 nodeAdam = nodeAdam.parent
                             }
-
-                            if (gNode === nodeAdam.node && nodeAdam.complete) {
+                            lastNode = selectedNodes[selectedNodes.length - 1];
+                            if (lastNode === nodeAdam.node && nodeAdam.complete) {
                                 selectedNodes.forEach(node => {
                                     node.tile.style.backgroundColor = "yellow"
                                 })
@@ -215,60 +194,10 @@ export function setUpTiles(grid) {
                                     node.tile.style.backgroundColor = "blue"
                                 })
                             }
-
+                            console.log(selectedNodes)
                             console.log(nodeAdam)
                         }
                     }
-
-                    // if (!gNode.selected) {
-                    //     word += gNode.ch
-                    //     selectedNodes.push(gNode)
-                    //     gNode.tile.style.backgroundColor = "blue";
-
-                    //     if (unbrokenWord && nodeAdam.children[gNode.coordinates]) {
-                    //         nodeAdam = nodeAdam.children[gNode.coordinates]
-                    //     } else {
-                    //         unbrokenWord = false;
-                    //     }
-
-                    //     console.log(nodeAdam)
-
-                    //     if (unbrokenWord && nodeAdam.complete) {
-                    //         selectedNodes.forEach(node => {
-                    //             node.tile.style.backgroundColor = "yellow"
-                    //         })
-                    //     } else {
-                    //         selectedNodes.forEach(node => {
-                    //             node.tile.style.backgroundColor = "blue"
-                    //         })
-                    //     }
-                    // } else {
-                    //     //so I know that gNode is selected here
-                    //     //I need to know if you've left and come back..
-                    //     let lastNode = selectedNodes[selectedNodes.length - 1];
-                    //     if (lastNode !== gNode) {
-                    //         lastNode.tile.style.backgroundColor = "white";
-                    //         selectedNodes.pop()
-                    //         word = word.slice(0, -1)
-                    //         //this condition is breaking my logic
-                    //         if (unbrokenWord) {
-                    //             if (gNode === nodeAdam.parent.node) {
-                    //                 console.log("this is the part!")
-                    //                 nodeAdam = nodeAdam.parent
-                    //             }
-                    //             console.log(nodeAdam)
-                    //             if (nodeAdam.complete) {
-                    //                 selectedNodes.forEach(node => {
-                    //                     node.tile.style.backgroundColor = "yellow"
-                    //                 })
-                    //             } else {
-                    //                 selectedNodes.forEach(node => {
-                    //                     node.tile.style.backgroundColor = "blue"
-                    //                 })
-                    //             }
-                    //         }
-                    //     }
-                    // }
                     gNode.selected = true
                     console.log(word)
                 }
