@@ -75,7 +75,6 @@ export function setUpGrid(root) {
     for (let x = 0; x < grid.length; x++) {
         let row = [];
         for (let y = 0; y < grid[0].length; y++) {
-            // console.log(`checking for ${grid[x][y].ch} at ${grid[x][y].coordinates}`)
             let arr = findWords(grid[x][y], root.map[grid[x][y].ch])
             row.push(arr[1])
             arr[0].forEach(word => {
@@ -143,32 +142,18 @@ export function setUpTiles(grid) {
                 let lastNode
                 if (mouseDown) {
                     //I know that I'm mousing over the node...
-                    //I need to handle the case where I mouse over a word that breaks 
                     if (!gNode.selected) {
                         word += gNode.ch;
                         selectedNodes.push(gNode)
                         gNode.tile.style.backgroundColor = "blue"
                         
-                        if (nodeAdam && nodeAdam.children[gNode.coordinates]) {
+                        if (nodeAdam && nodeAdam.children[gNode.coordinates]
+                            && nodeAdam.node === selectedNodes[selectedNodes.length - 2]) {
                             nodeAdam = nodeAdam.children[gNode.coordinates]
                         }
                         
-                        console.log(nodeAdam)
                         lastNode = selectedNodes[selectedNodes.length - 1];
-                        
-                        if (lastNode === nodeAdam.node && nodeAdam.complete) {
-                            selectedNodes.forEach(node => {
-                                node.tile.style.backgroundColor = "yellow"
-                            })
-                        } else {
-                            selectedNodes.forEach(node => {
-                                node.tile.style.backgroundColor = "blue"
-                            })
-                        } 
                     } else {
-                        //I know that this node has been selected and I've come back to it somehow
-                        //I need to check to see if this node is the last node in selectedNodes
-                        //if not then I must pop off the last node
                         if (selectedNodes.includes(gNode)) {
                             let currentNode
                             for (let i = selectedNodes.length - 1; i >= 0; i--) {
@@ -177,6 +162,7 @@ export function setUpTiles(grid) {
                                     break
                                 } else {
                                     currentNode.tile.style.backgroundColor = "white";
+                                    currentNode.selected = false
                                     word = word.slice(0, word.length - 1)
                                     selectedNodes.pop();
                                 }
@@ -185,18 +171,17 @@ export function setUpTiles(grid) {
                                 nodeAdam = nodeAdam.parent
                             }
                             lastNode = selectedNodes[selectedNodes.length - 1];
-                            if (lastNode === nodeAdam.node && nodeAdam.complete) {
-                                selectedNodes.forEach(node => {
-                                    node.tile.style.backgroundColor = "yellow"
-                                })
-                            } else {
-                                selectedNodes.forEach(node => {
-                                    node.tile.style.backgroundColor = "blue"
-                                })
-                            }
-                            console.log(selectedNodes)
-                            console.log(nodeAdam)
                         }
+                    }
+                    //now check to see if I have a complete word or not
+                    if (lastNode === nodeAdam.node && nodeAdam.complete) {
+                        selectedNodes.forEach(node => {
+                            node.tile.style.backgroundColor = "yellow"
+                        })
+                    } else {
+                        selectedNodes.forEach(node => {
+                            node.tile.style.backgroundColor = "blue"
+                        })
                     }
                     gNode.selected = true
                     console.log(word)
@@ -209,9 +194,7 @@ export function setUpTiles(grid) {
             })
 
             gameBoardContainer.appendChild(gNode.tile)
-            // row.push(gNode)
         }
-        // grid.push(row)
     }
 }
 
@@ -248,27 +231,20 @@ export function findWords(gridNode, tree) {
                     let currentNode = rootAncNode
                     //key into ancestory until at the right position
                     for (let x = 0; x < ele[2].length; x++) {
-                        // console.log(currentNode)
-                        // debugger
                         if (currentNode.children[ele[2][x].coordinates]) {
                             currentNode = currentNode.children[ele[2][x].coordinates]
                         }
                     }
 
-                    // debugger
                     currentNode.children[ele[1].node.neighbors[i].coordinates] = new ancestoryNode(ele[1].node.neighbors[i])
                     let newAncNode = currentNode.children[ele[1].node.neighbors[i].coordinates]
                     newAncNode.complete = subTree.complete
                     newAncNode.parent = ele[1]
-
-                    // console.log(currentNode.children[ele[1].neighbors[i].coordinates])
 
                     queue.push([subTree, newAncNode, path])
                 }
             }
         }
     }
-    // console.log(words)
-    // console.log(rootAncNode)
     return [words, rootAncNode]
 }

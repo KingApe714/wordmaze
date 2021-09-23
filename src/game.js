@@ -23,22 +23,7 @@ async function game() {
 
     let grid = setUpGrid(root)
 
-    //next lets find all possible words with the letters that are given using the trieTree
     const gameWords = [];
-    // for (let x = 0; x < grid.length; x++) {
-    //     for (let y = 0; y < grid[0].length; y++) {
-    //         console.log(`checking for ${grid[x][y].ch} at ${grid[x][y].coordinates}`)
-    //         findWords(grid[x][y], root.map[grid[x][y].ch]).forEach(word => {
-    //             if (!gameWords.includes(word)) {
-    //                 gameWords.push(word)
-    //             }
-    //         })
-    //     }
-    // }
-
-    // console.log(gameWords)
-    // console.log("checking for [0][0]")
-    // findWords(grid[0][0], root.map[grid[0][0].ch])
 }
     
 
