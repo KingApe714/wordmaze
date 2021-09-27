@@ -118,7 +118,7 @@ export function setUpTiles(grid) {
             }
         }
 
-        debugger
+        // debugger
 
         while (svgContainer.firstChild) {
             svgContainer.removeChild(svgContainer.firstChild)
@@ -136,7 +136,7 @@ export function setUpTiles(grid) {
                 if (!gNode.selected) {
                     word += gNode.ch
                     selectedNodes.push(gNode)
-                    // gNode.tile.style.backgroundColor = "blue";
+                    gNode.tile.style.backgroundColor = "blue";
 
                     nodeAdam = grid[i][j]
                 }
@@ -163,7 +163,7 @@ export function setUpTiles(grid) {
 
                         word += gNode.ch;
                         selectedNodes.push(gNode)
-                        // gNode.tile.style.backgroundColor = "blue"
+                        gNode.tile.style.backgroundColor = "blue"
                         
                         if (nodeAdam && nodeAdam.children[gNode.coordinates]
                             && nodeAdam.node === selectedNodes[selectedNodes.length - 2]) {
@@ -198,7 +198,7 @@ export function setUpTiles(grid) {
                         })
                     } else {
                         selectedNodes.forEach(node => {
-                            // node.tile.style.backgroundColor = "blue"
+                            node.tile.style.backgroundColor = "blue"
                         })
                     }
                     gNode.selected = true

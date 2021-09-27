@@ -7,11 +7,14 @@
 
 .svg-container {
     position: absolute;
+    /* left: 0;
+    top: 0; */
     width: 400px;
     height: 400px;
     border: 1px solid black;
     z-index: 1;
     /* background-color: aqua; */
+    pointer-events: none;
 }
 
 .game-tile {
@@ -82,5 +85,6 @@
 .game-line {
     stroke: blueviolet;
     stroke-width: 5;
+    stroke-linejoin: round;
     z-index: 5;
 }
