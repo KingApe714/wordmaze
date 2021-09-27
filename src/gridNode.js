@@ -44,7 +44,7 @@ export function setUpGrid(root) {
     for (let i = 0; i < 4; i++) {
         let row = []
         for (let j = 0; j < 4; j++) {
-            let gNode = new gridNode(`${i},${j}`)
+            let gNode = new gridNode(`${j},${i}`)
             gNode.tile.style.left = j * 100 + "px";
             gNode.tile.style.top = i * 100 + "px";
             row.push(gNode)
@@ -93,6 +93,7 @@ export function setUpGrid(root) {
 export function setUpTiles(grid) {
     //this grid is a grid full of ancestory nodes
     const gameBoardContainer = document.querySelector('.game-board-container')
+    const svgContainer = document.querySelector('.svg-container')
     let mouseDown = false;
     let word = ""
     let selectedNodes = [];
@@ -116,6 +117,14 @@ export function setUpTiles(grid) {
                 gNode.selected = false
             }
         }
+
+        debugger
+
+        while (svgContainer.firstChild) {
+            svgContainer.removeChild(svgContainer.firstChild)
+        }
+
+        console.log(gameBoardContainer)
     })
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
@@ -127,7 +136,7 @@ export function setUpTiles(grid) {
                 if (!gNode.selected) {
                     word += gNode.ch
                     selectedNodes.push(gNode)
-                    gNode.tile.style.backgroundColor = "blue";
+                    // gNode.tile.style.backgroundColor = "blue";
 
                     nodeAdam = grid[i][j]
                 }
@@ -140,9 +149,21 @@ export function setUpTiles(grid) {
                 if (mouseDown) {
                     //I know that I'm mousing over the node...
                     if (!gNode.selected) {
+                        let newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        let [x1, y1] = selectedNodes[selectedNodes.length -1].coordinates.split(',')
+                        let [x2, y2] = gNode.coordinates.split(',')
+                        console.log(`x1 = ${x1 * 100} y1 = ${y1 * 100} x2 = ${x2 * 100} y2 = ${y2 * 100}`)
+                        newLine.setAttribute('class', 'game-line')
+                        newLine.setAttribute('x1', `${x1 * 100 + 50}`)
+                        newLine.setAttribute('y1', `${y1 * 100 + 50}`)
+                        newLine.setAttribute('x2', `${x2 * 100 + 50}`)
+                        newLine.setAttribute('y2', `${y2 * 100 + 50}`)
+                        svgContainer.appendChild(newLine)
+                        console.log(svgContainer)
+
                         word += gNode.ch;
                         selectedNodes.push(gNode)
-                        gNode.tile.style.backgroundColor = "blue"
+                        // gNode.tile.style.backgroundColor = "blue"
                         
                         if (nodeAdam && nodeAdam.children[gNode.coordinates]
                             && nodeAdam.node === selectedNodes[selectedNodes.length - 2]) {
@@ -177,7 +198,7 @@ export function setUpTiles(grid) {
                         })
                     } else {
                         selectedNodes.forEach(node => {
-                            node.tile.style.backgroundColor = "blue"
+                            // node.tile.style.backgroundColor = "blue"
                         })
                     }
                     gNode.selected = true
@@ -189,10 +210,10 @@ export function setUpTiles(grid) {
                 mouseDown = false;
                 gNode.selected = false;
             })
-
             gameBoardContainer.appendChild(gNode.tile)
         }
     }
+    console.log(svgContainer)
 }
 
 export function findWords(gridNode, tree) {
