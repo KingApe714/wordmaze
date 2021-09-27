@@ -97,6 +97,7 @@ export function setUpTiles(grid) {
     let mouseDown = false;
     let word = ""
     let selectedNodes = [];
+    let currentLine = [];
     let nodeAdam = null;
     
     gameBoardContainer.addEventListener("mousedown", () => {
@@ -108,6 +109,7 @@ export function setUpTiles(grid) {
         
         word = "";
         selectedNodes = [];
+        currentLine = [];
         nodeAdam = null;
     
         for (let i = 0; i < grid.length; i++) {
