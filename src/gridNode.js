@@ -97,8 +97,9 @@ export function setUpTiles(grid) {
     let mouseDown = false;
     let word = ""
     let selectedNodes = [];
-    let currentLine = [];
     let nodeAdam = null;
+
+    let foundWords = []
     
     gameBoardContainer.addEventListener("mousedown", () => {
         mouseDown = true;
@@ -106,10 +107,13 @@ export function setUpTiles(grid) {
     })
     
     gameBoardContainer.addEventListener("mouseup", () => {
+
+        if (gameWords.includes(word) && !foundWords.includes(word)) {
+            foundWords.push(word)
+        }
         
         word = "";
         selectedNodes = [];
-        currentLine = [];
         nodeAdam = null;
     
         for (let i = 0; i < grid.length; i++) {
@@ -159,7 +163,6 @@ export function setUpTiles(grid) {
                         newLine.setAttribute('x2', `${x2 * 100 + 50}`)
                         newLine.setAttribute('y2', `${y2 * 100 + 50}`)
                         svgContainer.appendChild(newLine)
-                        currentLine.push(newLine);
                         console.log(svgContainer)
 
                         word += gNode.ch;
@@ -192,7 +195,6 @@ export function setUpTiles(grid) {
                             lastNode = selectedNodes[selectedNodes.length - 1];
                         }
                     }
-                    // console.log(currentLine)
                     //there will always be one more selectedNode than there is lines
                     //therefore I just need to delete all the lines past selectedNodes.length - 2
                     let x = selectedNodes.length - 1
