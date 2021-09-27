@@ -120,8 +120,6 @@ export function setUpTiles(grid) {
             }
         }
 
-        // debugger
-
         while (svgContainer.firstChild) {
             svgContainer.removeChild(svgContainer.firstChild)
         }
@@ -161,6 +159,7 @@ export function setUpTiles(grid) {
                         newLine.setAttribute('x2', `${x2 * 100 + 50}`)
                         newLine.setAttribute('y2', `${y2 * 100 + 50}`)
                         svgContainer.appendChild(newLine)
+                        currentLine.push(newLine);
                         console.log(svgContainer)
 
                         word += gNode.ch;
@@ -193,21 +192,30 @@ export function setUpTiles(grid) {
                             lastNode = selectedNodes[selectedNodes.length - 1];
                         }
                     }
-                    //now check to see if I have a complete word or not
-                    if (lastNode === nodeAdam.node && nodeAdam.complete) {
-                        selectedNodes.forEach(node => {
-                            node.tile.style.backgroundColor = "yellow"
-                        })
-                    } else {
-                        selectedNodes.forEach(node => {
-                            node.tile.style.backgroundColor = "blue"
-                        })
+                    // console.log(currentLine)
+                    //there will always be one more selectedNode than there is lines
+                    //therefore I just need to delete all the lines past selectedNodes.length - 2
+                    let x = selectedNodes.length - 1
+                    let dif = svgContainer.children.length - x
+                    for (let i = 0; i < dif; i++) {
+                        // console.log(svgContainer.children[i])
+                        // debugger
+                        if (svgContainer.lastChild) svgContainer.removeChild(svgContainer.lastChild)
+                    }
+                    for (let i = 0; i < selectedNodes.length; i++) {
+                        let node1 = selectedNodes[i]
+                        //now check to see if I have a complete word or not
+                        if (lastNode === nodeAdam.node && nodeAdam.complete) {
+                            node1.tile.style.backgroundColor = "yellow"
+                        } else {
+                            node1.tile.style.backgroundColor = "blue"
+                        }
                     }
                     gNode.selected = true
                     console.log(word)
                 }
             })
-
+            
             gNode.innerTile.addEventListener("mouseup", () => {
                 mouseDown = false;
                 gNode.selected = false;
