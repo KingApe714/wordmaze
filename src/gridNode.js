@@ -87,10 +87,10 @@ export function setUpGrid(root) {
     }
     console.log(gameWords)
     
-    return setUpTiles(newGrid)
+    return setUpTiles(newGrid, gameWords)
 }
 
-export function setUpTiles(grid) {
+export function setUpTiles(grid, gameWords) {
     //this grid is a grid full of ancestory nodes
     const gameBoardContainer = document.querySelector('.game-board-container')
     const svgContainer = document.querySelector('.svg-container')
@@ -226,6 +226,8 @@ export function setUpTiles(grid) {
         }
     }
     console.log(svgContainer)
+
+    return foundWords
 }
 
 export function findWords(gridNode, tree) {
