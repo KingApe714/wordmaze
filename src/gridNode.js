@@ -1,4 +1,5 @@
 import { fetchWord } from "./trie";
+import { gamePoints } from "./util";
 
 //lets try unnesting the ancestoryNode from inside of this node
 export function gridNode(coordinates) {
@@ -109,6 +110,7 @@ export function setUpTiles(grid, gameWords) {
     gameBoardContainer.addEventListener("mouseup", () => {
 
         if (gameWords.includes(word) && !foundWords.includes(word)) {
+            gamePoints(word)
             foundWords.push(word)
         }
         

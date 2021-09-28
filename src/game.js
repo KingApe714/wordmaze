@@ -21,9 +21,8 @@ async function game() {
     modal()
     timer()
 
-    let grid = setUpGrid(root)
+    setUpGrid(root)
 
-    const gameWords = [];
 }
     
 

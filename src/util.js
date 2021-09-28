@@ -29,5 +29,13 @@ export function timer() {
         countdownEl.innerHTML = `${minutes}:${seconds}`
 
         if (time > 0) time--;
+
+        if (time === 0) {
+
+        }
     }
+}
+
+export function gamePoints(word) {
+    
 }
