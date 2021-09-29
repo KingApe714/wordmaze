@@ -88,3 +88,20 @@
     stroke-linejoin: round;
     z-index: 5;
 }
+
+.mini-board {
+    position: relative;
+    border: 1px solid blue;
+    width: 120px;
+    height: 120px;
+}
+
+.mini-tile {
+    position: absolute;
+    border: 1px solid black;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

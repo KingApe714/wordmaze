@@ -227,9 +227,8 @@ export function setUpTiles(grid, gameWords) {
             gameBoardContainer.appendChild(gNode.tile)
         }
     }
-    console.log(svgContainer)
 
-    return foundWords
+    return grid
 }
 
 export function findWords(gridNode, tree) {
