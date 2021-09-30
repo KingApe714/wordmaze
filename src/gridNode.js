@@ -25,6 +25,8 @@ export function ancestoryNode(node) {
     this.complete = false;
     this.children = {};
     this.parent = null;
+
+    this.found = false;
 }
 
 export function setUpGrid(root) {
@@ -112,6 +114,12 @@ export function setUpTiles(grid, gameWords) {
         if (gameWords.includes(word) && !foundWords.includes(word)) {
             gamePoints(word)
             foundWords.push(word)
+
+            if (nodeAdam.complete) {
+                nodeAdam.found = true;
+                console.log('found word')
+                console.log(nodeAdam)
+            }
         }
         
         word = "";
@@ -130,7 +138,6 @@ export function setUpTiles(grid, gameWords) {
             svgContainer.removeChild(svgContainer.firstChild)
         }
 
-        console.log(gameBoardContainer)
     })
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
