@@ -110,7 +110,7 @@ export function wordPaths(rootNode, miniBoard) {
         if (currentNode.complete) {
             let miniBoardCopy = miniBoard.cloneNode(true)
             let wordContainer = document.createElement('p')
-            let boardContainer = document.createElement('div')
+            let miniBoardContainer = document.createElement('div')
             let [word, svgContainer] = drawLine(currentNode)
 
             wordContainer.className = "word-container"
@@ -118,15 +118,15 @@ export function wordPaths(rootNode, miniBoard) {
 
             miniBoardCopy.append(svgContainer)
 
-            boardContainer.className = "board-container"
-            boardContainer.append(miniBoardCopy)
-            boardContainer.append(wordContainer)
+            miniBoardContainer.className = "mini-board-container"
+            miniBoardContainer.append(miniBoardCopy)
+            miniBoardContainer.append(wordContainer)
 
             if (currentNode.found) {
-                boardContainer.style.backgroundColor = "yellow"
+                miniBoardContainer.style.backgroundColor = "yellow"
             }
 
-            currentPathsInner.append(boardContainer)
+            currentPathsInner.append(miniBoardContainer)
         }
     }
 

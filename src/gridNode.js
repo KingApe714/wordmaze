@@ -115,11 +115,11 @@ export function setUpTiles(grid, gameWords) {
             gamePoints(word)
             foundWords.push(word)
 
-            if (nodeAdam.complete) {
-                nodeAdam.found = true;
-                console.log('found word')
-                console.log(nodeAdam)
-            }
+        }
+        if (nodeAdam.complete) {
+            nodeAdam.found = true;
+            console.log('found word')
+            console.log(nodeAdam)
         }
         
         word = "";

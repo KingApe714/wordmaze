@@ -88,6 +88,10 @@
     z-index: 5;
 }
 
+.mini-board-container {
+    margin: 5px;
+}
+
 .mini-board {
     position: relative;
     border: 1px solid blue;
