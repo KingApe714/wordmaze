@@ -7,7 +7,7 @@ export function modal() {
 
     modalBtn.addEventListener('click', function() {
         modalBg.classList.add('bg-active')
-        modalChild.innerHTML = "TESTING"
+        // modalChild.innerHTML = "TESTING"
     })
 
     modalClose.addEventListener('click', function() {

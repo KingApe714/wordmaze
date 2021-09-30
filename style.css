@@ -66,12 +66,11 @@
     background-color: white;
     border-radius: 5px;
     position: relative;
-    width: 50%;
-    height: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: fit-content;
+    height: 700px;
     z-index: 2;
+
+    overflow: auto;
 }
 
 .modal-close {
@@ -92,16 +91,57 @@
 .mini-board {
     position: relative;
     border: 1px solid blue;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
+    margin: 5px;
 }
 
 .mini-tile {
     position: absolute;
     border: 1px solid black;
-    width: 30px;
-    height: 30px;
+    font-size: 11px;
+    width: 25px;
+    height: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.mini-game-line {
+    stroke: red;
+    stroke-width: 5;
+    stroke-linejoin: round;
+    z-index: 5;
+}
+
+.word-container {
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: underline;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.all-paths {
+    border: 1px solid darkgrey;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.current-paths-outer {
+    border: 1px solid gray;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    min-height: 164px;
+    width: 690px;
+    margin-bottom: 10px;
+}
+
+.current-paths-inner {
+    display: flex;
+    flex-wrap: wrap;
 }
