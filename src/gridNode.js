@@ -155,6 +155,7 @@ export function setUpTiles(grid, gameWords) {
                     word += gNode.ch
                     selectedNodes.push(gNode)
                     // gNode.tile.style.backgroundColor = "blue";
+                    gNode.innerTile.classList.add('selected-inner-tile')
 
                     nodeAdam = grid[i][j]
                 }
@@ -220,8 +221,8 @@ export function setUpTiles(grid, gameWords) {
                         //now check to see if I have a complete word or not
                         if (lastNode === nodeAdam.node && nodeAdam.complete) {
                             // node1.tile.style.backgroundColor = "yellow"
-                            node1.innerTile.style.width = "90px";
-                            node1.innerTile.style.height = "90px";
+                            node1.innerTile.style.width = "80px";
+                            node1.innerTile.style.height = "80px";
                         } else {
                             // node1.tile.style.backgroundColor = "blue"
                             node1.innerTile.style.width = "50px";
