@@ -12,7 +12,12 @@ export function gridNode(coordinates) {
     this.innerTile = document.createElement('div')
     this.innerTile.className = "inner-game-tile"
     this.innerTile.innerHTML = `${letter}`;
-    this.tile.appendChild(this.innerTile)
+
+    this.innerTileContainer = document.createElement('div')
+    this.innerTileContainer.className = "inner-tile-container"
+    this.innerTileContainer.appendChild(this.innerTile)
+
+    this.tile.appendChild(this.innerTileContainer)
 
     this.selected = false;
 }
@@ -217,12 +222,13 @@ export function setUpTiles(grid, gameWords) {
                     }
                     for (let i = 0; i < selectedNodes.length; i++) {
                         let node1 = selectedNodes[i]
-                        node1.innerTile.classList.add('selected-inner-tile')
+                        node1.innerTileContainer.classList.add('selected-inner-tile')
                         //now check to see if I have a complete word or not
                         if (lastNode === nodeAdam.node && nodeAdam.complete) {
                             // node1.tile.style.backgroundColor = "yellow"
-                            node1.innerTile.style.width = "80px";
-                            node1.innerTile.style.height = "80px";
+                            // node1.innerTile.style.width = "80px";
+                            // node1.innerTile.style.height = "80px";
+                            node1.innerTile.classList.add('selected-inner-tile-grow')
                         } else {
                             // node1.tile.style.backgroundColor = "blue"
                             node1.innerTile.style.width = "50px";
