@@ -8,20 +8,25 @@
     <link rel="stylesheet" href="style.css">
     <script src="dist/main.js"></script>
 </head>
-<body>
+<body style="background-image: url('background.jpeg');">
     <h1 class="title">Word Maze!</h1>
-    <button class="modal-button">INSTRUCTIONS</button>
     <div class="modal-bg">
         <div class="modal">
             <span class="modal-close">X</span>
             <h2 class="modal-child"></h2>
         </div>
     </div>
-    <div class="countdown">2:00</div>
-    <div onselectstart="return false"
-        class="game-board-container">
-        <svg class="svg-container">
-        </svg>
+    <div class="outer-game-container">
+        <div class="side-container">
+            <button class="modal-button">INSTRUCTIONS</button>
+            <div class="countdown">2:00</div>
+            <div class="gamepoints">0</div>
+        </div>
+        <div onselectstart="return false"
+            class="game-board-container">
+            <svg class="svg-container">
+            </svg>
+        </div>
     </div>
 </body>
 </html>

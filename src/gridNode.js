@@ -4,8 +4,6 @@ import { fetchWord } from "./trie";
 export function gridNode(coordinates) {
     this.neighbors = [];
     this.coordinates = coordinates;
-    // this.ancestory = new ancestoryNode(this);
-
     this.tile = document.createElement('div')
     this.tile.className = "game-tile";
     let letter = "AABCDEEFGHIIJKLMNOOPQRSSTUUVWXYZ"[Math.floor(Math.random() * 32)]
@@ -25,6 +23,7 @@ export function ancestoryNode(node) {
     this.children = {};
     this.parent = null;
 
+    this.points = 100;
     this.found = false;
 }
 
@@ -95,12 +94,14 @@ export function setUpGrid(root) {
 export function setUpTiles(grid, gameWords) {
     //this grid is a grid full of ancestory nodes
     const gameBoardContainer = document.querySelector('.game-board-container')
+    const gamePointsDiv = document.querySelector('.gamepoints')
     const svgContainer = document.querySelector('.svg-container')
     let mouseDown = false;
     let word = ""
     let selectedNodes = [];
     let nodeAdam = null;
 
+    let gamePoints = 0;
     let foundWords = []
     
     gameBoardContainer.addEventListener("mousedown", () => {
@@ -110,13 +111,17 @@ export function setUpTiles(grid, gameWords) {
     
     gameBoardContainer.addEventListener("mouseup", () => {
 
+        //I might not need this anymore
         if (gameWords.includes(word) && !foundWords.includes(word)) {
             foundWords.push(word)
         }
         if (!nodeAdam.found && nodeAdam.complete) {
             nodeAdam.found = true;
 
-
+            gamePoints += nodeAdam.points
+            gamePointsDiv.innerHTML = gamePoints
+            console.log(nodeAdam.points)
+            console.log(gamePoints)
         }
         
         word = "";
@@ -126,7 +131,10 @@ export function setUpTiles(grid, gameWords) {
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[0].length; j++) {
                 let gNode = grid[i][j].node;
-                gNode.tile.style.backgroundColor = "white";
+                gNode.innerTile.classList.remove('selected-inner-tile')
+                gNode.innerTile.style.width = "70px";
+                gNode.innerTile.style.height = "70px";
+                // gNode.tile.style.backgroundColor = "white";
                 gNode.selected = false
             }
         }
@@ -146,7 +154,7 @@ export function setUpTiles(grid, gameWords) {
                 if (!gNode.selected) {
                     word += gNode.ch
                     selectedNodes.push(gNode)
-                    gNode.tile.style.backgroundColor = "blue";
+                    // gNode.tile.style.backgroundColor = "blue";
 
                     nodeAdam = grid[i][j]
                 }
@@ -162,18 +170,16 @@ export function setUpTiles(grid, gameWords) {
                         let newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                         let [x1, y1] = selectedNodes[selectedNodes.length -1].coordinates.split(',')
                         let [x2, y2] = gNode.coordinates.split(',')
-                        console.log(`x1 = ${x1 * 100} y1 = ${y1 * 100} x2 = ${x2 * 100} y2 = ${y2 * 100}`)
                         newLine.setAttribute('class', 'game-line')
                         newLine.setAttribute('x1', `${x1 * 100 + 50}`)
                         newLine.setAttribute('y1', `${y1 * 100 + 50}`)
                         newLine.setAttribute('x2', `${x2 * 100 + 50}`)
                         newLine.setAttribute('y2', `${y2 * 100 + 50}`)
                         svgContainer.appendChild(newLine)
-                        console.log(svgContainer)
 
                         word += gNode.ch;
                         selectedNodes.push(gNode)
-                        gNode.tile.style.backgroundColor = "blue"
+                        // gNode.tile.style.backgroundColor = "blue"
                         
                         if (nodeAdam && nodeAdam.children[gNode.coordinates]
                             && nodeAdam.node === selectedNodes[selectedNodes.length - 2]) {
@@ -189,7 +195,7 @@ export function setUpTiles(grid, gameWords) {
                                 if (currentNode === gNode) {
                                     break
                                 } else {
-                                    currentNode.tile.style.backgroundColor = "white";
+                                    // currentNode.tile.style.backgroundColor = "white";
                                     currentNode.selected = false
                                     word = word.slice(0, word.length - 1)
                                     selectedNodes.pop();
@@ -206,17 +212,21 @@ export function setUpTiles(grid, gameWords) {
                     let x = selectedNodes.length - 1
                     let dif = svgContainer.children.length - x
                     for (let i = 0; i < dif; i++) {
-                        // console.log(svgContainer.children[i])
-                        // debugger
                         if (svgContainer.lastChild) svgContainer.removeChild(svgContainer.lastChild)
                     }
                     for (let i = 0; i < selectedNodes.length; i++) {
                         let node1 = selectedNodes[i]
+                        node1.innerTile.classList.add('selected-inner-tile')
                         //now check to see if I have a complete word or not
                         if (lastNode === nodeAdam.node && nodeAdam.complete) {
-                            node1.tile.style.backgroundColor = "yellow"
+                            // node1.tile.style.backgroundColor = "yellow"
+                            node1.innerTile.style.width = "90px";
+                            node1.innerTile.style.height = "90px";
                         } else {
-                            node1.tile.style.backgroundColor = "blue"
+                            // node1.tile.style.backgroundColor = "blue"
+                            node1.innerTile.style.width = "50px";
+                            node1.innerTile.style.height = "50px";
+
                         }
                     }
                     gNode.selected = true
@@ -277,6 +287,7 @@ export function findWords(gridNode, tree) {
                     let newAncNode = currentNode.children[ele[1].node.neighbors[i].coordinates]
                     newAncNode.complete = subTree.complete
                     newAncNode.parent = ele[1]
+                    newAncNode.points = newAncNode.parent.points + 100;
 
                     queue.push([subTree, newAncNode, path])
                 }
