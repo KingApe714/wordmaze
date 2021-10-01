@@ -157,7 +157,3 @@ export function drawLine(currentNode) {
 
     return [word, svg]
 }
-
-export function gamePoints(word) {
-    
-}

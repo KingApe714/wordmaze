@@ -1,5 +1,4 @@
 import { fetchWord } from "./trie";
-import { gamePoints } from "./util";
 
 //lets try unnesting the ancestoryNode from inside of this node
 export function gridNode(coordinates) {
@@ -14,7 +13,7 @@ export function gridNode(coordinates) {
 
     this.innerTile = document.createElement('div')
     this.innerTile.className = "inner-game-tile"
-    this.innerTile.innerHTML = `${letter} [${coordinates}]`;
+    this.innerTile.innerHTML = `${letter}`;
     this.tile.appendChild(this.innerTile)
 
     this.selected = false;
@@ -112,14 +111,12 @@ export function setUpTiles(grid, gameWords) {
     gameBoardContainer.addEventListener("mouseup", () => {
 
         if (gameWords.includes(word) && !foundWords.includes(word)) {
-            gamePoints(word)
             foundWords.push(word)
-
         }
-        if (nodeAdam.complete) {
+        if (!nodeAdam.found && nodeAdam.complete) {
             nodeAdam.found = true;
-            console.log('found word')
-            console.log(nodeAdam)
+
+
         }
         
         word = "";

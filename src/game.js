@@ -22,7 +22,7 @@ async function game() {
     
     let grid = setUpGrid(root)
     
-    timer(grid)
+    // timer(grid)
 }
 
 export default game

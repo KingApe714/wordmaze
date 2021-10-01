@@ -1,34 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+
+body {
+    font-family: 'Lato', sans-serif;
+}
+
 .game-board-container {
+    border-radius: 20px;
     position: relative;
     width: 400px;
     height: 400px;
-    border: 1px solid blue;
+    font-family: inherit;
+    /* box-shadow: 10px 10px 5px #aaaaaa; */
+    /* border: 1px solid blue; */
 }
 
 .svg-container {
+    font-family: inherit;
     position: absolute;
-    /* left: 0;
-    top: 0; */
     width: 400px;
     height: 400px;
-    border: 1px solid black;
     z-index: 1;
-    /* background-color: aqua; */
     pointer-events: none;
+    box-shadow: 1px 3px 15px inset;
+    border-radius: inherit;
+    /* background-color: aqua; */
+    /* border: 1px solid black; */
 }
 
 .game-tile {
+    font-family: inherit;
     cursor: pointer;
+    background-color: darkolivegreen;
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
     width: 100px;
     height: 100px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
+}
+
+.game-tile:nth-child(2) {
+    border-top-left-radius: inherit;
+}
+
+.game-tile:nth-child(5) {
+    border-top-right-radius: inherit;
+}
+
+.game-tile:nth-child(14) {
+    border-bottom-left-radius: inherit;
+}
+
+.game-tile:nth-child(17) {
+    border-bottom-right-radius: inherit;
 }
 
 .inner-game-tile {
+    font-family: inherit;
+    font-size: 27px;
+    font-weight: 700;
+    background-color: sandybrown;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px;
     width: 70px;
     height: 70px;
     display: flex;
@@ -36,7 +70,7 @@
     align-items: center;
 
     /* for testing */
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .modal-bg {
