@@ -136,7 +136,9 @@ export function setUpTiles(grid, gameWords) {
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[0].length; j++) {
                 let gNode = grid[i][j].node;
-                gNode.innerTile.classList.remove('selected-inner-tile')
+                gNode.innerTile.classList.remove('selected-inner-tile-grow')
+                gNode.innerTile.classList.remove('selected-inner-tile-shrink')
+                gNode.innerTileContainer.classList.remove('selected-inner-tile')
                 gNode.innerTile.style.width = "70px";
                 gNode.innerTile.style.height = "70px";
                 // gNode.tile.style.backgroundColor = "white";
@@ -160,7 +162,7 @@ export function setUpTiles(grid, gameWords) {
                     word += gNode.ch
                     selectedNodes.push(gNode)
                     // gNode.tile.style.backgroundColor = "blue";
-                    gNode.innerTile.classList.add('selected-inner-tile')
+                    gNode.innerTileContainer.classList.add('selected-inner-tile')
 
                     nodeAdam = grid[i][j]
                 }
@@ -228,11 +230,13 @@ export function setUpTiles(grid, gameWords) {
                             // node1.tile.style.backgroundColor = "yellow"
                             // node1.innerTile.style.width = "80px";
                             // node1.innerTile.style.height = "80px";
+                            node1.innerTile.classList.remove('selected-inner-tile-shrink')
                             node1.innerTile.classList.add('selected-inner-tile-grow')
                         } else {
                             // node1.tile.style.backgroundColor = "blue"
-                            node1.innerTile.style.width = "50px";
-                            node1.innerTile.style.height = "50px";
+                            // node1.innerTile.style.width = "60px";
+                            // node1.innerTile.style.height = "60px";
+                            node1.innerTile.classList.add('selected-inner-tile-shrink')
 
                         }
                     }

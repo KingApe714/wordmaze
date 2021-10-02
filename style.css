@@ -101,6 +101,11 @@ body {
     /* border: 1px solid black; */
 }
 
+.inner-tile-container {
+    width: 70px;
+    height: 70px;
+}
+
 /* .inner-game-tile:hover {
     animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
     transform: translate3d(0, 0, 0);
@@ -126,7 +131,13 @@ body {
     }
 }
 .selected-inner-tile-grow {
-    animation: size-grow 0.5s;
+    animation: size-grow 0.2s;
+
+    animation-fill-mode: forwards
+}
+
+.selected-inner-tile-shrink {
+    animation: size-shrink 0.2s;
 
     animation-fill-mode: forwards
 }
@@ -153,17 +164,31 @@ body {
 }
 
 @keyframes size-grow {
-    0% { width: 70px; height: 70px; }
-    10% { width: 71px; height: 71px; }
-    20% { width: 72px; height: 72px; }
-    30% { width: 73px; height: 73px; }
-    40% { width: 74px; height: 74px; }
-    50% { width: 75px; height: 75px; }
-    60% { width: 76px; height: 76px; }
-    70% { width: 77px; height: 77px; }
-    80% { width: 78px; height: 78px; }
-    90% { width: 79px; height: 79px; }
+    0% { width: 60px; height: 60px; }
+    10% { width: 62px; height: 62px; }
+    20% { width: 64px; height: 64px; }
+    30% { width: 66px; height: 66px; }
+    40% { width: 68px; height: 68px; }
+    50% { width: 70px; height: 70px; }
+    60% { width: 72px; height: 72px; }
+    70% { width: 74px; height: 74px; }
+    80% { width: 76px; height: 76px; }
+    90% { width: 78px; height: 78px; }
     100% { width: 80px; height: 80px; }
+}
+
+@keyframes size-shrink {
+    0% { width: 80px; height: 80px; }
+    10% { width: 78px; height: 78px; }
+    20% { width: 76px; height: 76px; }
+    30% { width: 74px; height: 74px; }
+    40% { width: 72px; height: 72px; }
+    50% { width: 70px; height: 70px; }
+    60% { width: 68px; height: 68px; }
+    70% { width: 66px; height: 66px; }
+    80% { width: 64px; height: 64px; }
+    90% { width: 62px; height: 62px; }
+    100% { width: 60px; height: 60px; }
 }
 
 .modal-bg {
