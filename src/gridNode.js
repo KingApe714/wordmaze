@@ -204,6 +204,9 @@ export function setUpTiles(grid, gameWords) {
                                     break
                                 } else {
                                     // currentNode.tile.style.backgroundColor = "white";
+                                    currentNode.innerTileContainer.classList.remove('selected-inner-tile')
+                                    currentNode.innerTile.classList.remove('selected-inner-tile-shrink')
+                                    currentNode.innerTile.classList.remove('selected-inner-tile-grow')
                                     currentNode.selected = false
                                     word = word.slice(0, word.length - 1)
                                     selectedNodes.pop();
