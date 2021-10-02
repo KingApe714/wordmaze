@@ -79,7 +79,7 @@ body {
     border-bottom-right-radius: inherit;
 }
 
-.inner-game-tile-container {
+.inner-tile-container {
     width: 70px;
     height: 70px;
 }
@@ -91,8 +91,8 @@ body {
     background-color: sandybrown;
     border-radius: 10px;
     box-shadow: 3px 3px 10px;
-    width: inherit;
-    height: inherit;
+    /* width: inherit;
+    height: inherit; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -132,18 +132,27 @@ body {
 }
 .selected-inner-tile-grow {
     animation: size-grow 0.2s;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
 
     animation-fill-mode: forwards
 }
 
 .selected-inner-tile-shrink {
     animation: size-shrink 0.2s;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
 
     animation-fill-mode: forwards
 }
 
 .selected-inner-tile {
     animation: quake 1.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     
     animation-iteration-count: infinite;
 }
