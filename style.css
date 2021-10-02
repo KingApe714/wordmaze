@@ -28,12 +28,15 @@ body {
     font-size: 28px;
 }
 
-.gamepoints, .countdown {
+.side-panel-inner-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 70px;
+}
+
+.gamepoints, .countdown {
 }
 
 .side-panel-title {
