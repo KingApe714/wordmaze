@@ -236,6 +236,7 @@ export function setUpTiles(grid, gameWords) {
                             // node1.tile.style.backgroundColor = "blue"
                             // node1.innerTile.style.width = "60px";
                             // node1.innerTile.style.height = "60px";
+                            node1.innerTile.classList.remove('selected-inner-tile-grow')
                             node1.innerTile.classList.add('selected-inner-tile-shrink')
 
                         }

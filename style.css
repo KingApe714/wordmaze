@@ -33,8 +33,6 @@ body {
     width: 400px;
     height: 400px;
     font-family: inherit;
-    /* box-shadow: 10px 10px 5px #aaaaaa; */
-    /* border: 1px solid blue; */
 }
 
 .svg-container {
@@ -46,8 +44,6 @@ body {
     pointer-events: none;
     box-shadow: 1px 3px 15px inset;
     border-radius: inherit;
-    /* background-color: aqua; */
-    /* border: 1px solid black; */
 }
 
 .game-tile {
@@ -60,7 +56,6 @@ body {
     position: absolute;
     width: 100px;
     height: 100px;
-    /* border: 1px solid red; */
 }
 
 .game-tile:nth-child(2) {
@@ -91,27 +86,41 @@ body {
     background-color: sandybrown;
     border-radius: 10px;
     box-shadow: 3px 3px 10px;
-    /* width: inherit;
-    height: inherit; */
+    width: inherit;
+    height: inherit;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    /* for testing */
-    /* border: 1px solid black; */
 }
 
-.inner-tile-container {
-    width: 70px;
-    height: 70px;
+.selected-inner-tile-grow {
+    animation: size-grow 0.2s;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    
+    animation-fill-mode: forwards
 }
 
-/* .inner-game-tile:hover {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-} */
+.selected-inner-tile-shrink {
+    animation: size-shrink 0.2s;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    
+    animation-fill-mode: forwards
+}
+
+.selected-inner-tile {
+    animation: quake 1.2s;
+    /* padding: 20px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    
+    animation-iteration-count: infinite;
+}
 
 @keyframes shake {
     10%, 90% {
@@ -130,33 +139,6 @@ body {
       transform: translate3d(3px, 0, 0);
     }
 }
-.selected-inner-tile-grow {
-    animation: size-grow 0.2s;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-
-    animation-fill-mode: forwards
-}
-
-.selected-inner-tile-shrink {
-    animation: size-shrink 0.2s;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-
-    animation-fill-mode: forwards
-}
-
-.selected-inner-tile {
-    animation: quake 1.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    animation-iteration-count: infinite;
-}
-
 
 @keyframes quake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
