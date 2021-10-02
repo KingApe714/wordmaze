@@ -23,9 +23,25 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
+
     font-size: 28px;
 }
+
+.gamepoints, .countdown {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+}
+
+.side-panel-title {
+    text-decoration: underline;
+    font-size: 20px;
+    height: 10px;
+}
+
 
 .game-board-container {
     border-radius: 20px;
@@ -75,8 +91,8 @@ body {
 }
 
 .inner-tile-container {
-    /* width: 70px;
-    height: 70px; */
+    /* width: inherit;
+    height: inherit; */
 }
 
 .inner-game-tile {
@@ -86,8 +102,8 @@ body {
     background-color: sandybrown;
     border-radius: 10px;
     box-shadow: 3px 3px 10px;
-    width: inherit;
-    height: inherit;
+    width: 70px;
+    height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -180,6 +196,17 @@ body {
     80% { width: 64px; height: 64px; }
     90% { width: 62px; height: 62px; }
     100% { width: 60px; height: 60px; }
+}
+
+.modal-button {
+    height: 25px;
+    width: 70px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    background-color: bisque;
+    box-shadow: 3px 3px 10px;
+    cursor: pointer;
 }
 
 .modal-bg {
