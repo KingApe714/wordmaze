@@ -100,6 +100,9 @@ export function setUpTiles(grid, gameWords) {
     //this grid is a grid full of ancestory nodes
     const gameBoardContainer = document.querySelector('.game-board-container')
     const gamePointsDiv = document.querySelector('.gamepoints')
+    const countdownDiv = document.querySelector('.countdown')
+    const pointExpression = document.querySelector('.point-expression')
+    const countExpression = document.querySelector('.count-expression')
     const svgContainer = document.querySelector('.svg-container')
     const wordContainer = document.querySelector('.word-container')
     let mouseDown = false;
@@ -126,8 +129,13 @@ export function setUpTiles(grid, gameWords) {
 
             gamePoints += nodeAdam.points
             gamePointsDiv.innerHTML = gamePoints
-            console.log(nodeAdam.points)
-            console.log(gamePoints)
+
+            pointExpression.innerHTML = nodeAdam.points;
+            pointExpression.classList.add('point-shrink')
+            setTimeout(() => {
+                pointExpression.classList.remove('point-shrink')
+                pointExpression.innerHTML = "";
+            }, 500)
         }
         
         word = "";
@@ -246,7 +254,7 @@ export function setUpTiles(grid, gameWords) {
                             } else {
                                 //user has found a word on a new path
                                 wordContainer.style.backgroundColor = "blue"
-                                wordContainer.innerHTML = `${word} + ${nodeAdam.points}!`
+                                wordContainer.innerHTML = `${word}  (+${nodeAdam.points})!`
                             }
                         } else {
                             // node1.tile.style.backgroundColor = "blue"

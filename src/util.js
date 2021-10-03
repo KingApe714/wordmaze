@@ -113,7 +113,7 @@ export function wordPaths(rootNode, miniBoard) {
             let miniBoardContainer = document.createElement('div')
             let [word, svgContainer] = drawLine(currentNode)
 
-            wordContainer.className = "word-container"
+            wordContainer.className = "mini-word-container"
             wordContainer.innerHTML = word
 
             miniBoardCopy.append(svgContainer)

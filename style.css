@@ -36,7 +36,46 @@ body {
     height: 70px;
 }
 
+.points-div, .time-div {
+    width: 100px;
+    height: 100px;
+    position: relative;
+}
+
+.gamepoints, .point-expression {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.point-expression, .count-expression {
+    font-size: 70px;
+    transition: all 500ms;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.point-shrink, .count-shrink {
+    font-size: 15px;
+    color: transparent;
+}
+
+.countdown, .count-expression {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
 .gamepoints, .countdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .side-panel-title {
@@ -309,14 +348,14 @@ body {
     z-index: 5;
 }
 
-/* .word-container {
+.mini-word-container {
     font-size: 12px;
     font-weight: 600;
     text-decoration: underline;
     display: flex;
     align-items: center;
     justify-content: center;
-} */
+}
 
 .all-paths {
     border: 1px solid darkgrey;
