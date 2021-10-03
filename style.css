@@ -45,6 +45,24 @@ body {
     height: 10px;
 }
 
+.word-outer-container {
+    height: 30px;
+    width: 130px;
+    margin: 0 auto;
+    margin-bottom: 25px;
+}
+
+.word-container {
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+    width: inherit;
+    border-radius: 12px;
+    background-color: darkolivegreen;
+    box-shadow: 1px 1px 10px inset;
+}
 
 .game-board-container {
     border-radius: 20px;
@@ -291,14 +309,14 @@ body {
     z-index: 5;
 }
 
-.word-container {
+/* .word-container {
     font-size: 12px;
     font-weight: 600;
     text-decoration: underline;
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} */
 
 .all-paths {
     border: 1px solid darkgrey;

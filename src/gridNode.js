@@ -101,6 +101,7 @@ export function setUpTiles(grid, gameWords) {
     const gameBoardContainer = document.querySelector('.game-board-container')
     const gamePointsDiv = document.querySelector('.gamepoints')
     const svgContainer = document.querySelector('.svg-container')
+    const wordContainer = document.querySelector('.word-container')
     let mouseDown = false;
     let word = ""
     let selectedNodes = [];
@@ -132,6 +133,7 @@ export function setUpTiles(grid, gameWords) {
         word = "";
         selectedNodes = [];
         nodeAdam = null;
+        wordContainer.style.display = "none"
     
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[0].length; j++) {
@@ -235,6 +237,17 @@ export function setUpTiles(grid, gameWords) {
                             // node1.innerTile.style.height = "80px";
                             node1.innerTile.classList.remove('selected-inner-tile-shrink')
                             node1.innerTile.classList.add('selected-inner-tile-grow')
+
+                            wordContainer.style.display = "flex"
+                            if (nodeAdam.found) {
+                                //user has found this word in this path
+                                wordContainer.innerHTML = `${word}`
+                                wordContainer.style.backgroundColor = "yellow"
+                            } else {
+                                //user has found a word on a new path
+                                wordContainer.style.backgroundColor = "blue"
+                                wordContainer.innerHTML = `${word} + ${nodeAdam.points}!`
+                            }
                         } else {
                             // node1.tile.style.backgroundColor = "blue"
                             // node1.innerTile.style.width = "60px";
@@ -242,6 +255,7 @@ export function setUpTiles(grid, gameWords) {
                             node1.innerTile.classList.remove('selected-inner-tile-grow')
                             node1.innerTile.classList.add('selected-inner-tile-shrink')
 
+                            wordContainer.style.display = "none"
                         }
                     }
                     gNode.selected = true
