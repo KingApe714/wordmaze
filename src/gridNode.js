@@ -6,6 +6,9 @@ export function gridNode(coordinates) {
     this.coordinates = coordinates;
     this.tile = document.createElement('div')
     this.tile.className = "game-tile";
+    this.tile.onselectstart = () => {
+        return false;
+    }
     let letter = "AABCDEEFGHIIJKLMNOOPQRSSTUUVWXYZ"[Math.floor(Math.random() * 32)]
     this.ch = letter;
 
@@ -32,8 +35,11 @@ export function ancestoryNode(node) {
     this.found = false;
 }
 
+export function foundNodes(rootNode) {
+    this.foundList = []
+}
+
 export function setUpGrid(root) {
-    const grid = []
     //set up neighbor check
     const nCheck = [
         [-1, 1],
@@ -45,58 +51,65 @@ export function setUpGrid(root) {
         [-1, -1],
         [-1, 0]
     ]
-
-    //set up gridNodes for gameBoard
-    for (let i = 0; i < 4; i++) {
-        let row = []
-        for (let j = 0; j < 4; j++) {
-            let gNode = new gridNode(`${j},${i}`)
-            gNode.tile.style.left = j * 100 + "px";
-            gNode.tile.style.top = i * 100 + "px";
-            row.push(gNode)
-        }
-        grid.push(row)
-    }
-
-    //set up gridNode neighbors
-    for (let i = 0; i < grid.length; i++) {
-        for (let j = 0; j < grid[0].length; j++) {
-
-            //set up neighbors
-            nCheck.forEach(n => {
-                let x = n[0] + i;
-                let y = n[1] + j;
-                //handle edge cases
-                if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
-                    grid[i][j].neighbors.push(grid[x][y])
-                }
-            })
-        }
-    }
-
-    const gameWords = []
-
-    const newGrid = []
-
-    for (let x = 0; x < grid.length; x++) {
-        let row = [];
-        for (let y = 0; y < grid[0].length; y++) {
-            let arr = findWords(grid[x][y], root.map[grid[x][y].ch])
-            row.push(arr[1])
-            arr[0].forEach(word => {
-                if (!gameWords.includes(word)) {
-                    gameWords.push(word)
-                }
-            })
-        }
-        newGrid.push(row)
-    }
-    console.log(gameWords)
     
-    return setUpTiles(newGrid, gameWords)
+    let gameWords = []
+    let newGrid = []
+    let completeNodes = {}
+    while (gameWords.length < 70) {
+        const grid = []
+        newGrid = []
+        gameWords = []
+        //set up gridNodes for gameBoard
+        for (let i = 0; i < 4; i++) {
+            let row = []
+            for (let j = 0; j < 4; j++) {
+                let gNode = new gridNode(`${j},${i}`)
+                gNode.tile.style.left = j * 100 + "px";
+                gNode.tile.style.top = i * 100 + "px";
+                row.push(gNode)
+            }
+            grid.push(row)
+        }
+    
+        //set up gridNode neighbors
+        for (let i = 0; i < grid.length; i++) {
+            for (let j = 0; j < grid[0].length; j++) {
+    
+                //set up neighbors
+                nCheck.forEach(n => {
+                    let x = n[0] + j;
+                    let y = n[1] + i;
+                    //handle edge cases
+                    if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
+                        grid[j][i].neighbors.push(grid[x][y])
+                    }
+                })
+            }
+        }
+    
+        //find all gameWords, set up newGrid with ancestoryNodes, and set up completeNodes object
+        for (let y = 0; y < grid.length; y++) {
+            let row = [];
+            for (let x = 0; x < grid[0].length; x++) {
+                let arr = findWords(grid[y][x], root.map[grid[y][x].ch])
+                row.push(arr[1])
+                arr[0].forEach(word => {
+                    if (!gameWords.includes(word)) {
+                        gameWords.push(word)
+                    }
+                })
+                completeNodes[arr[1].node.coordinates] = arr[2]
+            }
+            newGrid.push(row)
+        }
+        console.log(gameWords)
+    }
+
+    // I don't want to call setUpTiles until gameWords is longer than 70 words
+    return setUpTiles(newGrid, gameWords, completeNodes)
 }
 
-export function setUpTiles(grid, gameWords) {
+export function setUpTiles(grid, gameWords, completeNodes) {
     //this grid is a grid full of ancestory nodes
     const gameBoardContainer = document.querySelector('.game-board-container')
     const gamePointsDiv = document.querySelector('.gamepoints')
@@ -108,10 +121,27 @@ export function setUpTiles(grid, gameWords) {
     let mouseDown = false;
     let word = ""
     let selectedNodes = [];
+    let line = [];
     let nodeAdam = null;
+    let firstNode = null
 
     let gamePoints = 0;
     let foundWords = []
+
+    let completedTiles = []
+
+    //dead cells
+    for (let key in completeNodes) {
+        if (!completeNodes[key].length) {
+            let [x,y] = key.split(',')
+            grid[y][x].node.innerTileContainer.style.color = 'white'
+            grid[y][x].node.innerTileContainer.style.filter = 'brightness(90%)'
+        }
+    }
+
+    wordContainer.onselectstart = () => {
+        return false;
+    }
     
     gameBoardContainer.addEventListener("mousedown", () => {
         mouseDown = true;
@@ -124,43 +154,62 @@ export function setUpTiles(grid, gameWords) {
         if (gameWords.includes(word) && !foundWords.includes(word)) {
             foundWords.push(word)
         }
-        if (!nodeAdam.found && nodeAdam.complete) {
-            nodeAdam.found = true;
 
-            gamePoints += nodeAdam.points
-            gamePointsDiv.innerHTML = gamePoints
-
-            pointExpression.innerHTML = nodeAdam.points;
-            pointExpression.classList.add('point-shrink')
-            setTimeout(() => {
-                pointExpression.classList.remove('point-shrink')
-                pointExpression.innerHTML = "";
-            }, 500)
-        }
-        
-        word = "";
-        selectedNodes = [];
-        nodeAdam = null;
-        wordContainer.style.display = "none"
-    
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[0].length; j++) {
                 let gNode = grid[i][j].node;
                 gNode.innerTile.classList.remove('selected-inner-tile-grow')
                 gNode.innerTile.classList.remove('selected-inner-tile-shrink')
                 gNode.innerTileContainer.classList.remove('selected-inner-tile')
+                if (!completedTiles.includes(gNode)) {
+                    gNode.innerTile.style.backgroundColor = "transparent"
+                } else {
+                    gNode.innerTile.style.backgroundColor = "rgba(0, 230, 65, 0.45)"
+                }
                 gNode.innerTile.style.width = "70px";
                 gNode.innerTile.style.height = "70px";
-                // gNode.tile.style.backgroundColor = "white";
                 gNode.selected = false
             }
         }
+        if (!nodeAdam.found && nodeAdam.complete && gameWords.includes(word)) {
+            nodeAdam.found = true;
+            let idx = completeNodes[firstNode].indexOf(nodeAdam)
+            completeNodes[firstNode] = completeNodes[firstNode].slice(0, idx).concat(completeNodes[firstNode].slice(idx + 1))
+
+            if (!completeNodes[firstNode].length) {
+                let [x, y] = firstNode.split(',')
+                // grid[y][x].node.innerTileContainer.style.color = 'white'
+                // grid[y][x].node.innerTileContainer.style.filter = 'brightness(90%)'
+                grid[y][x].node.innerTile.style.backgroundColor = "rgba(0, 230, 65, 0.45)"
+                grid[y][x].node.innerTile.style.boxShadow = "3px 3px 10px white"
+
+                completedTiles.push(grid[y][x].node)
+            }
+
+            gamePoints += nodeAdam.points
+            
+            pointExpression.innerHTML = `+${nodeAdam.points}!!`;
+            pointExpression.classList.add('point-shrink')
+            setTimeout(() => {
+                pointExpression.classList.remove('point-shrink')
+                pointExpression.innerHTML = "";
+                gamePointsDiv.innerHTML = gamePoints
+            }, 900)
+        }
+        
+        word = "";
+        selectedNodes = [];
+        line = [];
+        nodeAdam = null;
+        firstNode = null;
+        wordContainer.style.display = "none"
+    
 
         while (svgContainer.firstChild) {
             svgContainer.removeChild(svgContainer.firstChild)
         }
-
     })
+
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
             let gNode = grid[i][j].node
@@ -175,6 +224,7 @@ export function setUpTiles(grid, gameWords) {
                     gNode.innerTileContainer.classList.add('selected-inner-tile')
 
                     nodeAdam = grid[i][j]
+                    firstNode = `${j},${i}`
                 }
                 gNode.selected = true;
             })
@@ -193,6 +243,7 @@ export function setUpTiles(grid, gameWords) {
                         newLine.setAttribute('y1', `${y1 * 100 + 50}`)
                         newLine.setAttribute('x2', `${x2 * 100 + 50}`)
                         newLine.setAttribute('y2', `${y2 * 100 + 50}`)
+                        line.push(newLine)
                         svgContainer.appendChild(newLine)
 
                         word += gNode.ch;
@@ -217,6 +268,7 @@ export function setUpTiles(grid, gameWords) {
                                     currentNode.innerTileContainer.classList.remove('selected-inner-tile')
                                     currentNode.innerTile.classList.remove('selected-inner-tile-shrink')
                                     currentNode.innerTile.classList.remove('selected-inner-tile-grow')
+                                    currentNode.innerTile.style.backgroundColor = "transparent"
                                     currentNode.selected = false
                                     word = word.slice(0, word.length - 1)
                                     selectedNodes.pop();
@@ -239,35 +291,25 @@ export function setUpTiles(grid, gameWords) {
                         let node1 = selectedNodes[i]
                         node1.innerTileContainer.classList.add('selected-inner-tile')
                         //now check to see if I have a complete word or not
+                        wordContainer.style.display = "flex"
                         if (lastNode === nodeAdam.node && nodeAdam.complete) {
-                            // node1.tile.style.backgroundColor = "yellow"
-                            // node1.innerTile.style.width = "80px";
-                            // node1.innerTile.style.height = "80px";
                             node1.innerTile.classList.remove('selected-inner-tile-shrink')
                             node1.innerTile.classList.add('selected-inner-tile-grow')
 
-                            wordContainer.style.display = "flex"
                             if (nodeAdam.found) {
                                 //user has found this word in this path
-                                wordContainer.innerHTML = `${word}`
-                                wordContainer.style.backgroundColor = "yellow"
+                                colorChange(line, "yellow", wordContainer, word, node1, "hsla(60, 100%, 75%, 0.6)")
                             } else {
                                 //user has found a word on a new path
-                                wordContainer.style.backgroundColor = "blue"
-                                wordContainer.innerHTML = `${word}  (+${nodeAdam.points})!`
+                                colorChange(line, "white", wordContainer, `${word}  (+${nodeAdam.points})!`, node1, "hsla(137, 100%, 45%, 0.45)")
                             }
                         } else {
-                            // node1.tile.style.backgroundColor = "blue"
-                            // node1.innerTile.style.width = "60px";
-                            // node1.innerTile.style.height = "60px";
                             node1.innerTile.classList.remove('selected-inner-tile-grow')
                             node1.innerTile.classList.add('selected-inner-tile-shrink')
-
-                            wordContainer.style.display = "none"
+                            colorChange(line, "red", wordContainer, word, node1, "hsla(5, 90%, 51%, 0.6)")
                         }
                     }
                     gNode.selected = true
-                    console.log(word)
                 }
             })
             
@@ -279,7 +321,16 @@ export function setUpTiles(grid, gameWords) {
         }
     }
 
-    return grid
+    return [grid, completeNodes, gamePoints]
+}
+
+export function colorChange(line, color, wordContainer, word, node, tileColor) {
+    wordContainer.innerHTML = word;
+    wordContainer.style.backgroundColor = tileColor
+    node.innerTile.style.backgroundColor = tileColor
+    return line.forEach(el => {
+        el.style.stroke = color
+    })
 }
 
 export function findWords(gridNode, tree) {
@@ -289,6 +340,7 @@ export function findWords(gridNode, tree) {
     //use pos 2 to key into ancestory to set up next nodes
     let rootAncNode = new ancestoryNode(gridNode);
     const queue = [[tree, rootAncNode, [gridNode]]];
+    let completeNodes = []
 
     while (queue.length) {
         let ele = queue.shift();
@@ -324,12 +376,19 @@ export function findWords(gridNode, tree) {
                     let newAncNode = currentNode.children[ele[1].node.neighbors[i].coordinates]
                     newAncNode.complete = subTree.complete
                     newAncNode.parent = ele[1]
-                    newAncNode.points = newAncNode.parent.points + 100;
+
+                    //the point system
+                    newAncNode.points = newAncNode.parent.points * 2;
+
+                    //the complete and found words system
+                    if (subTree.complete) {
+                        completeNodes.push(newAncNode)
+                    }
 
                     queue.push([subTree, newAncNode, path])
                 }
             }
         }
     }
-    return [words, rootAncNode]
+    return [words, rootAncNode, completeNodes]
 }
