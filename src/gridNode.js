@@ -33,6 +33,12 @@ export function ancestoryNode(node) {
 
     this.points = 100;
     this.found = false;
+
+    //properly set up the word at the nodes that return a .complete
+    //then at the node store the definition
+    //later create an object with that references each node, all the words and their definitions
+    this.word = ""
+    this.definition = null;
 }
 
 export function foundNodes(rootNode) {
@@ -104,6 +110,21 @@ export function setUpGrid(root) {
         }
         console.log(gameWords)
     }
+
+    const Http = new XMLHttpRequest();
+    let dic = {}
+    gameWords.forEach(word => {
+        let url=`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+        Http.open("GET", url);
+        Http.send();
+
+        Http.onreadystatechange = (e) => {
+            // console.log(Http.responseText)
+            dic[word] = Http.responseText
+        }
+        
+    })
+    console.log(dic)
 
     // I don't want to call setUpTiles until gameWords is longer than 70 words
     return setUpTiles(newGrid, gameWords, completeNodes)
