@@ -37,8 +37,9 @@ export function ancestoryNode(node) {
     //properly set up the word at the nodes that return a .complete
     //then at the node store the definition
     //later create an object with that references each node, all the words and their definitions
-    this.word = ""
-    this.definition = null;
+    
+    this.words = []
+    this.definitions = {}
 }
 
 export function foundNodes(rootNode) {
@@ -103,6 +104,7 @@ export function setUpGrid(root) {
                     if (!gameWords.includes(word)) {
                         gameWords.push(word)
                     }
+
                 })
                 completeNodes[arr[1].node.coordinates] = arr[2]
             }
@@ -110,21 +112,42 @@ export function setUpGrid(root) {
         }
         console.log(gameWords)
     }
+    
+    for (let y = 0; y < newGrid.length; y++) {
+        for (let x = 0; x < newGrid[0].length; x++) {
+            newGrid[y][x].words.forEach(word => {
+                let Http = new XMLHttpRequest();
+                let url=`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+                Http.open("GET", url);
+                Http.send();
+            
+                Http.onreadystatechange = (e) => {
+                    console.log(word)
+                    let definition = JSON.parse(Http.responseText)[0].meanings[0].definitions[0].definition
+                    console.log(definition)
 
-    const Http = new XMLHttpRequest();
-    let dic = {}
-    gameWords.forEach(word => {
-        let url=`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
-        Http.open("GET", url);
-        Http.send();
-
-        Http.onreadystatechange = (e) => {
-            // console.log(Http.responseText)
-            dic[word] = Http.responseText
+                    if (definition) {
+                        newGrid[y][x].definitions[word] = definition
+                    }
+                }
+            })
+            console.log(newGrid[y][x].definitions)
         }
+    }
+
+    //test promise.all
+    // gameWords.forEach(word => {
+    //     let url=`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+    //     Http.open("GET", url);
+    //     Http.send();
+
+    //     Http.onreadystatechange = (e) => {
+    //         console.log(Http.responseText)
+    //         // dic[word] = Http.responseText
+    //     }
         
-    })
-    console.log(dic)
+    // })
+    // console.log(dic)
 
     // I don't want to call setUpTiles until gameWords is longer than 70 words
     return setUpTiles(newGrid, gameWords, completeNodes)
@@ -411,5 +434,8 @@ export function findWords(gridNode, tree) {
             }
         }
     }
+
+    rootAncNode.words = words
+
     return [words, rootAncNode, completeNodes]
 }
