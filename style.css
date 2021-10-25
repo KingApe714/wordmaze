@@ -471,6 +471,7 @@ body {
 }
 
 .definitions-div {
+    cursor: pointer;
     display: none;
     position: absolute;
     left: 15px;
@@ -483,10 +484,13 @@ body {
     font-size: 10.5px;
 
     overflow: scroll;
+    /* transition: visibility 0s, opacity 0.5s; */
 }
 
 .mini-board-container:hover .definitions-div{
     display: block;
+    /* transition: visibility 0s, opacity 0.5s; */
+    transition: 1s;
 }
 
 .mini-board {
