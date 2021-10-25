@@ -359,8 +359,12 @@ export function drawLine(currentNode, miniGrid) {
 
     miniBoardContainer.appendChild(definitonsDiv)
 
-    // miniBoardContainer.addEventListener('mouseover', () => {
-    //     definitonsDiv.style.display = "block"
-    // })
+    miniBoardContainer.addEventListener('mouseover', () => {
+        definitonsDiv.classList.add('definitions-show')
+    })
+
+    miniBoardContainer.addEventListener('mouseleave', () => {
+        definitonsDiv.classList.remove('definitions-show')
+    })
     return miniBoardContainer
 }
