@@ -48,7 +48,7 @@ export function timer(grid, completeNodes, gamePoints) {
         miniGrid.push(miniRow)
     })
 
-    let time = 120;
+    let time = 10;
     let t = setInterval(updateCountdown, 1000);
     let stop = false;
 
@@ -348,5 +348,19 @@ export function drawLine(currentNode, miniGrid) {
         shadowContainer.className = "shadow-container"
         miniBoardContainer.appendChild(shadowContainer)
     }
+
+    let definitonsDiv = document.createElement('div')
+    definitonsDiv.className = "definitions-div"
+    if (currentNode.definitions[word]) {
+        definitonsDiv.innerHTML = currentNode.definitions[word]
+    } else {
+        definitonsDiv.innerHTML = "Sorry, no definition for this one, but we know it's a word.."
+    }
+
+    miniBoardContainer.appendChild(definitonsDiv)
+
+    // miniBoardContainer.addEventListener('mouseover', () => {
+    //     definitonsDiv.style.display = "block"
+    // })
     return miniBoardContainer
 }
