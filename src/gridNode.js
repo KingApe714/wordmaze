@@ -40,10 +40,9 @@ export function ancestoryNode(node) {
     
     this.words = []
     this.definitions = {}
-}
 
-export function foundNodes(rootNode) {
-    this.foundList = []
+    //everywhere this node appears in a clue word will be referenced here
+    this.clueDivs = []
 }
 
 export function setUpGrid(root) {
@@ -122,35 +121,131 @@ export function setUpGrid(root) {
                 Http.send();
             
                 Http.onreadystatechange = (e) => {
-                    console.log(word)
+                    // console.log(word)
                     let definition = JSON.parse(Http.responseText)[0].meanings[0].definitions[0].definition
-                    console.log(definition)
+                    // console.log(definition)
 
                     if (definition) {
                         newGrid[y][x].definitions[word] = definition
                     }
                 }
             })
-            console.log(newGrid[y][x].definitions)
+            // console.log(newGrid[y][x].definitions)
         }
     }
 
-    //test promise.all
-    // gameWords.forEach(word => {
-    //     let url=`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
-    //     Http.open("GET", url);
-    //     Http.send();
+    let setTiles = setUpTiles(newGrid, gameWords, completeNodes)
 
-    //     Http.onreadystatechange = (e) => {
-    //         console.log(Http.responseText)
-    //         // dic[word] = Http.responseText
-    //     }
-        
-    // })
-    // console.log(dic)
+    //I want to call the function that will set up the underscore container here
+    //I need to pass to it newGrid
+    setUpClues(newGrid)
 
     // I don't want to call setUpTiles until gameWords is longer than 70 words
-    return setUpTiles(newGrid, gameWords, completeNodes)
+    return setTiles
+}
+
+export function setUpClues(newGrid) {
+    let clueArray = [];
+
+    //I want to loop through all of the nodes and set up a 2D array that has the letter
+    //in pos 0 and the coordinates in pos 1
+    //When user has completed a node then loop through the entire array and find where
+    //the coordinates match the completed node and set the letter to visible
+    for (let i = 0; i < newGrid.length; i++) {
+        for (let j = 0; j < newGrid[0].length; j++) {
+            let currentNode = newGrid[i][j]
+            //I want to look at all possible words from currentNode
+            clueArray = clueArray.concat(findClueWords(currentNode))
+        }
+    }
+
+    console.log(clueArray)
+}
+
+//findClueWords will populate the clueContainer for me
+//it will also have the array with the references to all the letters and their coordinates
+export function findClueWords(rootNode) {
+    console.log(rootNode.definitions)
+    let queue = [rootNode];
+    const clueContainer = document.querySelector('.clue-container')
+    const clueArray = []
+
+    while (queue.length) {
+        let currentNode = queue.shift()
+        let children = Object.values(currentNode.children)
+
+        if (children.length) {
+            queue = queue.concat(children)
+        }
+
+        //this is where I want to set up the logic for the clue container
+        if (currentNode.complete) {
+            let checkNode = currentNode
+            let word = ""
+            //arr should be a 2 dimensional array, pos 0 will be the letter displayed to user in the div
+            //pos 1 is the coordinate of the letter
+            let arr = []
+            let clueWordContainer = document.createElement('div')
+            clueWordContainer.className = 'clue-word-container'
+
+            let clueWordDefinition = document.createElement('div')
+            clueWordDefinition.className = 'clue-word-definition'
+
+            while (checkNode) {
+                let clueLetterContainer = document.createElement('div')
+                let clueLetter = document.createElement('div')
+
+                clueLetterContainer.className = 'clue-letter-container'
+                clueLetter.className = 'clue-letter'
+
+                clueLetter.innerHTML = checkNode.node.ch
+                clueLetterContainer.append(clueLetter)
+
+                word = checkNode.node.ch + word
+                
+                arr.unshift([clueLetterContainer, checkNode.node.coordinates])
+
+                //with this I should be able to just loop through the clueDivs array to find all
+                //relevant divs
+                checkNode.clueDivs.push(clueLetterContainer)
+
+                checkNode = checkNode.parent
+            }
+
+            arr.forEach(ele => {
+                clueWordContainer.append(ele[0])
+            })
+
+            // console.log(word)
+            // console.log(rootNode.definitions)
+            // console.log(rootNode.definitions[word])
+            // console.log(Object.keys(rootNode.definitions))
+            // console.log(Object.values(rootNode.definitions))
+            // for (let key in rootNode.definitions) {
+            //     console.log(key)
+            // }
+            if (rootNode.definitions[word]) {
+                clueWordDefinition.innerHTML = rootNode.definitions[word]
+            } else {
+                clueWordDefinition.innerHTML = "Sorry, no definition for this one, but we know it's a word.."
+            }
+
+            clueWordContainer.append(clueWordDefinition)
+
+            clueWordContainer.addEventListener('mouseover', () => {
+                clueWordDefinition.classList.add('definitions-show')
+            })
+        
+            clueWordContainer.addEventListener('mouseleave', () => {
+                clueWordDefinition.classList.remove('definitions-show')
+            })
+
+            clueArray.push(arr)
+            clueContainer.append(clueWordContainer)
+        }
+    }
+
+    return clueArray
 }
 
 export function setUpTiles(grid, gameWords, completeNodes) {
@@ -221,13 +316,19 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             completeNodes[firstNode] = completeNodes[firstNode].slice(0, idx).concat(completeNodes[firstNode].slice(idx + 1))
 
             if (!completeNodes[firstNode].length) {
+                //this signifies I've found all the words I can with this tile
                 let [x, y] = firstNode.split(',')
-                // grid[y][x].node.innerTileContainer.style.color = 'white'
-                // grid[y][x].node.innerTileContainer.style.filter = 'brightness(90%)'
                 grid[y][x].node.innerTile.style.backgroundColor = "rgba(0, 230, 65, 0.45)"
                 grid[y][x].node.innerTile.style.boxShadow = "3px 3px 10px white"
 
                 completedTiles.push(grid[y][x].node)
+
+                console.log("I believe this is where I wanna be")
+                //TESTING CLUE DIVS
+                console.log(grid[y][x])
+                grid[y][x].clueDivs.forEach(div => {
+                    div.style.backgroundColor = "green"
+                })
             }
 
             gamePoints += nodeAdam.points

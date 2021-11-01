@@ -483,8 +483,6 @@ body {
     font-size: 10.5px;
     
     overflow: scroll;
-
-    /* display: none; */
     opacity: 0;
     transition: opacity 0.5s ease-out;
 }
@@ -664,4 +662,52 @@ body {
     padding-right: 6px;
     font-weight: 600;
     background-color: hsla(35, 95%, 50%, 0.7);
+}
+
+.clue-container {
+    width: 65%;
+    display: flex;
+    flex-wrap: wrap;
+    height: fit-content;
+    margin: 10px;
+    background-color: #003f7d;
+    border-radius: 20px;
+    box-shadow: 1px 3px 15px inset
+}
+
+.clue-word-container {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+
+    z-index: 0;
+
+    position: relative;
+}
+
+.clue-letter {
+    z-index: 0;
+}
+
+.clue-word-definition {
+    position: absolute;
+    left: 15px;
+    top: 2px;
+    padding: 5px;
+    width: 60px;
+    height: 80px;
+    /* max-height: 75%; */
+    border-radius: inherit;
+    background-color: white;
+    font-size: 10.5px;
+    z-index: 1;
+
+    overflow: scroll;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+.definitions-show {
+    opacity: 1;
 }
