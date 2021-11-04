@@ -112,27 +112,28 @@ export function setUpGrid(root) {
         console.log(gameWords)
     }
     
-    for (let y = 0; y < newGrid.length; y++) {
-        for (let x = 0; x < newGrid[0].length; x++) {
-            newGrid[y][x].words.forEach(word => {
-                let Http = new XMLHttpRequest();
-                let url=`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
-                Http.open("GET", url);
-                Http.send();
+    // for (let y = 0; y < newGrid.length; y++) {
+    //     for (let x = 0; x < newGrid[0].length; x++) {
+    //         newGrid[y][x].words.forEach(word => {
+    //             let Http = new XMLHttpRequest();
+    //             let url=`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+    //             Http.open("GET", url);
+    //             Http.send();
             
-                Http.onreadystatechange = (e) => {
-                    // console.log(word)
-                    let definition = JSON.parse(Http.responseText)[0].meanings[0].definitions[0].definition
-                    // console.log(definition)
+    //             Http.onreadystatechange = (e) => {
+    //                 // console.log(word)
+    //                 let definition = JSON.parse(Http.responseText)[0].meanings[0].definitions[0].definition
+    //                 // console.log(definition)
 
-                    if (definition) {
-                        newGrid[y][x].definitions[word] = definition
-                    }
-                }
-            })
-            // console.log(newGrid[y][x].definitions)
-        }
-    }
+    //                 if (definition) {
+    //                     newGrid[y][x].definitions[word] = definition
+    //                 }
+    //             }
+    //         })
+    //         // console.log(newGrid[y][x].definitions)
+    //         // newGrid[y][x].definitions = Object.assign({}, newGrid[y][x].definitions)
+    //     }
+    // }
 
     let setTiles = setUpTiles(newGrid, gameWords, completeNodes)
 
@@ -140,8 +141,21 @@ export function setUpGrid(root) {
     //I need to pass to it newGrid
     setUpClues(newGrid)
 
+    dictionaryApi()
+
     // I don't want to call setUpTiles until gameWords is longer than 70 words
     return setTiles
+}
+
+export function dictionaryApi() {
+    let definitionsAPI = "https://api.dictionaryapi.dev/api/v2/entries/en/"
+
+    console.log('in here')
+
+    fetch(definitionsAPI + 'something')
+        .then(response => response.json())
+        .then(json => console.log(json))
+        .catch(err => console.log(err))
 }
 
 export function setUpClues(newGrid) {
@@ -166,6 +180,9 @@ export function setUpClues(newGrid) {
 //it will also have the array with the references to all the letters and their coordinates
 export function findClueWords(rootNode) {
     console.log(rootNode.definitions)
+    let definitions = JSON.parse(JSON.stringify(rootNode.definitions))
+    console.log(definitions)
+    // console.log(JSON.parse(rootNode.definitions))
     let queue = [rootNode];
     const clueContainer = document.querySelector('.clue-container')
     const clueArray = []
@@ -224,7 +241,9 @@ export function findClueWords(rootNode) {
             // for (let key in rootNode.definitions) {
             //     console.log(key)
             // }
-            if (rootNode.definitions[word]) {
+
+            console.log(definitions[word])
+            if (definitions[word]) {
                 clueWordDefinition.innerHTML = rootNode.definitions[word]
             } else {
                 clueWordDefinition.innerHTML = "Sorry, no definition for this one, but we know it's a word.."
