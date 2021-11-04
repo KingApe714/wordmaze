@@ -137,25 +137,33 @@ export function setUpGrid(root) {
 
     let setTiles = setUpTiles(newGrid, gameWords, completeNodes)
 
+    let words = ['something', 'has', 'to', 'work']
+    let promises = words.filter(word => {
+        return dictionaryApi(word)
+    })
+
+
+    Promise.all(promises)
+        .then(results => {
+            console.log(results)
+        })
+        .catch(err => console.log(err))
+
     //I want to call the function that will set up the underscore container here
     //I need to pass to it newGrid
     setUpClues(newGrid)
-
-    dictionaryApi()
 
     // I don't want to call setUpTiles until gameWords is longer than 70 words
     return setTiles
 }
 
-export function dictionaryApi() {
+async function dictionaryApi(word) {
     let definitionsAPI = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
-    console.log('in here')
-
-    fetch(definitionsAPI + 'something')
-        .then(response => response.json())
-        .then(json => console.log(json))
-        .catch(err => console.log(err))
+    let response = await fetch(definitionsAPI+word)
+    let json = await response.json()
+    console.log(json)
+    return json
 }
 
 export function setUpClues(newGrid) {
@@ -179,9 +187,7 @@ export function setUpClues(newGrid) {
 //findClueWords will populate the clueContainer for me
 //it will also have the array with the references to all the letters and their coordinates
 export function findClueWords(rootNode) {
-    console.log(rootNode.definitions)
     let definitions = JSON.parse(JSON.stringify(rootNode.definitions))
-    console.log(definitions)
     // console.log(JSON.parse(rootNode.definitions))
     let queue = [rootNode];
     const clueContainer = document.querySelector('.clue-container')
