@@ -137,21 +137,44 @@ export function setUpGrid(root) {
 
     let setTiles = setUpTiles(newGrid, gameWords, completeNodes)
 
-    let words = ['something', 'has', 'to', 'work']
-    let promises = words.filter(word => {
-        return dictionaryApi(word)
-    })
+    let words = ['something', 'has', 'to', 'work', 'malingang']
+    let promises = [];
+    gameWords.forEach(word => promises.push(dictionaryApi(word)))
 
+    // words.forEach(word => promises.push(dictionaryApi(word)))
 
     Promise.all(promises)
         .then(results => {
             console.log(results)
+
+            let dictionary = {};
+            results.forEach(res => {
+                dictionary[res[0]] = res[1]
+            })
+
+            for (let i = 0; i < newGrid.length; i++) {
+                for (let j = 0; j < newGrid[i].length; j++) {
+                    newGrid[i][j].words.forEach(word => {
+                        if (dictionary[word]) {
+                            newGrid[i][j].definitions[word] = dictionary[word]
+                            
+                            console.log(`in here ${word}`)
+                        }
+                    })
+                }
+            }
+
+            console.log(dictionary)
+            newGrid.forEach(row => {
+                console.log(row)
+            })
+            setUpClues(newGrid)
         })
         .catch(err => console.log(err))
 
+
     //I want to call the function that will set up the underscore container here
     //I need to pass to it newGrid
-    setUpClues(newGrid)
 
     // I don't want to call setUpTiles until gameWords is longer than 70 words
     return setTiles
@@ -162,8 +185,12 @@ async function dictionaryApi(word) {
 
     let response = await fetch(definitionsAPI+word)
     let json = await response.json()
-    console.log(json)
-    return json
+    let definition = json[0] ? json[0].meanings[0].definitions[0].definition : "Sorry, no definition for this one, but we know it's a word.."
+    console.log(word)
+    return [
+        word,
+        definition
+    ]
 }
 
 export function setUpClues(newGrid) {
