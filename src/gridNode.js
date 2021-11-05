@@ -170,7 +170,7 @@ export function setUpClues(newGrid) {
         for (let j = 0; j < newGrid[0].length; j++) {
             let currentNode = newGrid[i][j]
             //I want to look at all possible words from currentNode
-            clueArray = clueArray.concat(findClueWords(currentNode))
+            clueArray = clueArray.concat(findClueWords(newGrid, currentNode))
         }
     }
 
@@ -179,7 +179,7 @@ export function setUpClues(newGrid) {
 
 //findClueWords will populate the clueContainer for me
 //it will also have the array with the references to all the letters and their coordinates
-export function findClueWords(rootNode) {
+export function findClueWords(newGrid, rootNode) {
 
     let queue = [rootNode];
     const innerClueContainer = document.querySelector('.inner-clue-container')
@@ -223,7 +223,9 @@ export function findClueWords(rootNode) {
 
                 //with this I should be able to just loop through the clueDivs array to find all
                 //relevant divs
-                checkNode.clueDivs.push(clueLetterContainer)
+                let [x, y] = checkNode.node.coordinates.split(',')
+                newGrid[y][x].clueDivs.push(clueLetterContainer)
+                // checkNode.clueDivs.push(clueLetterContainer)
 
                 checkNode = checkNode.parent
             }
