@@ -351,11 +351,11 @@ export function drawLine(currentNode, miniGrid) {
 
     let definitonsDiv = document.createElement('div')
     definitonsDiv.className = "definitions-div"
-    if (currentNode.definitions[word]) {
+    // if (currentNode.definitions[word]) {
         definitonsDiv.innerHTML = currentNode.definitions[word]
-    } else {
-        definitonsDiv.innerHTML = "Sorry, no definition for this one, but we know it's a word.."
-    }
+    // } else {
+        // definitonsDiv.innerHTML = "Sorry, no definition for this one, but we know it's a word.."
+    // }
 
     miniBoardContainer.appendChild(definitonsDiv)
 

@@ -111,70 +111,37 @@ export function setUpGrid(root) {
         }
         console.log(gameWords)
     }
-    
-    // for (let y = 0; y < newGrid.length; y++) {
-    //     for (let x = 0; x < newGrid[0].length; x++) {
-    //         newGrid[y][x].words.forEach(word => {
-    //             let Http = new XMLHttpRequest();
-    //             let url=`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
-    //             Http.open("GET", url);
-    //             Http.send();
-            
-    //             Http.onreadystatechange = (e) => {
-    //                 // console.log(word)
-    //                 let definition = JSON.parse(Http.responseText)[0].meanings[0].definitions[0].definition
-    //                 // console.log(definition)
-
-    //                 if (definition) {
-    //                     newGrid[y][x].definitions[word] = definition
-    //                 }
-    //             }
-    //         })
-    //         // console.log(newGrid[y][x].definitions)
-    //         // newGrid[y][x].definitions = Object.assign({}, newGrid[y][x].definitions)
-    //     }
-    // }
 
     let setTiles = setUpTiles(newGrid, gameWords, completeNodes)
 
-    let words = ['something', 'has', 'to', 'work', 'malingang']
     let promises = [];
-    gameWords.forEach(word => promises.push(dictionaryApi(word)))
 
-    // words.forEach(word => promises.push(dictionaryApi(word)))
+    gameWords.forEach(word => promises.push(dictionaryApi(word)))
 
     Promise.all(promises)
         .then(results => {
-            console.log(results)
-
             let dictionary = {};
             results.forEach(res => {
                 dictionary[res[0]] = res[1]
             })
+
+            console.log(dictionary)
 
             for (let i = 0; i < newGrid.length; i++) {
                 for (let j = 0; j < newGrid[i].length; j++) {
                     newGrid[i][j].words.forEach(word => {
                         if (dictionary[word]) {
                             newGrid[i][j].definitions[word] = dictionary[word]
-                            
-                            console.log(`in here ${word}`)
                         }
                     })
                 }
             }
 
-            console.log(dictionary)
-            newGrid.forEach(row => {
-                console.log(row)
-            })
+            //I want to call the function that will set up the underscore container here
+            //I need to pass to it newGrid
             setUpClues(newGrid)
         })
         .catch(err => console.log(err))
-
-
-    //I want to call the function that will set up the underscore container here
-    //I need to pass to it newGrid
 
     // I don't want to call setUpTiles until gameWords is longer than 70 words
     return setTiles
@@ -186,7 +153,6 @@ async function dictionaryApi(word) {
     let response = await fetch(definitionsAPI+word)
     let json = await response.json()
     let definition = json[0] ? json[0].meanings[0].definitions[0].definition : "Sorry, no definition for this one, but we know it's a word.."
-    console.log(word)
     return [
         word,
         definition
@@ -214,10 +180,10 @@ export function setUpClues(newGrid) {
 //findClueWords will populate the clueContainer for me
 //it will also have the array with the references to all the letters and their coordinates
 export function findClueWords(rootNode) {
-    let definitions = JSON.parse(JSON.stringify(rootNode.definitions))
-    // console.log(JSON.parse(rootNode.definitions))
+
     let queue = [rootNode];
-    const clueContainer = document.querySelector('.clue-container')
+    const innerClueContainer = document.querySelector('.inner-clue-container')
+    const definitionsContainer = document.querySelector('.definitions-container')
     const clueArray = []
 
     while (queue.length) {
@@ -238,8 +204,8 @@ export function findClueWords(rootNode) {
             let clueWordContainer = document.createElement('div')
             clueWordContainer.className = 'clue-word-container'
 
-            let clueWordDefinition = document.createElement('div')
-            clueWordDefinition.className = 'clue-word-definition'
+            // let clueWordDefinition = document.createElement('div')
+            // clueWordDefinition.className = 'clue-word-definition'
 
             while (checkNode) {
                 let clueLetterContainer = document.createElement('div')
@@ -266,34 +232,24 @@ export function findClueWords(rootNode) {
                 clueWordContainer.append(ele[0])
             })
 
-            // console.log(word)
-            // console.log(rootNode.definitions)
-            // console.log(rootNode.definitions[word])
-            // console.log(Object.keys(rootNode.definitions))
-            // console.log(Object.values(rootNode.definitions))
-            // for (let key in rootNode.definitions) {
-            //     console.log(key)
-            // }
+            console.log(rootNode.definitions[word])
+            
+            // clueWordDefinition.innerHTML = rootNode.definitions[word]
 
-            console.log(definitions[word])
-            if (definitions[word]) {
-                clueWordDefinition.innerHTML = rootNode.definitions[word]
-            } else {
-                clueWordDefinition.innerHTML = "Sorry, no definition for this one, but we know it's a word.."
-            }
-
-            clueWordContainer.append(clueWordDefinition)
-
-            clueWordContainer.addEventListener('mouseover', () => {
-                clueWordDefinition.classList.add('definitions-show')
+            
+            // clueWordContainer.append(clueWordDefinition)
+            
+            clueWordContainer.addEventListener('mousedown', () => {
+                // clueWordDefinition.classList.add('definitions-show')
+                definitionsContainer.innerHTML = rootNode.definitions[word]
             })
         
-            clueWordContainer.addEventListener('mouseleave', () => {
-                clueWordDefinition.classList.remove('definitions-show')
-            })
+            // clueWordContainer.addEventListener('mouseleave', () => {
+                // clueWordDefinition.classList.remove('definitions-show')
+            // })
 
             clueArray.push(arr)
-            clueContainer.append(clueWordContainer)
+            innerClueContainer.append(clueWordContainer)
         }
     }
 
@@ -301,6 +257,8 @@ export function findClueWords(rootNode) {
 }
 
 export function setUpTiles(grid, gameWords, completeNodes) {
+
+    console.log(grid)
     //this grid is a grid full of ancestory nodes
     const gameBoardContainer = document.querySelector('.game-board-container')
     const gamePointsDiv = document.querySelector('.gamepoints')
