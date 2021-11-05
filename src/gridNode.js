@@ -160,7 +160,7 @@ async function dictionaryApi(word) {
 }
 
 export function setUpClues(newGrid) {
-    let clueArray = [];
+    // let clueArray = [];
 
     //I want to loop through all of the nodes and set up a 2D array that has the letter
     //in pos 0 and the coordinates in pos 1
@@ -170,11 +170,13 @@ export function setUpClues(newGrid) {
         for (let j = 0; j < newGrid[0].length; j++) {
             let currentNode = newGrid[i][j]
             //I want to look at all possible words from currentNode
-            clueArray = clueArray.concat(findClueWords(newGrid, currentNode))
+            // clueArray = clueArray.concat(findClueWords(newGrid, currentNode))
+
+            findClueWords(newGrid, currentNode)
         }
     }
 
-    console.log(clueArray)
+    // console.log(clueArray)
 }
 
 //findClueWords will populate the clueContainer for me
@@ -184,7 +186,7 @@ export function findClueWords(newGrid, rootNode) {
     let queue = [rootNode];
     const innerClueContainer = document.querySelector('.inner-clue-container')
     const definitionsContainer = document.querySelector('.definitions-container')
-    const clueArray = []
+    // const clueArray = []
 
     while (queue.length) {
         let currentNode = queue.shift()
@@ -250,12 +252,12 @@ export function findClueWords(newGrid, rootNode) {
                 // clueWordDefinition.classList.remove('definitions-show')
             // })
 
-            clueArray.push(arr)
+            // clueArray.push(arr)
             innerClueContainer.append(clueWordContainer)
         }
     }
 
-    return clueArray
+    // return clueArray
 }
 
 export function setUpTiles(grid, gameWords, completeNodes) {
@@ -335,7 +337,6 @@ export function setUpTiles(grid, gameWords, completeNodes) {
 
                 completedTiles.push(grid[y][x].node)
 
-                console.log("I believe this is where I wanna be")
                 //TESTING CLUE DIVS
                 console.log(grid[y][x])
                 grid[y][x].clueDivs.forEach(div => {
