@@ -707,8 +707,29 @@ body {
     position: relative;
 }
 
+.clue-letter-container {
+    background-image: url(tile-image.jpeg);
+    filter: brightness(120%);
+    width: fit-content;
+    height: fit-content;
+    border-radius: 4px;
+    box-shadow: 1px 1px 10px white inset;
+
+    margin: 1px;
+}
+
 .clue-letter {
-    z-index: 0;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 800;
+    text-shadow: 0px 0.5px white;
+    border-radius: 4px;
+    box-shadow: 1px 1.5px 4px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .clue-word-definition {

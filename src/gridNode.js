@@ -216,7 +216,7 @@ export function findClueWords(newGrid, rootNode) {
                 clueLetterContainer.className = 'clue-letter-container'
                 clueLetter.className = 'clue-letter'
 
-                clueLetter.innerHTML = checkNode.node.ch
+                // clueLetter.innerHTML = checkNode.node.ch
                 clueLetterContainer.append(clueLetter)
 
                 word = checkNode.node.ch + word
@@ -340,7 +340,10 @@ export function setUpTiles(grid, gameWords, completeNodes) {
                 //TESTING CLUE DIVS
                 console.log(grid[y][x])
                 grid[y][x].clueDivs.forEach(div => {
-                    div.style.backgroundColor = "green"
+                    div.firstChild.style.backgroundColor = "rgba(0, 230, 65, 0.45)"
+                    div.firstChild.style.boxShadow = "1px .15px 4px white"
+
+                    div.firstChild.innerHTML = grid[y][x].node.ch
                 })
             }
 
