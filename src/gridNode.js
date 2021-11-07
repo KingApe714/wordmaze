@@ -43,6 +43,8 @@ export function ancestoryNode(node) {
 
     //everywhere this node appears in a clue word will be referenced here
     this.clueDivs = []
+
+    this.clueWordContainer = null;
 }
 
 export function setUpGrid(root) {
@@ -236,11 +238,11 @@ export function findClueWords(newGrid, rootNode) {
                 clueWordContainer.append(ele[0])
             })
 
-            console.log(rootNode.definitions[word])
+            currentNode.clueWordContainer = clueWordContainer;
+
+            // console.log(rootNode.definitions[word])
             
             // clueWordDefinition.innerHTML = rootNode.definitions[word]
-
-            
             // clueWordContainer.append(clueWordDefinition)
             
             clueWordContainer.addEventListener('mousedown', () => {
@@ -251,18 +253,14 @@ export function findClueWords(newGrid, rootNode) {
             // clueWordContainer.addEventListener('mouseleave', () => {
                 // clueWordDefinition.classList.remove('definitions-show')
             // })
-
             // clueArray.push(arr)
             innerClueContainer.append(clueWordContainer)
         }
     }
-
     // return clueArray
 }
 
 export function setUpTiles(grid, gameWords, completeNodes) {
-
-    console.log(grid)
     //this grid is a grid full of ancestory nodes
     const gameBoardContainer = document.querySelector('.game-board-container')
     const gamePointsDiv = document.querySelector('.gamepoints')
@@ -289,6 +287,14 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             let [x,y] = key.split(',')
             grid[y][x].node.innerTileContainer.style.color = 'white'
             grid[y][x].node.innerTileContainer.style.filter = 'brightness(90%)'
+
+            console.log(grid[y][x].clueDivs)
+            grid[y][x].clueDivs.forEach(div => {
+                div.firstChild.style.color = "white"
+                div.firstChild.style.filter = "brightness(90%)"
+
+                div.firstChild.innerHTML = grid[y][x].node.ch
+            })
         }
     }
 
@@ -308,6 +314,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             foundWords.push(word)
         }
 
+        //reset gameBoard styling
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[0].length; j++) {
                 let gNode = grid[i][j].node;
@@ -329,6 +336,13 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             let idx = completeNodes[firstNode].indexOf(nodeAdam)
             completeNodes[firstNode] = completeNodes[firstNode].slice(0, idx).concat(completeNodes[firstNode].slice(idx + 1))
 
+            for (let i = 0; i < word.length; i++) {
+                let currentDiv = nodeAdam.clueWordContainer.children[i]
+                let char = word[i]
+
+                currentDiv.firstChild.innerHTML = char
+            }
+
             if (!completeNodes[firstNode].length) {
                 //this signifies I've found all the words I can with this tile
                 let [x, y] = firstNode.split(',')
@@ -337,8 +351,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
 
                 completedTiles.push(grid[y][x].node)
 
-                //TESTING CLUE DIVS
-                console.log(grid[y][x])
+                //all relevant clue tiles are now visible
                 grid[y][x].clueDivs.forEach(div => {
                     div.firstChild.style.backgroundColor = "rgba(0, 230, 65, 0.45)"
                     div.firstChild.style.boxShadow = "1px .15px 4px white"
