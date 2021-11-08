@@ -10,23 +10,35 @@ body {
     align-items: center;
 }
 
-.outer-game-container {
+.outer-container {
     display: flex;
     flex-direction: row;
+    height: 85vh;
+}
+
+.outer-game-container {
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
     width: 70%;
 }
 
-.side-container {
-    border-radius: 20px;
-    box-shadow: 1px 3px 15px inset;
+.bottom-panel-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     background-color: #003f7d;
+    box-shadow: 1px 3px 15px;
+    width: 400px;
+}
+
+.side-container {
+    margin-left: 10px;
     width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-
     font-size: 28px;
 }
 
@@ -34,7 +46,6 @@ body {
     background-image: url(tile-image.jpeg);
     width: 140px;
     height: 70px;
-    margin: 10px;
     filter: brightness(130%);
     box-shadow: 3px 3px 10px black;
     border-radius: 12px;
@@ -137,7 +148,6 @@ body {
 .game-board-container {
     border-radius: 20px;
     position: relative;
-    margin-left: 15px;
     width: 400px;
     height: 400px;
     font-family: inherit;
@@ -679,30 +689,23 @@ body {
 .clue-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 70%;
+    width: 35vw;
+    height: inherit;
 }
 
 .inner-clue-container {
-    width: 65%;
     display: flex;
     flex-wrap: wrap;
-    height: fit-content;
-    max-height: 200px;
-    /* margin: 10px; */
-    background-color: #003f7d;
-    border-radius: 20px;
-    box-shadow: 1px 3px 15px inset;
+    height: inherit;
+    background-color: #0077b6;
+    box-shadow: 1px 3px 15px;
 
     overflow-y: scroll;
 }
 
 .definitions-container {
     background-color: white;
-    border-radius: 20px;
     box-shadow: 1px 3px 15px inset;
-    /* color: white; */
-    /* padding: 10px; */
     width: 150px;
     height: 200px;
     overflow-y: scroll;
@@ -712,7 +715,9 @@ body {
     cursor: pointer;
     display: flex;
     flex-direction: row;
-    margin: 5px;
+    margin-left: 5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 
     z-index: 0;
 
