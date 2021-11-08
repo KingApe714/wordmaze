@@ -435,6 +435,8 @@ export function setUpTiles(grid, gameWords, completeNodes) {
                         
                         lastNode = selectedNodes[selectedNodes.length - 1];
                     } else {
+                        //User has come back to a previously visited tile
+                        //So remove styling from tiles he/she has abandoned
                         if (selectedNodes.includes(gNode)) {
                             let currentNode
                             for (let i = selectedNodes.length - 1; i >= 0; i--) {
@@ -442,11 +444,16 @@ export function setUpTiles(grid, gameWords, completeNodes) {
                                 if (currentNode === gNode) {
                                     break
                                 } else {
-                                    // currentNode.tile.style.backgroundColor = "white";
                                     currentNode.innerTileContainer.classList.remove('selected-inner-tile')
                                     currentNode.innerTile.classList.remove('selected-inner-tile-shrink')
                                     currentNode.innerTile.classList.remove('selected-inner-tile-grow')
-                                    currentNode.innerTile.style.backgroundColor = "transparent"
+                                    //I believe this is what is removing the green from a node I've completed
+                                    if (!completedTiles.includes(currentNode)) {
+                                        currentNode.innerTile.style.backgroundColor = "transparent"
+                                    } else {
+                                        currentNode.innerTile.style.backgroundColor = "rgba(0, 230, 65, 0.45)"
+                                    }
+
                                     currentNode.selected = false
                                     word = word.slice(0, word.length - 1)
                                     selectedNodes.pop();
@@ -459,7 +466,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
                         }
                     }
                     //there will always be one more selectedNode than there is lines
-                    //therefore I just need to delete all the lines past selectedNodes.length - 2
+                    //therefore I just need to delete all the lines past selectedNodes.length - 1
                     let x = selectedNodes.length - 1
                     let dif = svgContainer.children.length - x
                     for (let i = 0; i < dif; i++) {

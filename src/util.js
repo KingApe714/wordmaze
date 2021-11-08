@@ -48,7 +48,7 @@ export function timer(grid, completeNodes, gamePoints) {
         miniGrid.push(miniRow)
     })
 
-    let time = 10;
+    let time = 120;
     let t = setInterval(updateCountdown, 1000);
     let stop = false;
 
