@@ -121,19 +121,8 @@ export function gameOverModal(grid, miniGrid, completeNodes, gamePoints) {
         let cellsDiv = document.createElement('div')
         cellsDiv.className = "cells-div"
 
-        cellsDivTitle.innerHTML = "COMPLETED TILES"
-        cellsDivSmallScore.innerHTML = totalPoints
-        cellsDivBigScore.innerHTML = completeCells.length * 50000
+        let miniTotalPoints = 0;
 
-        cellsDivTitleContainer.appendChild(cellsDivTitle)
-        cellsDivTitleContainer.appendChild(cellsDivSmallScore)
-        cellsDivTitleContainer.appendChild(cellsDivBigScore)
-
-        innerCompleteCellsDiv.appendChild(cellsDivTitleContainer)
-
-        // let divCover = document.createElement('div')
-        // divCover.className = "div-cover"
-        // cellsDiv.appendChild(divCover)
         completeCells.forEach(arr => {
             let [cell, cellTotalPoints] = arr
             let innerCellsDiv = document.createElement('div')
@@ -150,10 +139,18 @@ export function gameOverModal(grid, miniGrid, completeNodes, gamePoints) {
             innerCellsDiv.appendChild(cellScoreDiv)
             cellsDiv.appendChild(innerCellsDiv)
 
-            // let divCover = document.createElement('div')
-            // divCover.className = "div-cover"
-            // cellsDiv.appendChild(divCover)
+            miniTotalPoints += cellTotalPoints;
         })
+
+        cellsDivTitle.innerHTML = "COMPLETE!"
+        cellsDivSmallScore.innerHTML = `+${miniTotalPoints} points`
+        cellsDivBigScore.innerHTML = `+${completeCells.length * 5000} points`
+
+        cellsDivTitleContainer.appendChild(cellsDivTitle)
+        cellsDivTitleContainer.appendChild(cellsDivSmallScore)
+        cellsDivTitleContainer.appendChild(cellsDivBigScore)
+
+        innerCompleteCellsDiv.appendChild(cellsDivTitleContainer)
         
         innerCompleteCellsDiv.appendChild(cellsDiv)
         completeCellsDiv.appendChild(innerCompleteCellsDiv)
