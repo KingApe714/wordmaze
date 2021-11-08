@@ -63,10 +63,13 @@ export function setUpGrid(root) {
     let gameWords = []
     let newGrid = []
     let completeNodes = {}
+    let deadNodes = []
     while (gameWords.length < 70) {
         const grid = []
         newGrid = []
         gameWords = []
+        completeNodes = {}
+        deadNodes = []
         //set up gridNodes for gameBoard
         for (let i = 0; i < 4; i++) {
             let row = []
@@ -108,6 +111,9 @@ export function setUpGrid(root) {
 
                 })
                 completeNodes[arr[1].node.coordinates] = arr[2]
+                if (arr[2].length === 0) {
+                    deadNodes.push(arr[1].node.coordinates)
+                }
             }
             newGrid.push(row)
         }
@@ -141,7 +147,7 @@ export function setUpGrid(root) {
 
             //I want to call the function that will set up the underscore container here
             //I need to pass to it newGrid
-            setUpClues(newGrid)
+            setUpClues(newGrid, deadNodes)
         })
         .catch(err => console.log(err))
 
@@ -161,9 +167,7 @@ async function dictionaryApi(word) {
     ]
 }
 
-export function setUpClues(newGrid) {
-    // let clueArray = [];
-
+export function setUpClues(newGrid, deadNodes) {
     //I want to loop through all of the nodes and set up a 2D array that has the letter
     //in pos 0 and the coordinates in pos 1
     //When user has completed a node then loop through the entire array and find where
@@ -171,10 +175,10 @@ export function setUpClues(newGrid) {
     for (let i = 0; i < newGrid.length; i++) {
         for (let j = 0; j < newGrid[0].length; j++) {
             let currentNode = newGrid[i][j]
-            //I want to look at all possible words from currentNode
-            // clueArray = clueArray.concat(findClueWords(newGrid, currentNode))
 
-            findClueWords(newGrid, currentNode)
+            //I want to look at all possible words from currentNode
+
+            findClueWords(newGrid, currentNode, deadNodes)
         }
     }
 
@@ -183,7 +187,7 @@ export function setUpClues(newGrid) {
 
 //findClueWords will populate the clueContainer for me
 //it will also have the array with the references to all the letters and their coordinates
-export function findClueWords(newGrid, rootNode) {
+export function findClueWords(newGrid, rootNode, deadNodes) {
 
     let queue = [rootNode];
     const innerClueContainer = document.querySelector('.inner-clue-container')
@@ -218,16 +222,24 @@ export function findClueWords(newGrid, rootNode) {
                 clueLetterContainer.className = 'clue-letter-container'
                 clueLetter.className = 'clue-letter'
 
+                
                 // clueLetter.innerHTML = checkNode.node.ch
                 clueLetterContainer.append(clueLetter)
-
+                
                 word = checkNode.node.ch + word
                 
                 arr.unshift([clueLetterContainer, checkNode.node.coordinates])
-
+                
                 //with this I should be able to just loop through the clueDivs array to find all
                 //relevant divs
                 let [x, y] = checkNode.node.coordinates.split(',')
+
+                if (deadNodes.includes(`${x},${y}`)) {
+                    clueLetterContainer.style.color = "white"
+                    clueLetterContainer.style.filter = 'brightness(90%)'
+                    clueLetter.innerHTML = checkNode.node.ch
+                }
+
                 newGrid[y][x].clueDivs.push(clueLetterContainer)
                 // checkNode.clueDivs.push(clueLetterContainer)
 
@@ -287,14 +299,6 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             let [x,y] = key.split(',')
             grid[y][x].node.innerTileContainer.style.color = 'white'
             grid[y][x].node.innerTileContainer.style.filter = 'brightness(90%)'
-
-            console.log(grid[y][x].clueDivs)
-            grid[y][x].clueDivs.forEach(div => {
-                div.firstChild.style.color = "white"
-                div.firstChild.style.filter = "brightness(90%)"
-
-                div.firstChild.innerHTML = grid[y][x].node.ch
-            })
         }
     }
 
