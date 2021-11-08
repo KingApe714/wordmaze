@@ -668,7 +668,7 @@ body {
     flex: 0 1 auto;
     margin-left: auto;
     width: fit-content;
-    border-top-right-radius: inherit;
+    border-top-right-radius: 10px;
     box-shadow: 3px 3px 10px;
     padding: 3px;
     padding-right: 6px;

@@ -130,7 +130,7 @@ export function gameOverModal(grid, miniGrid, completeNodes, gamePoints) {
             innerCellsDiv.backgroundColor = "hsla(137, 100%, 45%, 0.7)"
             let cellScoreDiv = document.createElement('div')
             cellScoreDiv.className = "cell-score-div"
-            cellScoreDiv.innerHTML = "+50000 points"
+            cellScoreDiv.innerHTML = "+5000 points"
             let miniCellScoreDiv = document.createElement('div')
             miniCellScoreDiv.className = "mini-cell-score-div"
             miniCellScoreDiv.innerHTML = `+${cellTotalPoints} points`
