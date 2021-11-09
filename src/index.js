@@ -6,6 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const restartButton = document.querySelector('.restart-button')
 
     restartButton.addEventListener('click', () => {
-        game()
+        window.location.reload()
     })
 })
