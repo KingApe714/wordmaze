@@ -288,7 +288,8 @@ export function setUpTiles(grid, gameWords, completeNodes) {
     let nodeAdam = null;
     let firstNode = null
 
-    let gamePoints = 0;
+    let gamePoints = parseInt(window.localStorage.getItem('gameScore'));
+    gamePointsDiv.innerHTML = gamePoints
     let foundWords = []
 
     let completedTiles = []
@@ -506,7 +507,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
         }
     }
 
-    return [grid, completeNodes, gamePoints]
+    return [grid, completeNodes]
 }
 
 export function colorChange(line, color, wordContainer, word, node, tileColor) {

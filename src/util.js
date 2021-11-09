@@ -24,7 +24,7 @@ export function modal() {
     })
 }
 
-export function timer(grid, completeNodes, gamePoints) {
+export function timer(grid, completeNodes) {
     const countdownEl = document.querySelector('.countdown');
     const modalChild = document.querySelector('.modal-child')
     const modalBg = document.querySelector('.modal-bg')
@@ -64,7 +64,7 @@ export function timer(grid, completeNodes, gamePoints) {
 
         //open the modal and show the score, whether user passed the stage and all the possible words
         if (time === 0 && !stop) {
-            gameOverModal(grid, miniGrid, completeNodes, gamePoints)
+            gameOverModal(grid, miniGrid, completeNodes)
             stop = true;
 
             modalBg.classList.add('bg-active')
@@ -72,10 +72,37 @@ export function timer(grid, completeNodes, gamePoints) {
     }
 }
 
-export function gameOverModal(grid, miniGrid, completeNodes, gamePoints) {
+//I could have this function return whether user passed the stage or not.
+//If pass then we reset time and allow gamePoints to persist
+//Otherwise don't even render the next stage button
+export function gameOverModal(grid, miniGrid, completeNodes) {
+
+    const modalTitle = document.querySelector('.modal-title')
+    const modalChild = document.querySelector('.modal-child')
+    const modalInner = document.querySelector('.modal-inner')
+    let gamePoints = parseInt(document.querySelector('.gamepoints').innerHTML)
 
     let totalPoints = 0;
     let passStage = false;
+
+    let pastScore = parseInt(window.localStorage.getItem('gameScore'))
+    debugger
+    if (gamePoints - pastScore >= 15000) {
+        passStage = true;
+    }
+
+    if (passStage) {
+        const nextStageButton = document.createElement('button')
+        nextStageButton.className = 'next-stage-button'
+        nextStageButton.addEventListener('click', () => {
+            //store current score into local storage
+            window.localStorage.setItem('gameScore', gamePoints)
+            window.location.reload()
+
+        })
+        modalChild.append(nextStageButton)
+    }
+    
 
     const allPaths = document.createElement('div');
     const completeCells = [];
@@ -101,9 +128,6 @@ export function gameOverModal(grid, miniGrid, completeNodes, gamePoints) {
         }
     }
 
-    const modalTitle = document.querySelector('.modal-title')
-    const modalChild = document.querySelector('.modal-child')
-    const modalInner = document.querySelector('.modal-inner')
 
     if (completeCells.length) {
         let completeCellsDiv = document.createElement('div');
@@ -165,8 +189,6 @@ export function gameOverModal(grid, miniGrid, completeNodes, gamePoints) {
     //     modalInner.appendChild(deadCellsDiv)
     // }
 
-    modalTitle.innerHTML = "Time's Up!"
-    modalChild.innerHTML = "15000 points needed to move on and at least one tile needs to be complete."
     modalInner.appendChild(allPaths)
 }
 
