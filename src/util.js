@@ -86,7 +86,7 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     let passStage = false;
 
     let pastScore = parseInt(window.localStorage.getItem('gameScore'))
-    debugger
+    // debugger
     if (gamePoints - pastScore >= 15000) {
         passStage = true;
     }
