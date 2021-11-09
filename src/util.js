@@ -85,25 +85,6 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     let totalPoints = 0;
     let passStage = false;
 
-    let pastScore = parseInt(window.localStorage.getItem('gameScore'))
-    // debugger
-    if (gamePoints - pastScore >= 15000) {
-        passStage = true;
-    }
-
-    if (passStage) {
-        const nextStageButton = document.createElement('button')
-        nextStageButton.className = 'next-stage-button'
-        nextStageButton.addEventListener('click', () => {
-            //store current score into local storage
-            window.localStorage.setItem('gameScore', gamePoints)
-            window.location.reload()
-
-        })
-        modalChild.append(nextStageButton)
-    }
-    
-
     const allPaths = document.createElement('div');
     const completeCells = [];
     const deadCells = [];
@@ -128,6 +109,7 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
         }
     }
 
+    let totalBonusPoints = 0;
 
     if (completeCells.length) {
         let completeCellsDiv = document.createElement('div');
@@ -179,15 +161,74 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
         innerCompleteCellsDiv.appendChild(cellsDiv)
         completeCellsDiv.appendChild(innerCompleteCellsDiv)
         modalInner.appendChild(completeCellsDiv)
+
+        totalBonusPoints = miniTotalPoints + (completeCells.length * 5000)
     }
-    // if (deadCells.length) {
-    //     let deadCellsDiv = document.createElement('div');
-    //     deadCellsDiv.className = "dead-cells-div"
-    //     deadCells.forEach(cell => {
-    //         deadCellsDiv.appendChild(cell)
-    //     })
-    //     modalInner.appendChild(deadCellsDiv)
-    // }
+
+    const innerContainer = document.createElement('div')
+    innerContainer.className = 'inner-container'
+    const messageDiv = document.createElement('div')
+    messageDiv.className = 'message-div'
+    const buttonContainer = document.createElement('div')
+    buttonContainer.className = 'button-container'
+    const scoreContainer = document.createElement('div')
+    scoreContainer.className = 'score-container'
+    const stageScore = document.createElement('div')
+    stageScore.className = 'stage-score'
+    const bonusPoints = document.createElement('div')
+    bonusPoints.className = 'bonus-points'
+    const totalStagePoints = document.createElement('div')
+    totalStagePoints.className = 'total-stage-points'
+    const messageButtonDiv = document.createElement('div')
+    messageButtonDiv.className = 'message-button-div'
+
+    let pastScore = parseInt(window.localStorage.getItem('gameScore'))
+
+    stageScore.innerHTML = gamePoints - pastScore;
+    bonusPoints.innerHTML = totalBonusPoints;
+    totalStagePoints.innerHTML = gamePoints + totalBonusPoints;
+    
+    scoreContainer.append(stageScore)
+    scoreContainer.append(bonusPoints)
+    scoreContainer.append(totalStagePoints)
+    
+    
+    
+    if (gamePoints + totalBonusPoints - pastScore >= 15000) {
+        passStage = true;
+    }
+    
+    if (passStage) {
+        const nextStageButton = document.createElement('button')
+        nextStageButton.className = 'next-stage-button'
+        
+        nextStageButton.addEventListener('click', () => {
+            //store current score into local storage
+            window.localStorage.setItem('gameScore', gamePoints)
+            window.location.reload()
+            
+        })
+        messageDiv.innerHTML = 'STAGE PASSED!'
+        buttonContainer.append(nextStageButton)
+    } else {
+        messageDiv.innerHTML = 'STAGE FAILED!'
+    }
+
+    const restartButton = document.createElement('button');
+    restartButton.addEventListener('click', () => {
+        localStorage.clear()
+        window.localStorage.setItem('gameScore', 0);
+        window.location.reload()
+    })
+    buttonContainer.append(restartButton)
+    
+    messageButtonDiv.append(messageDiv)
+    messageButtonDiv.append(buttonContainer)
+
+    innerContainer.append(messageButtonDiv)
+    innerContainer.append(scoreContainer)
+
+    modalChild.append(innerContainer)
 
     modalInner.appendChild(allPaths)
 }
