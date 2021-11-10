@@ -20,9 +20,9 @@ async function game() {
     
     modal()
     
-    let [grid, completeNodes, gamePoints] = setUpGrid(root)
+    let [grid, completeNodes] = setUpGrid(root)
     
-    timer(grid, completeNodes, gamePoints)
+    timer(grid, completeNodes)
 }
 
 export default game
