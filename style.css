@@ -349,11 +349,87 @@ body {
 }
 
 .modal-child {
+    width: -webkit-fill-available;
     background-color: #0077b6;
     box-shadow: 3px 3px 10px black;
     color: white;
     font-weight: 300;
     padding: 30px;
+}
+
+.inner-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.message-button-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.message-div {
+    width: 250px;
+}
+
+.button-container {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.next-stage-button, .modal-restart-button {
+    cursor: pointer;
+    height: 25px;
+    width: 100px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff4d00;
+    color: white;
+}
+
+.score-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 210px;
+    box-shadow: 3px 3px 10px black;
+    background-color: white;
+    padding: 5px;
+}
+
+.score-titles {
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.score-title {
+    font-size: 18px;
+    color: black;
+    font-weight: 500;
+}
+
+.score-inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.prev-score, .stage-score, .bonus-points, .total-stage-points {
+    font-size: 18px;
+    font-weight: 400;
+    background-color: hsla(35, 95%, 50%, 0.7);;
+    color: black;
+    box-shadow: 2px 1px 10px inset;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .modal-close {

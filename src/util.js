@@ -172,27 +172,55 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     const buttonContainer = document.createElement('div')
     buttonContainer.className = 'button-container'
     const scoreContainer = document.createElement('div')
+    const messageButtonDiv = document.createElement('div')
+    messageButtonDiv.className = 'message-button-div'
+    
     scoreContainer.className = 'score-container'
+    const scoreInnerContainer = document.createElement('div')
+    scoreInnerContainer.className = 'score-inner-container'
+    const prevScore = document.createElement('div')
+    prevScore.className = 'prev-score'
     const stageScore = document.createElement('div')
     stageScore.className = 'stage-score'
     const bonusPoints = document.createElement('div')
     bonusPoints.className = 'bonus-points'
     const totalStagePoints = document.createElement('div')
     totalStagePoints.className = 'total-stage-points'
-    const messageButtonDiv = document.createElement('div')
-    messageButtonDiv.className = 'message-button-div'
+    const scoreTitles = document.createElement('div')
+    scoreTitles.className = 'score-titles'
+    const prevScoreTitle = document.createElement('div')
+    prevScoreTitle.className = 'score-title'
+    const stageScoreTitle = document.createElement('div')
+    stageScoreTitle.className = 'score-title'
+    const bonusScoreTitle = document.createElement('div')
+    bonusScoreTitle.className = 'score-title'
+    const totalScoreTitle = document.createElement('div')
+    totalScoreTitle.className = 'score-title'
+
+    prevScoreTitle.innerHTML = "Previous Score"
+    stageScoreTitle.innerHTML = "Stage Score"
+    bonusScoreTitle.innerHTML = "Total Bonus Points"
+    totalScoreTitle.innerHTML = "Total Score"
+
+    scoreTitles.append(prevScoreTitle)
+    scoreTitles.append(stageScoreTitle)
+    scoreTitles.append(bonusScoreTitle)
+    scoreTitles.append(totalScoreTitle)
 
     let pastScore = parseInt(window.localStorage.getItem('gameScore'))
 
+    prevScore.innerHTML = pastScore
     stageScore.innerHTML = gamePoints - pastScore;
     bonusPoints.innerHTML = totalBonusPoints;
     totalStagePoints.innerHTML = gamePoints + totalBonusPoints;
     
-    scoreContainer.append(stageScore)
-    scoreContainer.append(bonusPoints)
-    scoreContainer.append(totalStagePoints)
-    
-    
+    scoreInnerContainer.append(prevScore)
+    scoreInnerContainer.append(stageScore)
+    scoreInnerContainer.append(bonusPoints)
+    scoreInnerContainer.append(totalStagePoints)
+
+    scoreContainer.append(scoreTitles)
+    scoreContainer.append(scoreInnerContainer)
     
     if (gamePoints + totalBonusPoints - pastScore >= 15000) {
         passStage = true;
@@ -201,6 +229,7 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     if (passStage) {
         const nextStageButton = document.createElement('button')
         nextStageButton.className = 'next-stage-button'
+        nextStageButton.innerHTML = "NEXT STAGE"
         
         nextStageButton.addEventListener('click', () => {
             //store current score into local storage
@@ -208,13 +237,15 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
             window.location.reload()
             
         })
-        messageDiv.innerHTML = 'STAGE PASSED!'
+        modalTitle.innerHTML = 'STAGE PASSED!'
         buttonContainer.append(nextStageButton)
     } else {
-        messageDiv.innerHTML = 'STAGE FAILED!'
+        modalTitle.innerHTML = 'STAGE FAILED!'
     }
 
     const restartButton = document.createElement('button');
+    restartButton.className = 'modal-restart-button'
+    restartButton.innerHTML = "RESTART"
     restartButton.addEventListener('click', () => {
         localStorage.clear()
         window.localStorage.setItem('gameScore', 0);
@@ -222,12 +253,19 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     })
     buttonContainer.append(restartButton)
     
+    messageDiv.innerHTML = "15,000 points needed to move on to next stage"
+
     messageButtonDiv.append(messageDiv)
     messageButtonDiv.append(buttonContainer)
 
     innerContainer.append(messageButtonDiv)
     innerContainer.append(scoreContainer)
 
+    while (modalChild.firstChild) {
+        modalChild.removeChild(modalChild.firstChild)
+    }
+
+    modalChild.append(modalTitle)
     modalChild.append(innerContainer)
 
     modalInner.appendChild(allPaths)
