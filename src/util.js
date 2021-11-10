@@ -48,22 +48,22 @@ export function timer(grid, completeNodes) {
         miniGrid.push(miniRow)
     })
 
-    let time = 120;
+    // let time = 120;
     let t = setInterval(updateCountdown, 1000);
     let stop = false;
 
     function updateCountdown() {
-        const minutes = Math.floor(time / 60)
-        let seconds = time % 60;
+        const minutes = Math.floor(window.time / 60)
+        let seconds = window.time % 60;
 
         seconds = seconds < 10 ? '0' + seconds : seconds;
 
         countdownEl.innerHTML = `${minutes}:${seconds}`
 
-        if (time > 0) time--;
+        if (window.time > 0) window.time--;
 
         //open the modal and show the score, whether user passed the stage and all the possible words
-        if (time === 0 && !stop) {
+        if (window.time === 0 && !stop) {
             gameOverModal(grid, miniGrid, completeNodes)
             stop = true;
 

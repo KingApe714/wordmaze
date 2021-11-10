@@ -31,6 +31,7 @@ export function ancestoryNode(node) {
     this.children = {};
     this.parent = null;
 
+    this.timeBonus = 1;
     this.points = 100;
     this.found = false;
 
@@ -366,10 +367,16 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             }
 
             gamePoints += nodeAdam.points
+            window.time += nodeAdam.timeBonus
             
+            countExpression.innerHTML = `+${nodeAdam.timeBonus}`
+            countExpression.classList.add('count-shrink')
             pointExpression.innerHTML = `+${nodeAdam.points}!!`;
             pointExpression.classList.add('point-shrink')
             setTimeout(() => {
+                countExpression.classList.remove('count-shrink')
+                countExpression.innerHTML = "";
+
                 pointExpression.classList.remove('point-shrink')
                 pointExpression.innerHTML = "";
                 gamePointsDiv.innerHTML = gamePoints
@@ -565,6 +572,7 @@ export function findWords(gridNode, tree) {
 
                     //the point system
                     newAncNode.points = newAncNode.parent.points * 2;
+                    newAncNode.timeBonus = newAncNode.parent.timeBonus + 1;
 
                     //the complete and found words system
                     if (subTree.complete) {

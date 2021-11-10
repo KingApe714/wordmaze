@@ -3,6 +3,8 @@ import game from './game.js'
 document.addEventListener("DOMContentLoaded", () => {
     game()
     
+    window.time = 120;
+
     const restartButton = document.querySelector('.restart-button')
     
     restartButton.addEventListener('click', () => {
