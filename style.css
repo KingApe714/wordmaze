@@ -81,8 +81,8 @@ body {
     font-size: 70px;
     transition: all 1000ms;
     width: 150px;
-    left: 320px;
-    top: -370px;
+    left: 150px;
+    top: -600px;
     z-index: 10;
     
     display: flex;
