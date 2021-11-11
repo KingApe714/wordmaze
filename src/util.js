@@ -10,8 +10,13 @@ export function modal() {
     
     modalBtn.addEventListener('click', function() {
         //get rid of any other divs in modal and only show instructions (for now)
-        if (modalInner.children.length < 2) {
-            modalInner.removeChild(modalInner.lastElementChild)
+        // if (modalInner.children.length < 2) {
+        //     modalInner.removeChild(modalInner.lastElementChild)
+        // }
+        let elements = document.getElementsByClassName('.all-paths')
+
+        while(elements.length) {
+            elements[0].parentNode.removeChild(elements[0])
         }
 
         modalBg.classList.add('bg-active')
@@ -80,7 +85,7 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     const modalTitle = document.querySelector('.modal-title')
     const modalChild = document.querySelector('.modal-child')
     const modalInner = document.querySelector('.modal-inner')
-    let gamePoints = parseInt(document.querySelector('.gamepoints').innerHTML)
+    // let gamePoints = parseInt(document.querySelector('.gamepoints').innerHTML)
 
     let totalPoints = 0;
     let passStage = false;
