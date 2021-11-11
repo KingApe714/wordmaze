@@ -210,9 +210,11 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     let pastScore = parseInt(window.localStorage.getItem('gameScore'))
 
     prevScore.innerHTML = pastScore
-    stageScore.innerHTML = gamePoints - pastScore;
+    stageScore.innerHTML = window.gamePoints - pastScore;
     bonusPoints.innerHTML = totalBonusPoints;
-    totalStagePoints.innerHTML = gamePoints + totalBonusPoints;
+    totalStagePoints.innerHTML = window.gamePoints + totalBonusPoints;
+
+    window.gamePoints += totalBonusPoints;
     
     scoreInnerContainer.append(prevScore)
     scoreInnerContainer.append(stageScore)
@@ -222,7 +224,7 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     scoreContainer.append(scoreTitles)
     scoreContainer.append(scoreInnerContainer)
     
-    if (gamePoints + totalBonusPoints - pastScore >= 15000) {
+    if (window.gamePoints + totalBonusPoints - pastScore >= 15000) {
         passStage = true;
     }
     
@@ -233,7 +235,7 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
         
         nextStageButton.addEventListener('click', () => {
             //store current score into local storage
-            window.localStorage.setItem('gameScore', gamePoints)
+            window.localStorage.setItem('gameScore', window.gamePoints)
             window.location.reload()
             
         })

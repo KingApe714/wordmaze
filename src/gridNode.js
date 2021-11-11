@@ -289,8 +289,8 @@ export function setUpTiles(grid, gameWords, completeNodes) {
     let nodeAdam = null;
     let firstNode = null
 
-    let gamePoints = parseInt(window.localStorage.getItem('gameScore'));
-    gamePointsDiv.innerHTML = gamePoints
+    window.gamePoints = parseInt(window.localStorage.getItem('gameScore'));
+    gamePointsDiv.innerHTML = window.gamePoints
     let foundWords = []
 
     let completedTiles = []
@@ -366,7 +366,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
                 })
             }
 
-            gamePoints += nodeAdam.points
+            window.gamePoints += nodeAdam.points
             window.time += nodeAdam.timeBonus
             
             countExpression.innerHTML = `+${nodeAdam.timeBonus}`
@@ -379,7 +379,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
 
                 pointExpression.classList.remove('point-shrink')
                 pointExpression.innerHTML = "";
-                gamePointsDiv.innerHTML = gamePoints
+                gamePointsDiv.innerHTML = window.gamePoints
             }, 900)
         }
         
