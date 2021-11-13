@@ -241,20 +241,20 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
                 clueWordContainer.append(ele[0])
             })
 
+            let clueWordShadow = document.createElement('div')
+            clueWordShadow.className = 'clue-word-shadow';
+            clueWordContainer.appendChild(clueWordShadow)
+
             clueWordContainer.addEventListener('mousedown', () => {
                 definitionsContainer.innerHTML = rootNode.definitions[word]
                 //highlight the selected clueWordContainer and unhighlight any other
-                //testing
-                // innerClueContainer.children.forEach(child => {
-                    //     child.style.backgroundColor = 'none'
-                    // })
-                
                 for (let i = 0; i < innerClueContainer.children.length; i++) {
                     innerClueContainer.children[i].style.backgroundColor = ""
+                    // innerClueContainer.children[i].style.b = ""
                 }
                 clueWordContainer.style.backgroundColor = '#FFFF33'
+                // clueWordContainer.style.borderRadius = '4px'
             })
-            // console.log(selectedClueWordContainer)
 
             currentNode.clueWordContainer = clueWordContainer;
             innerClueContainer.append(clueWordContainer)
@@ -339,9 +339,8 @@ export function setUpTiles(grid, gameWords, completeNodes) {
                 currentDiv.firstChild.innerHTML = char
             }
             //shade out the clueWordContainer to signify that it is a found word
-            let clueWordShadow = document.createElement('div')
-            clueWordShadow.className = 'clue-word-shadow';
-            nodeAdam.clueWordContainer.appendChild(clueWordShadow)
+            // nodeAdam.clueWordContainer.querySelector('.clue-word-shadow').classList.add('.remove-shadow');
+            nodeAdam.clueWordContainer.querySelector('.clue-word-shadow').style.backgroundColor = "transparent";
 
             if (!completeNodes[firstNode].length) {
                 //this signifies I've found all the words I can with this tile
