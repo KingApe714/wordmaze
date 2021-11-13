@@ -327,7 +327,7 @@ body {
     width: 70%;
     min-width: 645px;
     max-width: 800px;
-    max-height: 500px;
+    max-height: 700px;
     z-index: 2;
 
     overflow: auto;
@@ -799,13 +799,23 @@ body {
     cursor: pointer;
     display: flex;
     flex-direction: row;
-    margin-left: 5px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-
+    margin-left: 1.5px;
+    padding: 2px;
     z-index: 0;
-
+    border-radius: 4px;
     position: relative;
+}
+
+.clue-word-shadow {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-color: hsla(0, 0%, 0%, 0.23);
+
+    pointer-events: none;
 }
 
 .clue-letter-container {

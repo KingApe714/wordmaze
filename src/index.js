@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     game()
     
     window.time = 120;
+    window.selectedClueWordContainer = null;
 
     const restartButton = document.querySelector('.restart-button')
     

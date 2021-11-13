@@ -182,8 +182,6 @@ export function setUpClues(newGrid, deadNodes) {
             findClueWords(newGrid, currentNode, deadNodes)
         }
     }
-
-    // console.log(clueArray)
 }
 
 //findClueWords will populate the clueContainer for me
@@ -193,7 +191,7 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
     let queue = [rootNode];
     const innerClueContainer = document.querySelector('.inner-clue-container')
     const definitionsContainer = document.querySelector('.definitions-container')
-    // const clueArray = []
+    // window.selectedClueWordContainer = null;
 
     while (queue.length) {
         let currentNode = queue.shift()
@@ -213,18 +211,12 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
             let clueWordContainer = document.createElement('div')
             clueWordContainer.className = 'clue-word-container'
 
-            // let clueWordDefinition = document.createElement('div')
-            // clueWordDefinition.className = 'clue-word-definition'
-
             while (checkNode) {
                 let clueLetterContainer = document.createElement('div')
                 let clueLetter = document.createElement('div')
 
                 clueLetterContainer.className = 'clue-letter-container'
                 clueLetter.className = 'clue-letter'
-
-                
-                // clueLetter.innerHTML = checkNode.node.ch
                 clueLetterContainer.append(clueLetter)
                 
                 word = checkNode.node.ch + word
@@ -242,8 +234,6 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
                 }
 
                 newGrid[y][x].clueDivs.push(clueLetterContainer)
-                // checkNode.clueDivs.push(clueLetterContainer)
-
                 checkNode = checkNode.parent
             }
 
@@ -251,26 +241,25 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
                 clueWordContainer.append(ele[0])
             })
 
-            currentNode.clueWordContainer = clueWordContainer;
-
-            // console.log(rootNode.definitions[word])
-            
-            // clueWordDefinition.innerHTML = rootNode.definitions[word]
-            // clueWordContainer.append(clueWordDefinition)
-            
             clueWordContainer.addEventListener('mousedown', () => {
-                // clueWordDefinition.classList.add('definitions-show')
                 definitionsContainer.innerHTML = rootNode.definitions[word]
+                //highlight the selected clueWordContainer and unhighlight any other
+                //testing
+                // innerClueContainer.children.forEach(child => {
+                    //     child.style.backgroundColor = 'none'
+                    // })
+                
+                for (let i = 0; i < innerClueContainer.children.length; i++) {
+                    innerClueContainer.children[i].style.backgroundColor = ""
+                }
+                clueWordContainer.style.backgroundColor = '#FFFF33'
             })
-        
-            // clueWordContainer.addEventListener('mouseleave', () => {
-                // clueWordDefinition.classList.remove('definitions-show')
-            // })
-            // clueArray.push(arr)
+            // console.log(selectedClueWordContainer)
+
+            currentNode.clueWordContainer = clueWordContainer;
             innerClueContainer.append(clueWordContainer)
         }
     }
-    // return clueArray
 }
 
 export function setUpTiles(grid, gameWords, completeNodes) {
@@ -342,12 +331,17 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             let idx = completeNodes[firstNode].indexOf(nodeAdam)
             completeNodes[firstNode] = completeNodes[firstNode].slice(0, idx).concat(completeNodes[firstNode].slice(idx + 1))
 
+            //display the letters inside of the relevant clueWordContainer
             for (let i = 0; i < word.length; i++) {
                 let currentDiv = nodeAdam.clueWordContainer.children[i]
                 let char = word[i]
 
                 currentDiv.firstChild.innerHTML = char
             }
+            //shade out the clueWordContainer to signify that it is a found word
+            let clueWordShadow = document.createElement('div')
+            clueWordShadow.className = 'clue-word-shadow';
+            nodeAdam.clueWordContainer.appendChild(clueWordShadow)
 
             if (!completeNodes[firstNode].length) {
                 //this signifies I've found all the words I can with this tile

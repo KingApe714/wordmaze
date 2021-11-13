@@ -10,13 +10,8 @@ export function modal() {
     
     modalBtn.addEventListener('click', function() {
         //get rid of any other divs in modal and only show instructions (for now)
-        // if (modalInner.children.length < 2) {
-        //     modalInner.removeChild(modalInner.lastElementChild)
-        // }
-        let elements = document.getElementsByClassName('.all-paths')
-
-        while(elements.length) {
-            elements[0].parentNode.removeChild(elements[0])
+        if (modalInner.children.length < 2 && !window.time) {
+            modalInner.removeChild(modalInner.lastElementChild)
         }
 
         modalBg.classList.add('bg-active')
