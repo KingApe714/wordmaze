@@ -803,7 +803,8 @@ body {
     align-items: center;
     margin-left: 0.75px;
     margin-right: 0.75px;
-    padding: 2px;
+    height: fit-content;
+    padding: 2.7px;
     z-index: 0;
     border-radius: 4px;
     position: relative;
