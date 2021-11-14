@@ -496,6 +496,10 @@ body {
     margin-top: 5px;
 }
 
+.cells-div-small-score {
+    margin-right: 25px;
+}
+
 .cells-div-title {
     margin-left: 5px;
     border-top-left-radius: 10px;
@@ -817,8 +821,8 @@ body {
     justify-content: center;
     align-items: center;
     height: 29px;
-    padding-left: 2.7px;
-    padding-right: 2.7px;
+    /* padding-left: 2.7px;
+    padding-right: 2.7px; */
     position: relative;
     border-radius: 4px;
 }
