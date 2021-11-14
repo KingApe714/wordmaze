@@ -242,7 +242,7 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
             })
 
             //dynamically setting width to acommodate the growing tiles when selected
-            clueWordContainer.style.width = `${(arr.length * 23) + 10}px`
+            clueWordContainer.style.width = `${(arr.length * 21.5) + 9}px`
 
             let clueWordShadow = document.createElement('div')
             clueWordShadow.className = 'clue-word-shadow';
@@ -264,8 +264,8 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
                 //grow the letter tiles within the clue word div
                 let letterNodes = clueWordContainer.querySelectorAll('.clue-letter')
                 for (let i = 0; i < letterNodes.length; i++) {
-                    letterNodes[i].style.width = "22px"
-                    letterNodes[i].style.height = "22px"
+                    letterNodes[i].style.width = "21.5px"
+                    letterNodes[i].style.height = "21.5px"
                 }
             })
 
