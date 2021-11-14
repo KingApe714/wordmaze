@@ -10,10 +10,22 @@ body {
     align-items: center;
 }
 
+.title {
+    margin-bottom: 1px;
+    background-image: url(tile-image.jpeg);
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px, 2px 2px 6px white inset;
+    text-shadow: 0.5px 0.5px white;
+    filter: brightness(1.3);
+}
+
 .outer-container {
     display: flex;
     flex-direction: row;
     height: 85vh;
+    padding: 10px;
 }
 
 .outer-game-container {
@@ -29,23 +41,23 @@ body {
     justify-content: space-between;
     background-color: #003f7d;
     box-shadow: 1px 3px 15px;
-    width: 400px;
+    width: 370px;
+    padding: 15px;
 }
 
 .side-container {
-    margin-left: 10px;
     width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
-    font-size: 28px;
+    justify-content: space-between;
+    font-size: 20px;
 }
 
 .side-panel-inner-container {
     background-image: url(tile-image.jpeg);
     width: 140px;
-    height: 70px;
+    height: 45px;
     filter: brightness(130%);
     box-shadow: 3px 3px 10px black;
     border-radius: 12px;
@@ -57,7 +69,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* justify-content: space-evenly; */
     border-radius: inherit;
     box-shadow: 1px 1px 7px white inset;
     text-shadow: 0px 0.5px white;
@@ -111,11 +122,13 @@ body {
     align-items: center;
     justify-content: center;
     height: fit-content;
+    font-size: 21px;
 }
 
 .side-panel-title {
     text-decoration: underline;
-    font-size: 20px;
+    font-size: 17px;
+    font-weight: 500;
     height: fit-content;
     margin: unset;
 }
@@ -789,10 +802,12 @@ body {
 
 .definitions-container {
     background-color: white;
-    box-shadow: 1px 3px 15px inset;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 6.5px #ffff33, 2px 2px 6px inset;
     width: 150px;
-    height: 200px;
-    overflow-y: scroll;
+    height: 165px;
+    overflow-y: auto;
+    padding: 7px;
 }
 
 .clue-word-container {
