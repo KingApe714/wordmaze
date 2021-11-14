@@ -250,10 +250,21 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
                 //highlight the selected clueWordContainer and unhighlight any other
                 for (let i = 0; i < innerClueContainer.children.length; i++) {
                     innerClueContainer.children[i].style.backgroundColor = ""
-                    // innerClueContainer.children[i].style.b = ""
+                    let childNodes = innerClueContainer.children[i].querySelectorAll('.clue-letter')
+
+                    for (let j = 0; j < childNodes.length; j++) {
+                        childNodes[j].style.width = "20px"
+                        childNodes[j].style.height = "20px"
+                    }
                 }
                 clueWordContainer.style.backgroundColor = '#FFFF33'
-                // clueWordContainer.style.borderRadius = '4px'
+                //grow the letter tiles within the clue word div
+                let letterNodes = clueWordContainer.querySelectorAll('.clue-letter')
+                console.log(letterNodes)
+                for (let i = 0; i < letterNodes.length; i++) {
+                    letterNodes[i].style.width = "22.5px"
+                    letterNodes[i].style.height = "22.5px"
+                }
             })
 
             currentNode.clueWordContainer = clueWordContainer;

@@ -816,13 +816,11 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: fit-content;
-    padding: 2.7px;
+    height: 29px;
+    padding-left: 2.7px;
+    padding-right: 2.7px;
     position: relative;
     border-radius: 4px;
-    /* z-index: 0; */
-    /* margin-left: 0.75px; */
-    /* margin-right: 0.75px; */
 }
 
 .clue-word-shadow {
