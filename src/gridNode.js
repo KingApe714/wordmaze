@@ -242,7 +242,7 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
             })
 
             //dynamically setting width to acommodate the growing tiles when selected
-            clueWordContainer.style.width = `${(arr.length * 21.5) + 9}px`
+            clueWordContainer.style.width = `${(arr.length * 23.5) + 6.5}px`
 
             let clueWordShadow = document.createElement('div')
             clueWordShadow.className = 'clue-word-shadow';
