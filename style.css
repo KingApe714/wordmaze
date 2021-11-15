@@ -8,6 +8,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    position: relative;
 }
 
 .title {
@@ -99,6 +101,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.word-expression {
+    position: absolute;
+
+    display: block;
+    height: fit-content;
+    width: fit-content;
+
+    top: 79px;
+    left: 267px;
+
+    transition: all 2000ms;
 }
 
 .point-shrink, .count-shrink {

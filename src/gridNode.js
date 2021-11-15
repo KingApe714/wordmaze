@@ -375,7 +375,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             //green highlight found clue word
             nodeAdam.clueWordContainer.style.backgroundColor = "rgba(0, 230, 65, 0.85)"
 
-
+            
             if (pastFoundClueWord) {
                 if (pastFoundClueWord === window.selectedClueWord) {
                     pastFoundClueWord.style.backgroundColor = '#FFFF33';
@@ -384,27 +384,47 @@ export function setUpTiles(grid, gameWords, completeNodes) {
                 }
             }
             pastFoundClueWord = nodeAdam.clueWordContainer;
-
+            
             if (!completeNodes[firstNode].length) {
                 //this signifies I've found all the words I can with this tile
                 let [x, y] = firstNode.split(',')
                 grid[y][x].node.innerTile.style.backgroundColor = "rgba(0, 230, 65, 0.45)"
                 grid[y][x].node.innerTile.style.boxShadow = "3px 3px 10px white"
-
+                
                 completedTiles.push(grid[y][x].node)
-
+                
                 //all relevant clue tiles are now visible
                 grid[y][x].clueDivs.forEach(div => {
                     div.firstChild.style.backgroundColor = "rgba(0, 230, 65, 0.45)"
                     div.firstChild.style.boxShadow = "1px .15px 4px white"
-
+                    
                     div.firstChild.innerHTML = grid[y][x].node.ch
                 })
             }
-
+            
             window.gamePoints += nodeAdam.points
             window.time += nodeAdam.timeBonus
-            
+
+            console.log('clue-word-container')
+            console.log(nodeAdam.clueWordContainer.getBoundingClientRect())
+            console.log('word-container')
+            console.log(wordContainer.getBoundingClientRect())
+
+            const wordExpression = document.createElement('div');
+            wordExpression.className = 'word-expression'
+            wordExpression.innerHTML = word;
+            document.body.append(wordExpression);
+
+            let top = nodeAdam.clueWordContainer.getBoundingClientRect().top
+            top = top > 750 ? 750 : top
+            console.log(`top = ${top}`)
+            wordExpression.style.left = `${nodeAdam.clueWordContainer.getBoundingClientRect().left}px`
+            wordExpression.style.top = `${top}px`
+
+            setTimeout(() => {
+                document.body.removeChild(wordExpression);
+            }, 2100)
+
             countExpression.innerHTML = `+${nodeAdam.timeBonus}`
             countExpression.classList.add('count-shrink')
             pointExpression.innerHTML = `+${nodeAdam.points}!!`;
@@ -412,10 +432,11 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             setTimeout(() => {
                 countExpression.classList.remove('count-shrink')
                 countExpression.innerHTML = "";
-
+                
                 pointExpression.classList.remove('point-shrink')
                 pointExpression.innerHTML = "";
                 gamePointsDiv.innerHTML = window.gamePoints
+
             }, 900)
         }
         
