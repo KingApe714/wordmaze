@@ -254,6 +254,9 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
             clueWordContainer.appendChild(clueWordShadow)
 
             clueWordContainer.addEventListener('mousedown', () => {
+                //grab clueWordContainer to check if he is selected and found to make green persist
+                window.selectedClueWord = clueWordContainer;
+
                 definitionsContainer.innerHTML = rootNode.definitions[word]
                 //highlight the selected clueWordContainer and unhighlight any other
                 for (let i = 0; i < innerClueContainer.children.length; i++) {
@@ -303,7 +306,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
     let line = [];
     let nodeAdam = null;
     let firstNode = null
-    let foundClueWord = null;
+    let pastFoundClueWord = null;
 
     window.gamePoints = parseInt(window.localStorage.getItem('gameScore'));
     gamePointsDiv.innerHTML = window.gamePoints
@@ -355,9 +358,6 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             foundWordCount += 1
             completePercent.innerHTML = (foundWordCount / window.totalClueWords * 100).toFixed(2) + '%';
 
-            console.log(`foundWordCount = ${foundWordCount}`)
-            console.log(`totalClueWords = ${window.totalClueWords}`)
-
             //display the letters inside of the relevant clueWordContainer
             for (let i = 0; i < word.length; i++) {
                 let currentDiv = nodeAdam.clueWordContainer.children[i]
@@ -369,16 +369,17 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             nodeAdam.clueWordContainer.querySelector('.clue-word-shadow').style.backgroundColor = "transparent";
 
             //green highlight found clue word
-            if (foundClueWord) {
-                foundClueWord.style.backgroundColor = ""
-                nodeAdam.clueWordContainer.style.backgroundColor = "rgba(0, 230, 65, 0.85)"
+            nodeAdam.clueWordContainer.style.backgroundColor = "rgba(0, 230, 65, 0.85)"
 
-                foundClueWord = nodeAdam.clueWordContainer;
-            } else {
-                nodeAdam.clueWordContainer.style.backgroundColor = "rgba(0, 230, 65, 0.85)"
 
-                foundClueWord = nodeAdam.clueWordContainer;
+            if (pastFoundClueWord) {
+                if (pastFoundClueWord === window.selectedClueWord) {
+                    pastFoundClueWord.style.backgroundColor = '#FFFF33';
+                } else {
+                    pastFoundClueWord.style.backgroundColor = ""
+                }
             }
+            pastFoundClueWord = nodeAdam.clueWordContainer;
 
             if (!completeNodes[firstNode].length) {
                 //this signifies I've found all the words I can with this tile
