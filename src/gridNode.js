@@ -420,7 +420,9 @@ export function setUpTiles(grid, gameWords, completeNodes) {
         line = [];
         nodeAdam = null;
         firstNode = null;
-        wordContainer.style.display = "none"
+        // wordContainer.style.display = "none"
+        wordContainer.parentNode.style.opacity = "0"
+        wordContainer.style.opacity = "0"
     
 
         while (svgContainer.firstChild) {
@@ -516,7 +518,9 @@ export function setUpTiles(grid, gameWords, completeNodes) {
                         let node1 = selectedNodes[i]
                         node1.innerTileContainer.classList.add('selected-inner-tile')
                         //now check to see if I have a complete word or not
-                        wordContainer.style.display = "flex"
+                        // wordContainer.style.display = "flex"
+                        wordContainer.style.opacity = "1"
+                        wordContainer.parentNode.style.opacity = "1"
                         if (lastNode === nodeAdam.node && nodeAdam.complete) {
                             node1.innerTile.classList.remove('selected-inner-tile-shrink')
                             node1.innerTile.classList.add('selected-inner-tile-grow')
