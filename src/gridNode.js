@@ -413,6 +413,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             const wordExpression = document.createElement('div');
             wordExpression.className = 'word-expression'
             wordExpression.innerHTML = word;
+            wordExpression.style.left = `${wordContainer.getBoundingClientRect().left}px`
             document.body.append(wordExpression);
 
             let top = nodeAdam.clueWordContainer.getBoundingClientRect().top
