@@ -256,16 +256,17 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
                     let childNodes = innerClueContainer.children[i].querySelectorAll('.clue-letter')
 
                     for (let j = 0; j < childNodes.length; j++) {
-                        childNodes[j].style.width = "20px"
-                        childNodes[j].style.height = "20px"
+                        childNodes[j].classList.remove('grow-clue-letter')
+                        childNodes[j].parentNode.classList.remove('shake-clue-letter')
                     }
                 }
                 clueWordContainer.style.backgroundColor = '#FFFF33'
+                clueWordContainer.classList.add
                 //grow the letter tiles within the clue word div
                 let letterNodes = clueWordContainer.querySelectorAll('.clue-letter')
                 for (let i = 0; i < letterNodes.length; i++) {
-                    letterNodes[i].style.width = "21.5px"
-                    letterNodes[i].style.height = "21.5px"
+                    letterNodes[i].classList.add('grow-clue-letter')
+                    letterNodes[i].parentNode.classList.add('shake-clue-letter')
                 }
             })
 
