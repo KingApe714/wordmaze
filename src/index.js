@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     window.time = 120;
     window.selectedClueWordContainer = null;
+    window.completeBoard = false;
 
     const restartButton = document.querySelector('.restart-button')
     

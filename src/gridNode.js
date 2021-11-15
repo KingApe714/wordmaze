@@ -358,6 +358,10 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             foundWordCount += 1
             completePercent.innerHTML = (foundWordCount / window.totalClueWords * 100).toFixed(2) + '%';
 
+            if (foundWordCount === window.totalClueWords) {
+                window.completeBoard = true;
+            }
+
             //display the letters inside of the relevant clueWordContainer
             for (let i = 0; i < word.length; i++) {
                 let currentDiv = nodeAdam.clueWordContainer.children[i]
@@ -365,7 +369,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
 
                 currentDiv.firstChild.innerHTML = char
             }
-            //shade out the clueWordContainer to signify that it is a found word
+            //shade in the clueWordContainer to signify that it is a found word
             nodeAdam.clueWordContainer.querySelector('.clue-word-shadow').style.backgroundColor = "transparent";
 
             //green highlight found clue word

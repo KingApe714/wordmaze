@@ -19,6 +19,7 @@ export function modal() {
         modalChild.innerHTML = "-Make as many words as you can by swiping through adjacent tiles.<br>-Only words that are 3 letters or longer will be accepted.<br>-You can repeat words so long as you use a different arrangement of letters."
     })
 
+    modalClose.style.display = "block"
     modalClose.addEventListener('click', function() {
         modalBg.classList.remove('bg-active');
     })
@@ -63,7 +64,7 @@ export function timer(grid, completeNodes) {
         if (window.time > 0) window.time--;
 
         //open the modal and show the score, whether user passed the stage and all the possible words
-        if (window.time === 0 && !stop) {
+        if ((window.time === 0 && !stop) || window.completeBoard && !stop) {
             gameOverModal(grid, miniGrid, completeNodes)
             stop = true;
 
@@ -80,7 +81,10 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     const modalTitle = document.querySelector('.modal-title')
     const modalChild = document.querySelector('.modal-child')
     const modalInner = document.querySelector('.modal-inner')
+    const modalClose = document.querySelector('.modal-close')
     // let gamePoints = parseInt(document.querySelector('.gamepoints').innerHTML)
+
+    modalClose.style.display = "none"
 
     let totalPoints = 0;
     let passStage = false;
