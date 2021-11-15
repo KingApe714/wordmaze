@@ -169,6 +169,7 @@ async function dictionaryApi(word) {
 }
 
 export function setUpClues(newGrid, deadNodes) {
+    let totalWordCount = 0
     //I want to loop through all of the nodes and set up a 2D array that has the letter
     //in pos 0 and the coordinates in pos 1
     //When user has completed a node then loop through the entire array and find where
@@ -179,9 +180,11 @@ export function setUpClues(newGrid, deadNodes) {
 
             //I want to look at all possible words from currentNode
 
-            findClueWords(newGrid, currentNode, deadNodes)
+            totalWordCount += findClueWords(newGrid, currentNode, deadNodes)
         }
     }
+
+    window.totalClueWords = totalWordCount;
 }
 
 //findClueWords will populate the clueContainer for me
@@ -191,7 +194,7 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
     let queue = [rootNode];
     const innerClueContainer = document.querySelector('.inner-clue-container')
     const definitionsContainer = document.querySelector('.definitions-container')
-    // window.selectedClueWordContainer = null;
+    let wordCount = 0
 
     while (queue.length) {
         let currentNode = queue.shift()
@@ -203,6 +206,8 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
 
         //this is where I want to set up the logic for the clue container
         if (currentNode.complete) {
+            wordCount += 1
+
             let checkNode = currentNode
             let word = ""
             //arr should be a 2 dimensional array, pos 0 will be the letter displayed to user in the div
@@ -274,6 +279,8 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
             innerClueContainer.append(clueWordContainer)
         }
     }
+
+    return wordCount
 }
 
 export function setUpTiles(grid, gameWords, completeNodes) {
@@ -285,6 +292,11 @@ export function setUpTiles(grid, gameWords, completeNodes) {
     const countExpression = document.querySelector('.count-expression')
     const svgContainer = document.querySelector('.svg-container')
     const wordContainer = document.querySelector('.word-container')
+    const innerClueContainer = document.querySelector('.inner-clue-container')
+    const completePercent = document.querySelector('.complete-percent')
+
+    // let totalWords = innerClueContainer.querySelectorAll('.clue-word-container').length;
+    let foundWordCount = 0;
     let mouseDown = false;
     let word = ""
     let selectedNodes = [];
@@ -295,7 +307,6 @@ export function setUpTiles(grid, gameWords, completeNodes) {
 
     window.gamePoints = parseInt(window.localStorage.getItem('gameScore'));
     gamePointsDiv.innerHTML = window.gamePoints
-    let foundWords = []
 
     let completedTiles = []
 
@@ -318,12 +329,6 @@ export function setUpTiles(grid, gameWords, completeNodes) {
     })
     
     gameBoardContainer.addEventListener("mouseup", () => {
-
-        //I might not need this anymore
-        if (gameWords.includes(word) && !foundWords.includes(word)) {
-            foundWords.push(word)
-        }
-
         //reset gameBoard styling
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[0].length; j++) {
@@ -342,9 +347,16 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             }
         }
         if (!nodeAdam.found && nodeAdam.complete && gameWords.includes(word)) {
+            //this means I've found a new word
             nodeAdam.found = true;
             let idx = completeNodes[firstNode].indexOf(nodeAdam)
             completeNodes[firstNode] = completeNodes[firstNode].slice(0, idx).concat(completeNodes[firstNode].slice(idx + 1))
+
+            foundWordCount += 1
+            completePercent.innerHTML = (foundWordCount / window.totalClueWords * 100).toFixed(2) + '%';
+
+            console.log(`foundWordCount = ${foundWordCount}`)
+            console.log(`totalClueWords = ${window.totalClueWords}`)
 
             //display the letters inside of the relevant clueWordContainer
             for (let i = 0; i < word.length; i++) {

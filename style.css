@@ -831,19 +831,18 @@ body {
 
 .clue-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 35vw;
     height: inherit;
+    box-shadow: 1px 3px 15px;
 }
 
 .inner-clue-container {
     display: flex;
     flex-wrap: wrap;
-    height: inherit;
+    height: 100%;
     background-color: #0077b6;
-    box-shadow: 1px 3px 15px;
-
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .definitions-container {
@@ -868,7 +867,7 @@ body {
     position: relative;
     border-radius: 4px;
 
-    transition: all .35s ease-in;
+    transition: all .25s ease-in;
 }
 
 .clue-word-shadow {
@@ -933,4 +932,27 @@ body {
 .definitions-show {
     opacity: 1;
     z-index: 2;
+}
+
+.clue-div-title {
+    height: 55px;
+    width: 100%;
+    background-color: #ffbf00;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.inner-clue-title {
+    margin-right: 10px;
+}
+
+.complete-percent {
+    margin-right: 10px;
+    background-color: white;
+    box-shadow: 1px 1px 3px inset;
+    padding: 3px;
 }
