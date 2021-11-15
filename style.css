@@ -213,7 +213,7 @@ body {
     border-radius: 10px;
     box-shadow: 1px 1px 10px white inset;
 
-    transition: background 0.3s;
+    transition: background 0.2s;
 }
 
 .inner-game-tile {
@@ -231,7 +231,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    transition: background 0.3s;
+    transition: background 0.2s;
 }
 
 .selected-inner-tile-grow {

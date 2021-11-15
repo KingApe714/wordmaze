@@ -291,6 +291,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
     let line = [];
     let nodeAdam = null;
     let firstNode = null
+    let foundClueWord = null;
 
     window.gamePoints = parseInt(window.localStorage.getItem('gameScore'));
     gamePointsDiv.innerHTML = window.gamePoints
@@ -353,8 +354,19 @@ export function setUpTiles(grid, gameWords, completeNodes) {
                 currentDiv.firstChild.innerHTML = char
             }
             //shade out the clueWordContainer to signify that it is a found word
-            // nodeAdam.clueWordContainer.querySelector('.clue-word-shadow').classList.add('.remove-shadow');
             nodeAdam.clueWordContainer.querySelector('.clue-word-shadow').style.backgroundColor = "transparent";
+
+            //green highlight found clue word
+            if (foundClueWord) {
+                foundClueWord.style.backgroundColor = ""
+                nodeAdam.clueWordContainer.style.backgroundColor = "rgba(0, 230, 65, 0.85)"
+
+                foundClueWord = nodeAdam.clueWordContainer;
+            } else {
+                nodeAdam.clueWordContainer.style.backgroundColor = "rgba(0, 230, 65, 0.85)"
+
+                foundClueWord = nodeAdam.clueWordContainer;
+            }
 
             if (!completeNodes[firstNode].length) {
                 //this signifies I've found all the words I can with this tile
