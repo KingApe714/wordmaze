@@ -77,17 +77,19 @@ export function timer(grid, completeNodes) {
 //If pass then we reset time and allow gamePoints to persist
 //Otherwise don't even render the next stage button
 export function gameOverModal(grid, miniGrid, completeNodes) {
-
+    
     const modalTitle = document.querySelector('.modal-title')
     const modalChild = document.querySelector('.modal-child')
     const modalInner = document.querySelector('.modal-inner')
     const modalClose = document.querySelector('.modal-close')
     // let gamePoints = parseInt(document.querySelector('.gamepoints').innerHTML)
-
+    
     modalClose.style.display = "none"
-
+    
     let totalPoints = 0;
     let passStage = false;
+    let timeBonus = JSON.parse(JSON.stringify(window.time));
+    console.log(timeBonus)
 
     const allPaths = document.createElement('div');
     const completeCells = [];
@@ -175,10 +177,10 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     messageDiv.className = 'message-div'
     const buttonContainer = document.createElement('div')
     buttonContainer.className = 'button-container'
-    const scoreContainer = document.createElement('div')
     const messageButtonDiv = document.createElement('div')
     messageButtonDiv.className = 'message-button-div'
     
+    const scoreContainer = document.createElement('div')
     scoreContainer.className = 'score-container'
     const scoreInnerContainer = document.createElement('div')
     scoreInnerContainer.className = 'score-inner-container'
@@ -201,9 +203,22 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     const totalScoreTitle = document.createElement('div')
     totalScoreTitle.className = 'score-title'
 
+    if (timeBonus) {
+        const timeBonusScore = document.createElement('div')
+        timeBonusScore.className = 'time-bonus'
+        const timeBonusTitle = document.createElement('div')
+        timeBonusTitle.className = 'score-title'
+        
+        timeBonusScore.innerHTML = timeBonus * 1000
+        timeBonusTitle.innerHTML = "TIME BONUS"
+
+        scoreTitles.append(timeBonusTitle)
+        scoreInnerContainer.append(timeBonusScore)
+    }
+
     prevScoreTitle.innerHTML = "Previous Score"
     stageScoreTitle.innerHTML = "Stage Score"
-    bonusScoreTitle.innerHTML = "Total Bonus Points"
+    bonusScoreTitle.innerHTML = "Tile Points"
     totalScoreTitle.innerHTML = "Total Score"
 
     scoreTitles.append(prevScoreTitle)
@@ -216,7 +231,7 @@ export function gameOverModal(grid, miniGrid, completeNodes) {
     prevScore.innerHTML = pastScore
     stageScore.innerHTML = window.gamePoints - pastScore;
     bonusPoints.innerHTML = totalBonusPoints;
-    totalStagePoints.innerHTML = window.gamePoints + totalBonusPoints;
+    totalStagePoints.innerHTML = window.gamePoints + totalBonusPoints + (timeBonus * 1000);
 
     window.gamePoints += totalBonusPoints;
     
