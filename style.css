@@ -105,7 +105,8 @@ body {
 
 .word-expression {
     position: absolute;
-
+    font-size: 17px;
+    font-weight: 500;
     display: block;
     height: fit-content;
     width: fit-content;
@@ -113,7 +114,7 @@ body {
     top: 79px;
     left: 267px;
 
-    transition: all 2000ms;
+    transition: all 1600ms;
 }
 
 .point-shrink, .count-shrink {

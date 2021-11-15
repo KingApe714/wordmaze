@@ -423,7 +423,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
 
             setTimeout(() => {
                 document.body.removeChild(wordExpression);
-            }, 2100)
+            }, 1600)
 
             countExpression.innerHTML = `+${nodeAdam.timeBonus}`
             countExpression.classList.add('count-shrink')
