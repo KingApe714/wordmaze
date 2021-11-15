@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.time = 120;
     window.selectedClueWordContainer = null;
     window.completeBoard = false;
+    //ensure that gameScore is set even on a new machine
+    if (!window.localStorage.getItem('gameScore')) {
+        window.localStorage.setItem('gameScore', 0)
+    }
 
     const restartButton = document.querySelector('.restart-button')
     
