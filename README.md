@@ -92,14 +92,14 @@ export function ancestoryNode(node) {
 **Playable Game Boards**
 
 Since the tiles have randomly generated letters on them they can sometimes make for uninteresting games. So after generating a board with
-randomly generated tiles, the ancestory node algorithm us run to test for the amount of words that can be made. A board is only rendered
+randomly generated tiles, the ancestory node algorithm is run to test for the amount of words that can be made. A board is only rendered
 to the user if it has 70 unique words that can be found on it.
 
 **Game Board**
 
 Distinctive tile highlighting is used to singal to the user if either they've found a new word (green, enalrged), they've already found
 that word (yellow, enlarged), or the current set of letters does not make a word (red, shrunken). No matter the status of the tile, they also 
-shake signify if user is selecting it.
+shake signifying that the user is selecting it.
 
 ![game board photo snippet](https://user-images.githubusercontent.com/74022542/142067827-997dc5a6-9066-4e08-af7e-1653b812bfc8.png)
 
@@ -108,7 +108,7 @@ shake signify if user is selecting it.
 All possible words that can be found on the board are suggested in a clue container that sits to the
 right of the game board. Any tile that is grayed out is automatically revealed in where it appears in
 other words in the clue container; the same happens when a tile is completed and highlighted green.
-Clicking in the clue word will also give the user the definition of the word.
+Clicking on the clue word will also give the user the definition of the word.
 
 ![wordmaze video snippet](https://user-images.githubusercontent.com/74022542/142071891-ad0bd5d4-21f0-4953-a9f6-2196c8144056.png)
 
