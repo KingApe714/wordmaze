@@ -110,7 +110,7 @@ right of the game board. Any tile that is grayed out is automatically revealed i
 other words in the clue container; the same happens when a tile is completed and highlighted green.
 Clicking on the clue word will also give the user the definition of the word.
 
-![wordmaze video snippet](https://user-images.githubusercontent.com/74022542/142071891-ad0bd5d4-21f0-4953-a9f6-2196c8144056.png)
+![wordmaze image snippet](https://user-images.githubusercontent.com/74022542/142071891-ad0bd5d4-21f0-4953-a9f6-2196c8144056.png)
 
 **End Stage Modal**
 
