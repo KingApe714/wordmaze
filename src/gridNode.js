@@ -38,7 +38,6 @@ export function ancestoryNode(node) {
     //properly set up the word at the nodes that return a .complete
     //then at the node store the definition
     //later create an object with that references each node, all the words and their definitions
-    
     this.words = []
     this.definitions = {}
 
