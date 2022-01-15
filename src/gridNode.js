@@ -133,7 +133,7 @@ export function setUpGrid(root) {
                 dictionary[res[0]] = res[1]
             })
 
-            console.log(dictionary)
+            // console.log(dictionary)
 
             for (let i = 0; i < newGrid.length; i++) {
                 for (let j = 0; j < newGrid[i].length; j++) {
@@ -404,11 +404,6 @@ export function setUpTiles(grid, gameWords, completeNodes) {
             window.gamePoints += nodeAdam.points
             window.time += nodeAdam.timeBonus
 
-            console.log('clue-word-container')
-            console.log(nodeAdam.clueWordContainer.getBoundingClientRect())
-            console.log('word-container')
-            console.log(wordContainer.getBoundingClientRect())
-
             const wordExpression = document.createElement('div');
             wordExpression.className = 'word-expression'
             wordExpression.innerHTML = word;
@@ -417,7 +412,6 @@ export function setUpTiles(grid, gameWords, completeNodes) {
 
             let top = nodeAdam.clueWordContainer.getBoundingClientRect().top
             top = top > 750 ? 750 : top
-            console.log(`top = ${top}`)
             wordExpression.style.left = `${nodeAdam.clueWordContainer.getBoundingClientRect().left}px`
             wordExpression.style.top = `${top}px`
 

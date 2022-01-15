@@ -22,6 +22,10 @@ async function game() {
     
     let [grid, completeNodes] = setUpGrid(root)
     
+    window.addEventListener('load', () => {
+        console.log("let's make sure this is loading first")
+    })
+
     timer(grid, completeNodes)
 }
 
