@@ -1,6 +1,7 @@
 import { trieNode, add, fetchWord } from './trie.js';
 import { gridNode, setUpGrid, findWords } from './gridNode.js'
 import { modal, timer } from './util.js'
+import { Howl, Howler } from 'howler';
 
 let globalDictionary = null;
 
@@ -20,6 +21,12 @@ async function game() {
     
     modal()
     
+    let sound = new Howl({
+        src: ['../sounds/music.mp3']
+    })
+
+    sound.play();
+
     let [grid, completeNodes] = setUpGrid(root)
     
     //testing the loading screen
