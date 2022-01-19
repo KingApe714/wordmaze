@@ -56,6 +56,13 @@ body {
     font-size: 20px;
 }
 
+.side-upper-container {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
 .side-panel-inner-container {
     background-image: url(tile-image.jpeg);
     width: 140px;
@@ -363,15 +370,24 @@ body {
     100% { width: 60px; height: 60px; }
 }
 
-.modal-button, .restart-button {
+.modal-button, .restart-button, .play-music, .pause-music {
     height: 25px;
     width: 70px;
+    margin: 5px;
     font-weight: 600;
     border-radius: 10px;
     border: none;
     background-color: bisque;
     box-shadow: 3px 3px 10px;
     cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.play-music, .pause-music {
+    font-size: 12px;
 }
 
 .modal-bg {

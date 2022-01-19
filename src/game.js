@@ -21,11 +21,20 @@ async function game() {
     
     modal()
     
-    let sound = new Howl({
+    let music = new Howl({
         src: ['../sounds/music.mp3']
     })
 
-    sound.play();
+    const playButton = document.querySelector('.play-music')
+    const pauseButton = document.querySelector('.pause-music')
+
+    playButton.addEventListener('click', () => {
+        music.play();
+    })
+
+    pauseButton.addEventListener('click', () => {
+        music.pause();
+    })
 
     let [grid, completeNodes] = setUpGrid(root)
     
