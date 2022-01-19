@@ -1,4 +1,5 @@
 import { fetchWord } from "./trie";
+import { Howl, Howler } from 'howler';
 
 //lets try unnesting the ancestoryNode from inside of this node
 export function gridNode(coordinates) {
@@ -356,6 +357,12 @@ export function setUpTiles(grid, gameWords, completeNodes) {
 
             foundWordCount += 1
             completePercent.innerHTML = (foundWordCount / window.totalClueWords * 100).toFixed(2) + '%';
+
+            let sound1 = new Howl({
+                src: ['../sounds/sound2.wav']
+            })
+
+            sound1.play()
 
             if (foundWordCount === window.totalClueWords) {
                 window.completeBoard = true;
