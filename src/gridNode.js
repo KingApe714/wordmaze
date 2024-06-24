@@ -1,7 +1,7 @@
-import { fetchWord } from "./trie";
-import { Howl, Howler } from "howler";
+import { fetchWord } from "./trie.js";
+import dictionary from "./definitions.json" with { type: "json" };
 
-const fs = require("fs");
+// const fs = require("fs");
 
 //lets try unnesting the ancestoryNode from inside of this node
 export function gridNode(coordinates) {
@@ -154,16 +154,14 @@ export function setUpGrid(root) {
   //     })
   //     .catch(err => console.log(err))
 
-  const data = fs.readFileSync("definitions.json");
-  const dictionary = JSON.parse(data);
-
-  console.log(dictionary);
+  // const data = fs.readFileSync("definitions.json");
+  // const dictionary = JSON.parse(data);
 
   for (let i = 0; i < newGrid.length; i++) {
     for (let j = 0; j < newGrid[i].length; j++) {
       newGrid[i][j].words.forEach((word) => {
         if (dictionary[word]) {
-          newGrid[i][j].definitions[word] = dictionary[word];
+          newGrid[i][j].definitions[word] = dictionary[word] ? dictionary[word] : 'no definition currently';
         }
       });
     }
@@ -276,7 +274,7 @@ export function findClueWords(newGrid, rootNode, deadNodes) {
         //grab clueWordContainer to check if he is selected and found to make green persist
         window.selectedClueWord = clueWordContainer;
 
-        definitionsContainer.innerHTML = rootNode.definitions[word];
+        definitionsContainer.innerHTML = rootNode.definitions[word] ? rootNode.definitions[word] : 'no definition currently';
         //highlight the selected clueWordContainer and unhighlight any other
         for (let i = 0; i < innerClueContainer.children.length; i++) {
           innerClueContainer.children[i].style.backgroundColor = "";
@@ -369,7 +367,7 @@ export function setUpTiles(grid, gameWords, completeNodes) {
         gNode.selected = false;
       }
     }
-    if (!nodeAdam.found && nodeAdam.complete && gameWords.includes(word)) {
+    if (nodeAdam && !nodeAdam.found && nodeAdam.complete && gameWords.includes(word)) {
       //this means I've found a new word
       nodeAdam.found = true;
       let idx = completeNodes[firstNode].indexOf(nodeAdam);
@@ -380,12 +378,6 @@ export function setUpTiles(grid, gameWords, completeNodes) {
       foundWordCount += 1;
       completePercent.innerHTML =
         ((foundWordCount / window.totalClueWords) * 100).toFixed(2) + "%";
-
-      let sound1 = new Howl({
-        src: ["../sounds/sound2.wav"],
-      });
-
-      sound1.play();
 
       if (foundWordCount === window.totalClueWords) {
         window.completeBoard = true;

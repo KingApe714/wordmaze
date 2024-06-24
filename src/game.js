@@ -1,49 +1,43 @@
-import { trieNode, add, fetchWord } from './trie.js';
-import { gridNode, setUpGrid, findWords } from './gridNode.js'
-import { modal, timer } from './util.js'
-import { Howl, Howler } from 'howler';
+import { trieNode, add, fetchWord } from "./trie.js";
+import { gridNode, setUpGrid, findWords } from "./gridNode.js";
+import { modal, timer } from "./util.js";
 
 let globalDictionary = null;
 
 async function getDictionay() {
-    const response = await fetch('dictionary.txt');
-    const data = await response.text();
-    globalDictionary = data.split(/\r?\n/).filter(word => {
-        return word.length > 2
-    })
+  const response = await fetch("dictionary.txt");
+  const data = await response.text();
+  globalDictionary = data.split(/\r?\n/).filter((word) => {
+    return word.length > 2;
+  });
 }
 
 async function game() {
-    await getDictionay()
-    const root = new trieNode(null);
-    for (const item of globalDictionary)
-        add(item, 0, root)
-    
-    modal()
-    
-    let music = new Howl({
-        src: ['../sounds/music.mp3']
-    })
+  await getDictionay();
+  const root = new trieNode(null);
+  for (const item of globalDictionary) add(item, 0, root);
 
-    const playButton = document.querySelector('.play-music')
-    const pauseButton = document.querySelector('.pause-music')
+  modal();
 
-    playButton.addEventListener('click', () => {
-        music.play();
-    })
+  const playButton = document.querySelector(".play-music");
+  const pauseButton = document.querySelector(".pause-music");
 
-    pauseButton.addEventListener('click', () => {
-        music.pause();
-    })
+  playButton.addEventListener("click", () => {
+    music.play();
+  });
 
-    let [grid, completeNodes] = setUpGrid(root)
-    
-    //testing the loading screen
-    window.addEventListener('load', function() {
-        console.log("let's make sure this is loading first")
-    })
+  pauseButton.addEventListener("click", () => {
+    music.pause();
+  });
 
-    timer(grid, completeNodes)
+  let [grid, completeNodes] = setUpGrid(root);
+
+  //testing the loading screen
+  window.addEventListener("load", function () {
+    console.log("let's make sure this is loading first");
+  });
+
+  timer(grid, completeNodes);
 }
 
-export default game
+export default game;
