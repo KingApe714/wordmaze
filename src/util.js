@@ -476,7 +476,9 @@ export function drawLine(currentNode, miniGrid) {
 
   let definitonsDiv = document.createElement("div");
   definitonsDiv.className = "definitions-div";
-  definitonsDiv.innerHTML = currentNode.definitions[word];
+  definitonsDiv.innerHTML = currentNode.definitions[word]
+    ? currentNode.definitions[word]
+    : "no definition currently";
 
   miniBoardContainer.appendChild(definitonsDiv);
 
