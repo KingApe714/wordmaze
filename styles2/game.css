@@ -54,13 +54,13 @@ body {
   .outer-game-container {
     flex-direction: column-reverse;
   }
-  .clue-container {
-    height: 16vh;
-    width: 75vw;
-  }
   .game-container {
     height: 35vh;
     width: 35vh;
+  }
+  .clue-container {
+    height: 16vh;
+    width: 85vw;
   }
 }
 
@@ -80,7 +80,7 @@ body {
   }
   .clue-container {
     height: 16vh;
-    width: 75vw;
+    width: 85vw;
   }
 }
 
@@ -95,12 +95,12 @@ body {
     flex-direction: column-reverse;
   }
   .game-container {
-    height: 41vh;
-    width: 41vh;
+    height: 50vh;
+    width: 50vh;
   }
   .clue-container {
     height: 17vh;
-    width: 75vw;
+    width: 85vw;
   }
 }
 
