@@ -119,16 +119,13 @@ body {
   body {
     background-color: #6f6f6f;
   }
-  .outer-game-container {
-    flex-direction: column-reverse;
-  }
   .game-container {
-    height: 34vh;
-    width: 34vh;
+    height: 45vh;
+    width: 45vh;
   }
   .clue-container {
-    height: 17vh;
-    width: 85%;
+    height: 45vh;
+    width: 35vw;
   }
 }
 
