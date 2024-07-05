@@ -11,27 +11,76 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 60px;
-  width: 200px;
+  height: 10vh;
+  width: 40vw;
   border: 1px solid black;
+}
+
+.outer-game-container {
+  border: 1px solid purple;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 60vh;
+  width: 100%;
 }
 
 .game-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 400px;
-  width: 400px;
+  height: 50vh;
+  width: 50vh;
   border: 1px solid black;
 }
 
-@media (max-width: 480px) {
+.clue-container {
+  height: 50vh;
+  width: 30vw;
+  border: 1px solid blue;
+}
+
+.control-panel {
+  width: 95%;
+  height: 15vh;
+  border: 1px solid magenta;
+}
+
+@media (max-width: 344px) {
+  .title-container {
+    height: 4vh;
+  }
+  .outer-game-container {
+    flex-direction: column-reverse;
+  }
+  .clue-container {
+    height: 16vh;
+    width: 75vw;
+  }
+  .game-container {
+    height: 35vh;
+    width: 35vh;
+  }
+}
+
+@media (min-width: 345px) and (max-width: 480px) {
   body {
     background-color: #f7f7f5;
   }
+  .title-container {
+    height: 4vh;
+  }
+  .outer-game-container {
+    flex-direction: column-reverse;
+  }
   .game-container {
-    height: 350px;
-    width: 350px;
+    height: 41vh;
+    width: 41vh;
+  }
+  .clue-container {
+    height: 16vh;
+    width: 75vw;
   }
 }
 
@@ -39,17 +88,47 @@ body {
   body {
     background-color: #e2e2e2;
   }
+  .outer-game-container {
+    flex-direction: column-reverse;
+  }
+  .game-container {
+    height: 34vh;
+    width: 34vh;
+  }
+  .clue-container {
+    height: 17vh;
+    width: 85%;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
   body {
     background-color: #999;
   }
+  .game-container {
+    height: 42vh;
+    width: 42vh;
+  }
+  .clue-container {
+    height: 42vh;
+    width: 30vw;
+  }
 }
 
 @media (min-width: 1025px) and (max-width: 1200px) {
   body {
     background-color: #6f6f6f;
+  }
+  .outer-game-container {
+    flex-direction: column-reverse;
+  }
+  .game-container {
+    height: 34vh;
+    width: 34vh;
+  }
+  .clue-container {
+    height: 17vh;
+    width: 85%;
   }
 }
 
