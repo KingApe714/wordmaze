@@ -1,3 +1,19 @@
+/* $lightest-gray: #f7f7f5;
+$light-gray: #e2e2e2;
+$gray: #999;
+$dark-gray: #6f6f6f;
+$darkest-gray: #2d333f;
+$blue-green: #247f9e;
+$magenta: #da3743;
+$dark-magenta: #7e1e26;
+$confirmation-green: #55b68d; */
+
+/* 320px — 480px: Mobile devices
+481px — 768px: iPads, Tablets
+769px — 1024px: Small screens, laptops
+1025px — 1200px: Desktops, large screens
+1201px and more —  Extra large screens, TV */
+
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap");
 
 body {
