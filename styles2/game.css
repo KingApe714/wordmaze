@@ -88,16 +88,19 @@ body {
   body {
     background-color: #e2e2e2;
   }
+  .title-container {
+    height: 4vh;
+  }
   .outer-game-container {
     flex-direction: column-reverse;
   }
   .game-container {
-    height: 34vh;
-    width: 34vh;
+    height: 41vh;
+    width: 41vh;
   }
   .clue-container {
     height: 17vh;
-    width: 85%;
+    width: 75vw;
   }
 }
 
