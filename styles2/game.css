@@ -11,7 +11,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 10vh;
+  height: 6vh;
   width: 40vw;
   border: 1px solid black;
 }
@@ -22,7 +22,7 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  height: 60vh;
+  height: 70vh;
   width: 100%;
 }
 
@@ -30,13 +30,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50vh;
-  width: 50vh;
+  height: 55vh;
+  width: 55vh;
   border: 1px solid black;
 }
 
 .clue-container {
-  height: 50vh;
+  height: 55vh;
   width: 30vw;
   border: 1px solid blue;
 }
@@ -109,12 +109,12 @@ body {
     background-color: #999;
   }
   .game-container {
-    height: 42vh;
-    width: 42vh;
+    height: 45vh;
+    width: 45vh;
   }
   .clue-container {
-    height: 42vh;
-    width: 30vw;
+    height: 45vh;
+    width: 28vw;
   }
 }
 
