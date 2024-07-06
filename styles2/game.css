@@ -35,9 +35,38 @@ body {
   border: 1px solid black;
 }
 
+.inner-game-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 53vh;
+  width: 53vh;
+  border: 1px solid black;
+}
+
+.game-row {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+}
+
+.game-tile {
+  height: 86%;
+  width: 21%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid brown;
+}
+
 .clue-container {
   height: 55vh;
-  width: 30vw;
+  flex-grow: 0.5;
   border: 1px solid blue;
 }
 
@@ -57,6 +86,10 @@ body {
   .game-container {
     height: 35vh;
     width: 35vh;
+  }
+  .inner-game-container {
+    height: 33vh;
+    width: 33vh;
   }
   .clue-container {
     height: 16vh;
@@ -78,6 +111,10 @@ body {
     height: 41vh;
     width: 41vh;
   }
+  .inner-game-container {
+    height: 39vh;
+    width: 39vh;
+  }
   .clue-container {
     height: 16vh;
     width: 85vw;
@@ -98,6 +135,10 @@ body {
     height: 50vh;
     width: 50vh;
   }
+  .inner-game-container {
+    height: 48vh;
+    width: 48vh;
+  }
   .clue-container {
     height: 17vh;
     width: 85vw;
@@ -112,9 +153,12 @@ body {
     height: 45vh;
     width: 45vh;
   }
+  .inner-game-container {
+    height: 43vh;
+    width: 43vh;
+  }
   .clue-container {
     height: 45vh;
-    width: 28vw;
   }
 }
 
@@ -126,9 +170,12 @@ body {
     height: 45vh;
     width: 45vh;
   }
+  .inner-game-container {
+    height: 43vh;
+    width: 43vh;
+  }
   .clue-container {
     height: 45vh;
-    width: 35vw;
   }
 }
 
