@@ -7,6 +7,7 @@ class AncestoryNode {
     this.word = null;
     this.clueDiv = null;
     this.found = false;
+    this.deadNode = false;
   }
 }
 
@@ -50,6 +51,7 @@ const coords = [
 
 const bfs = (matrix, ancNode, trieNode, idx, jdx) => {
   const queue = [[trieNode, ancNode, idx, jdx, [`${idx},${jdx}`]]];
+  let wordCount = 0;
 
   while (queue.length) {
     const [trie, ancestor, i, j, visited] = queue.shift();
@@ -57,6 +59,7 @@ const bfs = (matrix, ancNode, trieNode, idx, jdx) => {
     if (trie.word) {
       ancestor.word = trie.word;
       ancestor.clueDiv = buildClueDiv(trie.word);
+      wordCount += 1;
     }
 
     for (const [deltaI, deltaJ] of coords) {
@@ -76,6 +79,8 @@ const bfs = (matrix, ancNode, trieNode, idx, jdx) => {
       }
     }
   }
+
+  return wordCount;
 };
 
 export const buildAncestoryNode = (gameBoard, root) => {
@@ -90,7 +95,12 @@ export const buildAncestoryNode = (gameBoard, root) => {
       const ancNode = new AncestoryNode(i, j, tile);
       const trieNode = root.children[char];
 
-      bfs(gameBoard, ancNode, trieNode, i, j);
+      const wordCount = bfs(gameBoard, ancNode, trieNode, i, j);
+      if (wordCount === 0) {
+        tile.style.backgroundColor = "green";
+        ancNode.deadNode = true;
+      }
+
       inner.push(ancNode);
     }
 
