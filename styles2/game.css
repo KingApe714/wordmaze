@@ -65,6 +65,8 @@ body {
 
 .clue-container {
   height: 55vh;
+  width: min-content;
+  padding: 4px;
   display: flex;
   flex-grow: 0.5;
   border: 1px solid blue;
@@ -73,9 +75,30 @@ body {
 }
 
 .inner-clue-container {
-  height: 97%;
-  width: 97%;
+  height: 100%;
+  width: 100%;
+  display: flex;
   border: 1px solid blue;
+  flex-wrap: wrap;
+  overflow: scroll;
+}
+
+.clue-word-container {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid darkcyan;
+  width: fit-content;
+  margin: 3px;
+}
+
+.clue-char-container {
+  border: 1px solid salmon;
+  height: 1.8vh;
+  width: 1.8vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5vh;
 }
 
 .control-panel {

@@ -1,5 +1,3 @@
-import { root } from "./trie.js";
-
 const generateChar = () =>
   "AABCDEEFGHIIJKLMNOOPQRSSTUUVWXYZ"[Math.floor(Math.random() * 32)];
 
@@ -18,7 +16,7 @@ const isValid = (i, j, visited, board, trie) => {
     i < 4 &&
     j >= 0 &&
     j < 4 &&
-    !visited.has(`${i},${j}`) &&
+    !visited.includes(`${i},${j}`) &&
     board[i][j] in trie.children
   );
 };
@@ -35,7 +33,7 @@ const coords = [
 ];
 
 const bfs = (matrix, root, idx, jdx) => {
-  const queue = [[root, idx, jdx, new Set([`${idx},${jdx}`])]];
+  const queue = [[root, idx, jdx, [`${idx},${jdx}`]]];
   const foundWords = [];
 
   while (queue.length) {
@@ -50,10 +48,10 @@ const bfs = (matrix, root, idx, jdx) => {
 
       if (isValid(nextI, nextJ, visited, matrix, trie)) {
         const char = matrix[nextI][nextJ];
-        const nextVisited = new Set(visited);
+        const nextVisited = [...visited];
         const nextTrie = trie.children[char];
 
-        nextVisited.add(`${nextI},${nextJ}`);
+        nextVisited.push(`${nextI},${nextJ}`);
         queue.push([nextTrie, nextI, nextJ, nextVisited]);
       }
     }
@@ -77,7 +75,7 @@ const boardCheck = (board, root) => {
   return words;
 };
 
-export const findBoard = () => {
+export const findBoard = (root) => {
   let currentMatrix = generateMatrix();
   let foundWords = boardCheck(currentMatrix, root);
 
@@ -89,8 +87,8 @@ export const findBoard = () => {
   return { currentMatrix, foundWords };
 };
 
-export const buildBoard = () => {
-  const { currentMatrix, foundWords } = findBoard();
+export const buildBoard = (root) => {
+  const { currentMatrix, foundWords } = findBoard(root);
   const innerGameContainer = document.querySelector(".inner-game-container");
   const gameBoard = [];
 
@@ -108,8 +106,8 @@ export const buildBoard = () => {
       row.appendChild(tile);
     }
 
-    gameBoard.push(inner);
     innerGameContainer.appendChild(row);
+    gameBoard.push(inner);
   }
 
   return gameBoard;
