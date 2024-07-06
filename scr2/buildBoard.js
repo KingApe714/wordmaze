@@ -77,7 +77,7 @@ const boardCheck = (board, root) => {
   return words;
 };
 
-export const buildBoard = () => {
+export const findBoard = () => {
   let currentMatrix = generateMatrix();
   let foundWords = boardCheck(currentMatrix, root);
 
@@ -87,4 +87,30 @@ export const buildBoard = () => {
   }
 
   return { currentMatrix, foundWords };
+};
+
+export const buildBoard = () => {
+  const { currentMatrix, foundWords } = findBoard();
+  const innerGameContainer = document.querySelector(".inner-game-container");
+  const gameBoard = [];
+
+  for (const arr of currentMatrix) {
+    const row = document.createElement("div");
+    row.className = "game-row";
+    const inner = [];
+
+    for (const char of arr) {
+      const tile = document.createElement("div");
+      tile.className = "game-tile";
+      tile.innerHTML = char;
+
+      inner.push(tile);
+      row.appendChild(tile);
+    }
+
+    gameBoard.push(inner);
+    innerGameContainer.appendChild(row);
+  }
+
+  return gameBoard;
 };
