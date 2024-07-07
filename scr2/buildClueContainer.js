@@ -1,13 +1,24 @@
+class AncestoryNodeRoot {
+  constructor(i, j, div) {
+    this.i = i;
+    this.j = j;
+    this.gameDiv = div;
+    this.children = {};
+    this.complete = false;
+    this.deadNode = false;
+  }
+}
+
 class AncestoryNode {
   constructor(i, j, div) {
     this.i = i;
     this.j = j;
     this.gameDiv = div;
     this.children = {};
+    this.parent = null;
     this.word = null;
     this.clueDiv = null;
     this.found = false;
-    this.deadNode = false;
   }
 }
 
@@ -23,6 +34,7 @@ const buildClueDiv = (word) => {
     wordContainer.appendChild(charContainer);
   }
 
+  // add event listener to the word container to populate a div in the control panel with the definition of the word
   innerClueContainer.appendChild(wordContainer);
   return wordContainer;
 };
@@ -92,7 +104,7 @@ export const buildAncestoryNode = (gameBoard, root) => {
     for (let j = 0; j < 4; j += 1) {
       const tile = gameBoard[i][j];
       const char = tile.innerHTML;
-      const ancNode = new AncestoryNode(i, j, tile);
+      const ancNode = new AncestoryNodeRoot(i, j, tile);
       const trieNode = root.children[char];
 
       const wordCount = bfs(gameBoard, ancNode, trieNode, i, j);
