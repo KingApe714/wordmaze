@@ -26,5 +26,6 @@ export class AncestoryNode extends Ancestor {
     super(i, j, char, div);
     this.parent = null;
     this.found = false;
+    this.path = null;
   }
 }

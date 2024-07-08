@@ -1,16 +1,24 @@
 import { AncestoryNode } from "./ancestor.js";
 
-// Test that clue container is actually being populated with the right styling. Try only passing in about 10 words, then restyle
-const buildClueDiv = (word) => {
+const buildClueDiv = (word, visited, board) => {
   const innerClueContainer = document.querySelector(".inner-clue-container");
   const wordContainer = document.createElement("div");
   wordContainer.className = "clue-word-container";
 
-  for (const char of word) {
+  console.log(word);
+  console.log(visited);
+
+  for (let i = 0; i < word.length; i += 1) {
+    const char = word[i];
     const charContainer = document.createElement("div");
     charContainer.className = "clue-char-container";
     charContainer.innerHTML = char;
     wordContainer.appendChild(charContainer);
+
+    // create reference between char-clue-div and root ancestory node
+    const [idx, jdx] = visited[i].split(",");
+    const rootAncestor = board[idx][jdx];
+    rootAncestor.clueCharContainers.push(charContainer);
   }
 
   // add event listener to the word container to populate a div in the control panel with the definition of the word
@@ -40,7 +48,8 @@ const coords = [
   [0, -1],
 ];
 
-const bfs = (test, ancNode, trieNode, idx, jdx) => {
+// visited has the path with all the root ancestory nodes that I need to reference
+const bfs = (gameBoard, ancNode, trieNode, idx, jdx) => {
   const queue = [[trieNode, ancNode, idx, jdx, [`${idx},${jdx}`]]];
   const deadLeafNodes = [];
   let wordCount = 0;
@@ -50,7 +59,8 @@ const bfs = (test, ancNode, trieNode, idx, jdx) => {
 
     if (trie.word) {
       ancestor.word = trie.word;
-      ancestor.clueDiv = buildClueDiv(trie.word);
+      ancestor.clueDiv = buildClueDiv(trie.word, visited, gameBoard);
+      ancestor.path = visited;
       wordCount += 1;
     }
 
@@ -59,8 +69,8 @@ const bfs = (test, ancNode, trieNode, idx, jdx) => {
     for (const [deltaI, deltaJ] of coords) {
       const [nextI, nextJ] = [i + deltaI, j + deltaJ];
 
-      if (isValid(nextI, nextJ, visited, test, trie)) {
-        const node = test[nextI][nextJ];
+      if (isValid(nextI, nextJ, visited, gameBoard, trie)) {
+        const node = gameBoard[nextI][nextJ];
         const div = node.gameDiv;
         const char = node.char;
         const nextVisited = [...visited];
@@ -103,22 +113,22 @@ const dropDeadBranches = (leafNodes) => {
   }
 };
 
-export const buildAncestoryNode = (gameBoardTest, root) => {
+export const buildAncestoryNode = (gameBoard, root) => {
   for (let i = 0; i < 4; i += 1) {
     for (let j = 0; j < 4; j += 1) {
-      const ancNode = gameBoardTest[i][j];
+      const ancNode = gameBoard[i][j];
       const char = ancNode.char;
       const tile = ancNode.gameDiv;
       const trieNode = root.children[char];
-      const [wordCount1, deadLeafNodes1] = bfs(
-        gameBoardTest,
+      const [wordCount, deadLeafNodes] = bfs(
+        gameBoard,
         ancNode,
         trieNode,
         i,
         j
       );
 
-      dropDeadBranches(deadLeafNodes1);
+      dropDeadBranches(deadLeafNodes);
 
       if (ancNode.children.size === 0 && ancNode.word === null) {
         tile.style.backgroundColor = "gray";
