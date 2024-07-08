@@ -1,30 +1,4 @@
-import { AncestoryNodeRoot, AncestoryNode } from "./ancestor.js";
-
-// class AncestoryNodeRoot {
-//   constructor(i, j, char, div) {
-//     this.i = i;
-//     this.j = j;
-//     this.char = char;
-//     this.gameDiv = div;
-//     this.children = new Map();
-//     this.complete = false;
-//     this.deadNode = false;
-//   }
-// }
-
-// class AncestoryNode {
-//   constructor(i, j, char, div) {
-//     this.i = i;
-//     this.j = j;
-//     this.char = char;
-//     this.gameDiv = div;
-//     this.children = new Map();
-//     this.parent = null;
-//     this.word = null;
-//     this.clueDiv = null;
-//     this.found = false;
-//   }
-// }
+import { AncestoryNode } from "./ancestor.js";
 
 // Test that clue container is actually being populated with the right styling. Try only passing in about 10 words, then restyle
 const buildClueDiv = (word) => {
@@ -51,7 +25,7 @@ const isValid = (i, j, visited, board, trie) => {
     j >= 0 &&
     j < 4 &&
     !visited.includes(`${i},${j}`) &&
-    board[i][j].innerHTML in trie.children
+    board[i][j].char in trie.children
   );
 };
 
@@ -66,7 +40,7 @@ const coords = [
   [0, -1],
 ];
 
-const bfs = (matrix, ancNode, trieNode, idx, jdx) => {
+const bfs = (test, ancNode, trieNode, idx, jdx) => {
   const queue = [[trieNode, ancNode, idx, jdx, [`${idx},${jdx}`]]];
   const deadLeafNodes = [];
   let wordCount = 0;
@@ -85,9 +59,10 @@ const bfs = (matrix, ancNode, trieNode, idx, jdx) => {
     for (const [deltaI, deltaJ] of coords) {
       const [nextI, nextJ] = [i + deltaI, j + deltaJ];
 
-      if (isValid(nextI, nextJ, visited, matrix, trie)) {
-        const div = matrix[nextI][nextJ];
-        const char = div.innerHTML;
+      if (isValid(nextI, nextJ, visited, test, trie)) {
+        const node = test[nextI][nextJ];
+        const div = node.gameDiv;
+        const char = node.char;
         const nextVisited = [...visited];
         const nextTrie = trie.children[char];
 
@@ -128,38 +103,27 @@ const dropDeadBranches = (leafNodes) => {
   }
 };
 
-export const buildAncestoryNode = (gameBoard, root) => {
-  const ancestoryMatrix = [];
-
+export const buildAncestoryNode = (gameBoardTest, root) => {
   for (let i = 0; i < 4; i += 1) {
-    const inner = [];
-
     for (let j = 0; j < 4; j += 1) {
-      const tile = gameBoard[i][j];
-      const char = tile.innerHTML;
-      const ancNode = new AncestoryNodeRoot(i, j, char, tile);
+      const ancNode = gameBoardTest[i][j];
+      const char = ancNode.char;
+      const tile = ancNode.gameDiv;
       const trieNode = root.children[char];
-
-      const [wordCount, deadLeafNodes] = bfs(
-        gameBoard,
+      const [wordCount1, deadLeafNodes1] = bfs(
+        gameBoardTest,
         ancNode,
         trieNode,
         i,
         j
       );
 
-      dropDeadBranches(deadLeafNodes);
+      dropDeadBranches(deadLeafNodes1);
 
       if (ancNode.children.size === 0 && ancNode.word === null) {
         tile.style.backgroundColor = "gray";
         ancNode.deadNode = true;
       }
-
-      inner.push(ancNode);
     }
-
-    ancestoryMatrix.push(inner);
   }
-
-  return ancestoryMatrix;
 };

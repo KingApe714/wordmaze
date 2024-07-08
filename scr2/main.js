@@ -5,7 +5,7 @@ import { gamePlay } from "./buildGamePlay.js";
 import definitions from '../src/definitions.json' with { type: "json" };
 
 const root = buildTrie(definitions);
-const gameBoard = buildBoard(root);
-const ancestoryMatrix = buildAncestoryNode(gameBoard, root);
+const gameBoardTest = buildBoard(root);
+const ancestoryMatrix = buildAncestoryNode(gameBoardTest, root);
 
 gamePlay(ancestoryMatrix);

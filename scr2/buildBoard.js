@@ -41,7 +41,7 @@ const bfs = (matrix, root, idx, jdx) => {
   while (queue.length) {
     const [trie, i, j, visited] = queue.shift();
 
-    if (trie.word) {
+    if (trie.word && trie.word.length >= 3) {
       foundWords.push(trie.word);
     }
 
@@ -81,43 +81,37 @@ export const findBoard = (root) => {
   let currentMatrix = generateMatrix();
   let foundWords = boardCheck(currentMatrix, root);
 
-  while (foundWords.length < 100) {
+  while (foundWords.length < 70) {
     currentMatrix = generateMatrix();
     foundWords = boardCheck(currentMatrix, root);
   }
 
-  console.log(foundWords);
   return { currentMatrix, foundWords };
 };
 
-// I want to set up the board with AncestoryNodeRoots so that I can pass it to the next file
 export const buildBoard = (root) => {
   const { currentMatrix, foundWords } = findBoard(root);
   const innerGameContainer = document.querySelector(".inner-game-container");
   const gameBoard = [];
 
-  for (const arr of currentMatrix) {
+  for (let i = 0; i < 4; i += 1) {
     const row = document.createElement("div");
     row.className = "game-row";
     const inner = [];
 
-    for (const char of arr) {
+    for (let j = 0; j < 4; j += 1) {
+      const char = currentMatrix[i][j];
       const tile = document.createElement("div");
       tile.className = "game-tile";
       tile.innerHTML = char;
+      const node = new AncestoryNodeRoot(i, j, char, tile);
 
-      inner.push(tile);
+      inner.push(node);
       row.appendChild(tile);
     }
 
     innerGameContainer.appendChild(row);
     gameBoard.push(inner);
-  }
-
-  const gameBoardTest = [];
-
-  for (let i = 0; i < 4; i += 1) {
-    for (let j = 0; j < 4; j += 1) {}
   }
 
   return gameBoard;
