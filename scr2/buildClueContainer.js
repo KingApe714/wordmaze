@@ -5,9 +5,6 @@ const buildClueDiv = (word, visited, board) => {
   const wordContainer = document.createElement("div");
   wordContainer.className = "clue-word-container";
 
-  console.log(word);
-  console.log(visited);
-
   for (let i = 0; i < word.length; i += 1) {
     const char = word[i];
     const charContainer = document.createElement("div");
