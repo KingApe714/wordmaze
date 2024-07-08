@@ -1,6 +1,6 @@
 import { AncestoryNode } from "./ancestor.js";
 
-const buildClueDiv = (word, visited, board, definitions) => {
+const buildClueDiv = (word, visited, board, definition) => {
   const innerClueContainer = document.querySelector(".inner-clue-container");
   const definitionsContainer = document.querySelector(".definitions-container");
   const wordContainer = document.createElement("div");
@@ -8,7 +8,7 @@ const buildClueDiv = (word, visited, board, definitions) => {
   wordContainer.className = "clue-word-container";
   wordContainer.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    definitionsContainer.innerHTML = definitions[word];
+    definitionsContainer.innerHTML = definition;
   });
 
   for (let i = 0; i < word.length; i += 1) {
@@ -61,11 +61,12 @@ const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
 
     if (trie.word) {
       ancestor.word = trie.word;
+      ancestor.definition = definitions[trie.word];
       ancestor.clueDiv = buildClueDiv(
         trie.word,
         visited,
         gameBoard,
-        definitions
+        ancestor.definition
       );
       ancestor.path = visited;
       wordCount += 1;

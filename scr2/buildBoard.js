@@ -77,7 +77,7 @@ const boardCheck = (board, root) => {
   return words;
 };
 
-export const findBoard = (root) => {
+const findBoard = (root) => {
   let currentMatrix = generateMatrix();
   let foundWords = boardCheck(currentMatrix, root);
 
