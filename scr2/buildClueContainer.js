@@ -124,7 +124,7 @@ const dropDeadBranches = (leafNodes) => {
       current = current.parent;
     }
 
-    current.children.delete(`${prev.i},${prev.j}`);
+    if (prev) current.children.delete(`${prev.i},${prev.j}`);
   }
 };
 
@@ -150,11 +150,10 @@ export const buildAncestoryNode = (gameBoard, root) => {
 
       dropDeadBranches(deadLeafNodes);
 
-      // console.log(ancNode);
-      // if (ancNode.children.size === 0 && ancNode.word === null) {
-      //   tile.style.backgroundColor = "green";
-      //   ancNode.deadNode = true;
-      // }
+      if (ancNode.children.size === 0 && ancNode.word === null) {
+        tile.style.backgroundColor = "gray";
+        ancNode.deadNode = true;
+      }
 
       inner.push(ancNode);
     }

@@ -86,6 +86,7 @@ export const findBoard = (root) => {
     foundWords = boardCheck(currentMatrix, root);
   }
 
+  console.log(foundWords);
   return { currentMatrix, foundWords };
 };
 
