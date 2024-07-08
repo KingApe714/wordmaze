@@ -1,26 +1,30 @@
-class AncestoryNodeRoot {
-  constructor(i, j, div) {
-    this.i = i;
-    this.j = j;
-    this.gameDiv = div;
-    this.children = {};
-    this.complete = false;
-    this.deadNode = false;
-  }
-}
+import { AncestoryNodeRoot, AncestoryNode } from "./ancestor.js";
 
-class AncestoryNode {
-  constructor(i, j, div) {
-    this.i = i;
-    this.j = j;
-    this.gameDiv = div;
-    this.children = {};
-    this.parent = null;
-    this.word = null;
-    this.clueDiv = null;
-    this.found = false;
-  }
-}
+// class AncestoryNodeRoot {
+//   constructor(i, j, char, div) {
+//     this.i = i;
+//     this.j = j;
+//     this.char = char;
+//     this.gameDiv = div;
+//     this.children = new Map();
+//     this.complete = false;
+//     this.deadNode = false;
+//   }
+// }
+
+// class AncestoryNode {
+//   constructor(i, j, char, div) {
+//     this.i = i;
+//     this.j = j;
+//     this.char = char;
+//     this.gameDiv = div;
+//     this.children = new Map();
+//     this.parent = null;
+//     this.word = null;
+//     this.clueDiv = null;
+//     this.found = false;
+//   }
+// }
 
 const buildClueDiv = (word) => {
   const innerClueContainer = document.querySelector(".inner-clue-container");
@@ -63,6 +67,7 @@ const coords = [
 
 const bfs = (matrix, ancNode, trieNode, idx, jdx) => {
   const queue = [[trieNode, ancNode, idx, jdx, [`${idx},${jdx}`]]];
+  const deadLeafNodes = [];
   let wordCount = 0;
 
   while (queue.length) {
@@ -74,6 +79,8 @@ const bfs = (matrix, ancNode, trieNode, idx, jdx) => {
       wordCount += 1;
     }
 
+    let hasChildren = false;
+
     for (const [deltaI, deltaJ] of coords) {
       const [nextI, nextJ] = [i + deltaI, j + deltaJ];
 
@@ -83,16 +90,41 @@ const bfs = (matrix, ancNode, trieNode, idx, jdx) => {
         const nextVisited = [...visited];
         const nextTrie = trie.children[char];
 
-        const nextAncestor = new AncestoryNode(nextI, nextJ, div);
-        ancestor.children[`${nextI},${nextJ}`] = nextAncestor;
+        const nextAncestor = new AncestoryNode(nextI, nextJ, char, div);
+        ancestor.children.set(`${nextI},${nextJ}`, nextAncestor);
+        nextAncestor.parent = ancestor;
 
         nextVisited.push(`${nextI},${nextJ}`);
         queue.push([nextTrie, nextAncestor, nextI, nextJ, nextVisited]);
+
+        hasChildren = true;
       }
+    }
+
+    if (!hasChildren && ancestor.word === null) {
+      deadLeafNodes.push(ancestor);
     }
   }
 
-  return wordCount;
+  return [wordCount, deadLeafNodes];
+};
+
+const dropDeadBranches = (leafNodes) => {
+  for (const node of leafNodes) {
+    let current = node;
+    let prev = null;
+
+    while (
+      current.word === null &&
+      current.children.size <= 1 &&
+      current.parent
+    ) {
+      prev = current;
+      current = current.parent;
+    }
+
+    current.children.delete(`${prev.i},${prev.j}`);
+  }
 };
 
 export const buildAncestoryNode = (gameBoard, root) => {
@@ -104,10 +136,20 @@ export const buildAncestoryNode = (gameBoard, root) => {
     for (let j = 0; j < 4; j += 1) {
       const tile = gameBoard[i][j];
       const char = tile.innerHTML;
-      const ancNode = new AncestoryNodeRoot(i, j, tile);
+      const ancNode = new AncestoryNodeRoot(i, j, char, tile);
       const trieNode = root.children[char];
 
-      const wordCount = bfs(gameBoard, ancNode, trieNode, i, j);
+      const [wordCount, deadLeafNodes] = bfs(
+        gameBoard,
+        ancNode,
+        trieNode,
+        i,
+        j
+      );
+
+      dropDeadBranches(deadLeafNodes);
+
+      console.log(ancNode);
       if (wordCount === 0) {
         tile.style.backgroundColor = "green";
         ancNode.deadNode = true;

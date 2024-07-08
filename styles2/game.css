@@ -88,6 +88,7 @@ body {
   flex-direction: row;
   border: 1px solid darkcyan;
   width: fit-content;
+  height: fit-content;
   margin: 3px;
 }
 
