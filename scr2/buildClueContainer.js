@@ -1,9 +1,15 @@
 import { AncestoryNode } from "./ancestor.js";
 
-const buildClueDiv = (word, visited, board) => {
+const buildClueDiv = (word, visited, board, definitions) => {
   const innerClueContainer = document.querySelector(".inner-clue-container");
+  const definitionsContainer = document.querySelector(".definitions-container");
   const wordContainer = document.createElement("div");
+
   wordContainer.className = "clue-word-container";
+  wordContainer.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    definitionsContainer.innerHTML = definitions[word];
+  });
 
   for (let i = 0; i < word.length; i += 1) {
     const char = word[i];
@@ -18,7 +24,6 @@ const buildClueDiv = (word, visited, board) => {
     rootAncestor.clueCharContainers.push(charContainer);
   }
 
-  // add event listener to the word container to populate a div in the control panel with the definition of the word
   innerClueContainer.appendChild(wordContainer);
   return wordContainer;
 };
@@ -46,7 +51,7 @@ const coords = [
 ];
 
 // visited has the path with all the root ancestory nodes that I need to reference
-const bfs = (gameBoard, ancNode, trieNode, idx, jdx) => {
+const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
   const queue = [[trieNode, ancNode, idx, jdx, [`${idx},${jdx}`]]];
   const deadLeafNodes = [];
   let wordCount = 0;
@@ -56,7 +61,12 @@ const bfs = (gameBoard, ancNode, trieNode, idx, jdx) => {
 
     if (trie.word) {
       ancestor.word = trie.word;
-      ancestor.clueDiv = buildClueDiv(trie.word, visited, gameBoard);
+      ancestor.clueDiv = buildClueDiv(
+        trie.word,
+        visited,
+        gameBoard,
+        definitions
+      );
       ancestor.path = visited;
       wordCount += 1;
     }
@@ -110,7 +120,7 @@ const dropDeadBranches = (leafNodes) => {
   }
 };
 
-export const buildAncestoryNode = (gameBoard, root) => {
+export const buildAncestoryNode = (gameBoard, root, definitions) => {
   for (let i = 0; i < 4; i += 1) {
     for (let j = 0; j < 4; j += 1) {
       const ancNode = gameBoard[i][j];
@@ -122,7 +132,8 @@ export const buildAncestoryNode = (gameBoard, root) => {
         ancNode,
         trieNode,
         i,
-        j
+        j,
+        definitions
       );
 
       dropDeadBranches(deadLeafNodes);

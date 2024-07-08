@@ -6,5 +6,5 @@ import definitions from '../src/definitions.json' with { type: "json" };
 
 const root = buildTrie(definitions);
 const gameBoard = buildBoard(root);
-buildAncestoryNode(gameBoard, root);
+buildAncestoryNode(gameBoard, root, definitions);
 gamePlay(gameBoard);
