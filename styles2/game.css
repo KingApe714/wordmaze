@@ -81,6 +81,7 @@ body {
   border: 1px solid blue;
   flex-wrap: wrap;
   overflow: scroll;
+  align-content: flex-start;
 }
 
 .clue-word-container {

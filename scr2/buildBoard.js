@@ -1,3 +1,5 @@
+import { AncestoryNodeRoot } from "./ancestor.js";
+
 const generateChar = () =>
   "AABCDEEFGHIIJKLMNOOPQRSSTUUVWXYZ"[Math.floor(Math.random() * 32)];
 
@@ -87,6 +89,7 @@ export const findBoard = (root) => {
   return { currentMatrix, foundWords };
 };
 
+// I want to set up the board with AncestoryNodeRoots so that I can pass it to the next file
 export const buildBoard = (root) => {
   const { currentMatrix, foundWords } = findBoard(root);
   const innerGameContainer = document.querySelector(".inner-game-container");
@@ -108,6 +111,12 @@ export const buildBoard = (root) => {
 
     innerGameContainer.appendChild(row);
     gameBoard.push(inner);
+  }
+
+  const gameBoardTest = [];
+
+  for (let i = 0; i < 4; i += 1) {
+    for (let j = 0; j < 4; j += 1) {}
   }
 
   return gameBoard;

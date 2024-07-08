@@ -26,6 +26,7 @@ import { AncestoryNodeRoot, AncestoryNode } from "./ancestor.js";
 //   }
 // }
 
+// Test that clue container is actually being populated with the right styling. Try only passing in about 10 words, then restyle
 const buildClueDiv = (word) => {
   const innerClueContainer = document.querySelector(".inner-clue-container");
   const wordContainer = document.createElement("div");
@@ -149,11 +150,11 @@ export const buildAncestoryNode = (gameBoard, root) => {
 
       dropDeadBranches(deadLeafNodes);
 
-      console.log(ancNode);
-      if (wordCount === 0) {
-        tile.style.backgroundColor = "green";
-        ancNode.deadNode = true;
-      }
+      // console.log(ancNode);
+      // if (ancNode.children.size === 0 && ancNode.word === null) {
+      //   tile.style.backgroundColor = "green";
+      //   ancNode.deadNode = true;
+      // }
 
       inner.push(ancNode);
     }
