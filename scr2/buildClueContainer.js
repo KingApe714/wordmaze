@@ -39,6 +39,10 @@ const isValid = (i, j, visited, board, trie) => {
   );
 };
 
+const isInbounds = (i, j) => {
+  return i >= 0 && i < 4 && j >= 0 && j < 4;
+};
+
 const coords = [
   [-1, -1],
   [-1, 0],
@@ -76,6 +80,10 @@ const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
 
     for (const [deltaI, deltaJ] of coords) {
       const [nextI, nextJ] = [i + deltaI, j + deltaJ];
+
+      if (isInbounds(nextI, nextJ)) {
+        ancestor.neighbors[`${nextI},${nextJ}`] = gameBoard[nextI][nextJ];
+      }
 
       if (isValid(nextI, nextJ, visited, gameBoard, trie)) {
         const node = gameBoard[nextI][nextJ];
@@ -122,6 +130,8 @@ const dropDeadBranches = (leafNodes) => {
 };
 
 export const buildAncestoryNode = (gameBoard, root, definitions) => {
+  const deadNodes = [];
+
   for (let i = 0; i < 4; i += 1) {
     for (let j = 0; j < 4; j += 1) {
       const ancNode = gameBoard[i][j];
@@ -142,7 +152,15 @@ export const buildAncestoryNode = (gameBoard, root, definitions) => {
       if (ancNode.children.size === 0 && ancNode.word === null) {
         tile.style.backgroundColor = "gray";
         ancNode.deadNode = true;
+
+        deadNodes.push(ancNode);
       }
+    }
+  }
+
+  for (const node of deadNodes) {
+    for (const div of node.clueCharContainers) {
+      div.style.backgroundColor = "gray";
     }
   }
 };

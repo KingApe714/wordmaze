@@ -7,6 +7,7 @@ class Ancestor {
     this.clueDiv = null;
     this.word = null;
     this.children = new Map();
+    this.neighbors = {};
   }
 }
 
@@ -18,6 +19,10 @@ export class AncestoryNodeRoot extends Ancestor {
     this.wordCount = 0;
     this.foundWordCount = 0;
     this.clueCharContainers = [];
+
+    this.gameDiv.addEventListener("mousedown", (e) => {
+      console.log("testing");
+    });
   }
 }
 

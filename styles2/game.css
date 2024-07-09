@@ -55,6 +55,7 @@ body {
 }
 
 .game-tile {
+  cursor: pointer;
   height: 86%;
   width: 21%;
   display: flex;
@@ -117,6 +118,7 @@ body {
   border: 1px solid purple;
   height: 85%;
   width: 50%;
+  overflow: scroll;
 }
 
 @media (max-width: 344px) {
