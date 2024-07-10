@@ -50,6 +50,16 @@ body {
   border: 1px solid black;
 }
 
+svg {
+  border: 3px solid blue;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
 .game-row {
   width: 100%;
   height: 25%;

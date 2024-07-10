@@ -32,33 +32,50 @@ export class AncestoryNodeRoot extends Ancestor {
       this.lastVisited = true;
     });
 
-    // if I mouse over, then one of my neighbors must have been the last ones visited. I need to find the last one that was visited and draw a line between that one and the current one
     this.gameDiv.addEventListener("mouseover", (e) => {
       e.preventDefault();
+
+      const svg = document.getElementById("line-canvas");
 
       if (this.active && !this.visited) {
         this.innerGameDiv.classList.add("active-inner-game-tile");
         this.visited = true;
 
-        // console.log(this.i, this.j);
-        // I need to loop through the neighbors to see who the lastVisited was, draw a line between that node and this one, and then set that last node's .lastVisited to false and set this node.lastVisited to true
-
         for (const key in this.neighbors) {
           const nei = this.neighbors[key];
-          // console.log(nei);
 
           if (nei.lastVisited) {
             nei.lastVisited = false;
-            console.log(
-              `there should be a line between ${[nei.i, nei.j]} and ${[
-                this.i,
-                this.j,
-              ]}`
+
+            const rect1 = this.innerGameDiv.getBoundingClientRect();
+            const rect2 = nei.innerGameDiv.getBoundingClientRect();
+
+            // Calculate the start and end points of the line
+            const x1 = rect1.left + rect1.width / 2;
+            const y1 = rect1.top + rect1.height / 2;
+            const x2 = rect2.left + rect2.width / 2;
+            const y2 = rect2.top + rect2.height / 2;
+
+            // Create an SVG line element
+            const line = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "line"
             );
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", "black");
+            line.setAttribute("stroke-width", "2");
+
+            svg.appendChild(line);
           }
         }
 
         this.lastVisited = true;
+      } else if (this.active && this.visited) {
+        // here I know that I've come back to a node that I've already crossed over. I need to make sure that I stop allowing for drawing a line
+        // maybe I can set all the nodes active status to false. This way, although we might not have moused up, It won't recognize any new squares outside of the ones that we've found
       }
     });
   }

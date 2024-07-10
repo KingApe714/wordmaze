@@ -18,6 +18,9 @@ export const gamePlay = (ancestoryMatrix) => {
   gameBoard.addEventListener("mouseup", (e) => {
     e.preventDefault();
 
+    const svg = document.getElementById("line-canvas");
+    svg.innerHTML = "";
+
     for (let i = 0; i < 4; i += 1) {
       for (let j = 0; j < 4; j += 1) {
         const node = ancestoryMatrix[i][j];
