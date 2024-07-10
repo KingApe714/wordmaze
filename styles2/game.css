@@ -55,6 +55,7 @@ body {
 }
 
 .game-tile {
+  background-color: aqua;
   cursor: pointer;
   height: 86%;
   width: 21%;

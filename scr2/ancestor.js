@@ -8,6 +8,8 @@ class Ancestor {
     this.word = null;
     this.children = new Map();
     this.neighbors = {};
+
+    this.active = false;
   }
 }
 
@@ -21,7 +23,17 @@ export class AncestoryNodeRoot extends Ancestor {
     this.clueCharContainers = [];
 
     this.gameDiv.addEventListener("mousedown", (e) => {
-      console.log("testing");
+      e.preventDefault();
+      this.gameDiv.style.boxShadow = "10px 10px 5px 2px rgba(0, 0, 0, 0.5)";
+      this.active = true;
+    });
+
+    this.gameDiv.addEventListener("mouseover", (e) => {
+      e.preventDefault();
+
+      if (this.active) {
+        this.gameDiv.style.boxShadow = "10px 10px 5px 2px rgba(0, 0, 0, 0.5)";
+      }
     });
   }
 }
