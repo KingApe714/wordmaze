@@ -1,3 +1,8 @@
+/* 
+hsla(60, 100%, 75%, 0.6)
+hsla(137, 100%, 45%, 0.45) 
+hsla(5, 90%, 51%, 0.6)
+*/
 body {
   display: flex;
   align-items: center;
@@ -55,7 +60,9 @@ body {
 }
 
 .game-tile {
-  background-color: aqua;
+  background-image: url(../images/tile-image.jpeg);
+  filter: brightness(130%);
+  position: relative;
   cursor: pointer;
   height: 86%;
   width: 21%;
@@ -63,6 +70,20 @@ body {
   align-items: center;
   justify-content: center;
   border: 1px solid brown;
+}
+
+.dead-game-tile {
+  filter: brightness(70%);
+}
+
+.inner-game-tile {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.active-inner-game-tile {
+  background-color: rgba(255, 0, 0, 0.4);
 }
 
 .clue-container {

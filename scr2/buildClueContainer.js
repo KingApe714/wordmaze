@@ -150,7 +150,7 @@ export const buildAncestoryNode = (gameBoard, root, definitions) => {
       dropDeadBranches(deadLeafNodes);
 
       if (ancNode.children.size === 0 && ancNode.word === null) {
-        tile.style.backgroundColor = "gray";
+        tile.classList.add("dead-game-tile");
         ancNode.deadNode = true;
 
         deadNodes.push(ancNode);

@@ -22,7 +22,9 @@ export const gamePlay = (ancestoryMatrix) => {
       for (let j = 0; j < 4; j += 1) {
         const node = ancestoryMatrix[i][j];
         node.active = false;
-        node.gameDiv.style.boxShadow = "";
+        node.visited = false;
+        node.lastVisited = false;
+        node.innerGameDiv.classList.remove("active-inner-game-tile");
       }
     }
   });

@@ -104,7 +104,12 @@ export const buildBoard = (root) => {
       const tile = document.createElement("div");
       tile.className = "game-tile";
       tile.innerHTML = char;
-      const node = new AncestoryNodeRoot(i, j, char, tile);
+
+      const innerTile = document.createElement("div");
+      innerTile.className = "inner-game-tile";
+      tile.appendChild(innerTile);
+
+      const node = new AncestoryNodeRoot(i, j, char, tile, innerTile);
 
       inner.push(node);
       row.appendChild(tile);
