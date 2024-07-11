@@ -109,7 +109,14 @@ export const buildBoard = (root) => {
       innerTile.className = "inner-game-tile";
       tile.appendChild(innerTile);
 
-      const node = new AncestoryNodeRoot(i, j, char, tile, innerTile);
+      const node = new AncestoryNodeRoot(
+        i,
+        j,
+        char,
+        tile,
+        innerTile,
+        gameBoard
+      );
 
       inner.push(node);
       row.appendChild(tile);

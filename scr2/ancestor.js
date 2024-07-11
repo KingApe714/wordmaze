@@ -14,8 +14,9 @@ class Ancestor {
 }
 
 export class AncestoryNodeRoot extends Ancestor {
-  constructor(i, j, char, div, innerDiv) {
+  constructor(i, j, char, div, innerDiv, gameBoard) {
     super(i, j, char, div);
+    this.gameBoard = gameBoard;
     this.innerGameDiv = innerDiv;
     this.complete = false;
     this.deadNode = false;
@@ -37,7 +38,12 @@ export class AncestoryNodeRoot extends Ancestor {
 
       const svg = document.getElementById("line-canvas");
 
-      if (this.active && !this.visited) {
+      // gameBoard must be active, this tile must not be visited and one of the neighbors has to be lastVisited
+      if (
+        this.active &&
+        !this.visited &&
+        Object.values(this.neighbors).some((nei) => nei.lastVisited)
+      ) {
         this.innerGameDiv.classList.add("active-inner-game-tile");
         this.visited = true;
 
@@ -66,16 +72,13 @@ export class AncestoryNodeRoot extends Ancestor {
             line.setAttribute("x2", x2);
             line.setAttribute("y2", y2);
             line.setAttribute("stroke", "black");
-            line.setAttribute("stroke-width", "2");
+            line.setAttribute("stroke-width", "1");
 
             svg.appendChild(line);
           }
         }
 
         this.lastVisited = true;
-      } else if (this.active && this.visited) {
-        // here I know that I've come back to a node that I've already crossed over. I need to make sure that I stop allowing for drawing a line
-        // maybe I can set all the nodes active status to false. This way, although we might not have moused up, It won't recognize any new squares outside of the ones that we've found
       }
     });
   }
