@@ -28,6 +28,13 @@ const buildClueDiv = (word, visited, board, definition) => {
   return wordContainer;
 };
 
+const handleFoundWordLogic = (node, trieNode) => {
+  // I beleibe that the node.gameDiv should be listening for mouse up if node.active
+  // this way I can reveal the found word in the clue div
+  // it should also inform the root Ancestory Node by adding one to the found word count
+  // I need to somehow highlight all of the clue chars after all the words have been found
+};
+
 const isValid = (i, j, visited, board, trie) => {
   return (
     i >= 0 &&

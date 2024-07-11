@@ -25,12 +25,15 @@ export class AncestoryNodeRoot extends Ancestor {
     this.clueCharContainers = [];
     this.visited = false;
     this.lastVisited = false;
+    this.current = this;
 
     this.gameDiv.addEventListener("mousedown", (e) => {
       e.preventDefault();
       this.innerGameDiv.classList.add("active-inner-game-tile");
       this.visited = true;
       this.lastVisited = true;
+
+      if (this.word) console.log(this.word);
     });
 
     this.gameDiv.addEventListener("mouseover", (e) => {
@@ -75,6 +78,23 @@ export class AncestoryNodeRoot extends Ancestor {
             line.setAttribute("stroke-width", "1");
 
             svg.appendChild(line);
+
+            const key = `${this.i},${this.j}`;
+
+            if (nei.current.children.has(key)) {
+              this.current = nei.current.children.get(key);
+
+              console.log(this.current);
+
+              // here is where I need to handle the logic for styling a found word
+            } else {
+              // here I know that I am not looking at a node that is spelling a word
+              // I need logic that won't permit to traverse any tree at all.
+              // maybe consider setting all of the root nodes' this.current to null
+              // they'll get reset to themselves on mouse up as the game board is listening for it
+              // maybe consider setting this.current to null
+              // I need to set up the event listener logic for the words that are found at the nodes themselves
+            }
           }
         }
 
@@ -92,4 +112,14 @@ export class AncestoryNode extends Ancestor {
     this.path = null;
     this.definition = null;
   }
+
+  // when I mouse down I know that root node has been visited
+  // I need to know which one of the nodes has been visited
+  // I may be able to just work out the tree traversal at the root node
+  // I know that root of the tree is the node that the user presses down on
+  // this tells me that the user can effectively traverse the tree by simply check to see if the next node is not just a neighbor but a child node as well.
+  // I can set the current node at the root node with something like a this.current
+  // when I enter a neighbor that is also a child I can set this.current to that child
+  // Then I simply check to see if that child is a complete word or a visited word and so on
+  // from here I can handle the logic of changing the color of all the divs
 }

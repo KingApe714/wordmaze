@@ -27,6 +27,7 @@ export const gamePlay = (ancestoryMatrix) => {
         node.active = false;
         node.visited = false;
         node.lastVisited = false;
+        node.current = node;
         node.innerGameDiv.classList.remove("active-inner-game-tile");
       }
     }
