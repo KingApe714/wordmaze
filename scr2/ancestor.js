@@ -25,7 +25,7 @@ export class AncestoryNodeRoot extends Ancestor {
     this.clueCharContainers = [];
     this.visited = false;
     this.lastVisited = false;
-    this.current = this;
+    this.current = this; // this represents the ancestoryNode we are currently at
 
     this.gameDiv.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -81,12 +81,40 @@ export class AncestoryNodeRoot extends Ancestor {
 
             const key = `${this.i},${this.j}`;
 
+            // now I need to handle the logic where I've found all the words that start at a particular tile
             if (nei.current.children.has(key)) {
               this.current = nei.current.children.get(key);
+              const rootNode = this.current.rootNode;
+              const that = this;
 
-              console.log(this.current);
+              if (that.current.word) {
+                if (!that.current.found) {
+                  that.gameDiv.addEventListener("mouseup", handleMouseUp);
+                } else {
+                  // here is where I style the divs and the line to indicate to the user that they have already found this tile
+                  console.log("you've found this one already");
+                }
+              }
 
-              // here is where I need to handle the logic for styling a found word
+              function handleMouseUp(e) {
+                e.preventDefault();
+                rootNode.foundWordCount += 1;
+
+                console.log(rootNode.foundWordCount, rootNode.wordCount);
+
+                if (rootNode.foundWordCount === rootNode.wordCount) {
+                  rootNode.complete = true;
+                  console.log("we've completed a tile");
+
+                  for (const div of rootNode.clueCharContainers) {
+                    div.style.backgroundColor = "green";
+                  }
+                }
+
+                that.current.found = true;
+                that.current.clueDiv.style.backgroundColor = "green";
+                that.gameDiv.removeEventListener("mouseup", handleMouseUp);
+              }
             } else {
               // here I know that I am not looking at a node that is spelling a word
               // I need logic that won't permit to traverse any tree at all.
@@ -105,12 +133,13 @@ export class AncestoryNodeRoot extends Ancestor {
 }
 
 export class AncestoryNode extends Ancestor {
-  constructor(i, j, char, div) {
+  constructor(i, j, char, div, root) {
     super(i, j, char, div);
     this.parent = null;
     this.found = false;
     this.path = null;
     this.definition = null;
+    this.rootNode = root;
   }
 
   // when I mouse down I know that root node has been visited
