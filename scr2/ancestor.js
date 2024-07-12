@@ -84,6 +84,10 @@ export class AncestoryNodeRoot extends Ancestor {
 
             const key = `${this.i},${this.j}`;
 
+            for (const line of this.lines) {
+              line.setAttribute("stroke", "red");
+            }
+
             if (nei.current !== null && nei.current.children.has(key)) {
               this.current = nei.current.children.get(key);
               const rootNode = this.current.rootNode;
@@ -91,8 +95,6 @@ export class AncestoryNodeRoot extends Ancestor {
 
               if (that.current.word) {
                 if (!that.current.found) {
-                  that.gameDiv.addEventListener("mouseup", handleMouseUp);
-
                   for (const line of this.lines) {
                     line.setAttribute("stroke", "green");
                   }
@@ -106,28 +108,6 @@ export class AncestoryNodeRoot extends Ancestor {
                   }
                 }
               }
-
-              function handleMouseUp(e) {
-                e.preventDefault();
-                rootNode.foundWordCount += 1;
-
-                console.log(rootNode.foundWordCount, rootNode.wordCount);
-
-                if (rootNode.foundWordCount === rootNode.wordCount) {
-                  rootNode.complete = true;
-                  rootNode.innerGameDiv.style.backgroundColor =
-                    "rgba(0, 128, 0, 0.5)";
-                  console.log("we've completed a tile");
-
-                  for (const div of rootNode.clueCharContainers) {
-                    div.style.backgroundColor = "green";
-                  }
-                }
-
-                that.current.found = true;
-                that.current.clueDiv.style.backgroundColor = "green";
-                that.gameDiv.removeEventListener("mouseup", handleMouseUp);
-              }
             } else {
               console.log("you're not spelling a word!");
               for (let i = 0; i < this.gameBoard.length; i += 1) {
@@ -135,10 +115,6 @@ export class AncestoryNodeRoot extends Ancestor {
                   const node = this.gameBoard[i][j];
                   node.current = null;
                 }
-              }
-
-              for (const line of this.lines) {
-                line.setAttribute("stroke", "red");
               }
             }
           }
