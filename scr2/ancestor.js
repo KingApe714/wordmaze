@@ -26,6 +26,7 @@ export class AncestoryNodeRoot extends Ancestor {
     this.visited = false;
     this.lastVisited = false;
     this.current = this; // this represents the ancestoryNode we are currently at
+    this.lines = [];
 
     this.gameDiv.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -74,15 +75,16 @@ export class AncestoryNodeRoot extends Ancestor {
             line.setAttribute("y1", y1);
             line.setAttribute("x2", x2);
             line.setAttribute("y2", y2);
-            line.setAttribute("stroke", "black");
+            line.setAttribute("stroke", "red");
             line.setAttribute("stroke-width", "1");
 
             svg.appendChild(line);
 
+            this.lines = [...nei.lines, line];
+
             const key = `${this.i},${this.j}`;
 
-            // now I need to handle the logic where I've found all the words that start at a particular tile
-            if (nei.current.children.has(key)) {
+            if (nei.current !== null && nei.current.children.has(key)) {
               this.current = nei.current.children.get(key);
               const rootNode = this.current.rootNode;
               const that = this;
@@ -90,9 +92,18 @@ export class AncestoryNodeRoot extends Ancestor {
               if (that.current.word) {
                 if (!that.current.found) {
                   that.gameDiv.addEventListener("mouseup", handleMouseUp);
+
+                  for (const line of this.lines) {
+                    line.setAttribute("stroke", "green");
+                  }
                 } else {
                   // here is where I style the divs and the line to indicate to the user that they have already found this tile
                   console.log("you've found this one already");
+                  console.log(that.current.path);
+
+                  for (const line of this.lines) {
+                    line.setAttribute("stroke", "yellow");
+                  }
                 }
               }
 
@@ -104,6 +115,8 @@ export class AncestoryNodeRoot extends Ancestor {
 
                 if (rootNode.foundWordCount === rootNode.wordCount) {
                   rootNode.complete = true;
+                  rootNode.innerGameDiv.style.backgroundColor =
+                    "rgba(0, 128, 0, 0.5)";
                   console.log("we've completed a tile");
 
                   for (const div of rootNode.clueCharContainers) {
@@ -116,12 +129,17 @@ export class AncestoryNodeRoot extends Ancestor {
                 that.gameDiv.removeEventListener("mouseup", handleMouseUp);
               }
             } else {
-              // here I know that I am not looking at a node that is spelling a word
-              // I need logic that won't permit to traverse any tree at all.
-              // maybe consider setting all of the root nodes' this.current to null
-              // they'll get reset to themselves on mouse up as the game board is listening for it
-              // maybe consider setting this.current to null
-              // I need to set up the event listener logic for the words that are found at the nodes themselves
+              console.log("you're not spelling a word!");
+              for (let i = 0; i < this.gameBoard.length; i += 1) {
+                for (let j = 0; j < this.gameBoard[i].length; j += 1) {
+                  const node = this.gameBoard[i][j];
+                  node.current = null;
+                }
+              }
+
+              for (const line of this.lines) {
+                line.setAttribute("stroke", "red");
+              }
             }
           }
         }
@@ -132,6 +150,7 @@ export class AncestoryNodeRoot extends Ancestor {
   }
 }
 
+// have a reference from a completed word node, back to the rootNode for building the modal at the end of every stage
 export class AncestoryNode extends Ancestor {
   constructor(i, j, char, div, root) {
     super(i, j, char, div);
@@ -141,14 +160,4 @@ export class AncestoryNode extends Ancestor {
     this.definition = null;
     this.rootNode = root;
   }
-
-  // when I mouse down I know that root node has been visited
-  // I need to know which one of the nodes has been visited
-  // I may be able to just work out the tree traversal at the root node
-  // I know that root of the tree is the node that the user presses down on
-  // this tells me that the user can effectively traverse the tree by simply check to see if the next node is not just a neighbor but a child node as well.
-  // I can set the current node at the root node with something like a this.current
-  // when I enter a neighbor that is also a child I can set this.current to that child
-  // Then I simply check to see if that child is a complete word or a visited word and so on
-  // from here I can handle the logic of changing the color of all the divs
 }

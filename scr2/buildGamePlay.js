@@ -1,9 +1,6 @@
 export const gamePlay = (ancestoryMatrix) => {
   const gameBoard = document.querySelector(".inner-game-container");
-  console.log(ancestoryMatrix);
 
-  // it seems that I have to have the mouse down event on the gameContainer
-  // my next question is can the game container listen for a mouse down while the tiles are listening for a mouse down?
   gameBoard.addEventListener("mousedown", (e) => {
     e.preventDefault();
 
@@ -28,6 +25,7 @@ export const gamePlay = (ancestoryMatrix) => {
         node.visited = false;
         node.lastVisited = false;
         node.current = node;
+        node.lines.length = 0;
         node.innerGameDiv.classList.remove("active-inner-game-tile");
       }
     }
