@@ -1,5 +1,9 @@
 export const gamePlay = (ancestoryMatrix) => {
   const gameBoard = document.querySelector(".inner-game-container");
+  // I can grab the svg from here and handle the drawing line logic from here
+  // I need to be able to key into the ancestoryMatrix with the coordinates that the touch events give me
+  // From there I should be able to work out similar logic to what I did with the AncestoryNodeRoot class
+  // Lets start by grabbing the node from the ancestory matrix given the coordinates of the touch events on the game board.
 
   gameBoard.addEventListener("mousedown", (e) => {
     e.preventDefault();
@@ -33,7 +37,6 @@ export const gamePlay = (ancestoryMatrix) => {
             rootNode.complete = true;
             rootNode.innerGameDiv.style.backgroundColor =
               "rgba(0, 128, 0, 0.5)";
-            console.log("we've completed a tile");
 
             for (const div of rootNode.clueCharContainers) {
               div.style.backgroundColor = "green";
