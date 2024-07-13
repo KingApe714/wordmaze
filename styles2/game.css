@@ -79,6 +79,7 @@ svg {
   align-items: center;
   justify-content: center;
   border: 1px solid brown;
+  font-size: 3.2vh;
 }
 
 .dead-game-tile {
@@ -138,14 +139,34 @@ svg {
   border: 1px solid magenta;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+}
+
+.points-timer-container {
+  width: 40%;
+  height: 85%;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
 }
 
 .definitions-container {
   border: 1px solid purple;
   height: 85%;
-  width: 50%;
+  width: 40%;
   overflow: scroll;
+}
+
+.points-counter,
+.timer {
+  height: 40%;
+  width: 80%;
+  border: 1px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (max-width: 344px) {

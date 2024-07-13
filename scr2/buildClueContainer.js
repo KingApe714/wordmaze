@@ -63,9 +63,11 @@ const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
   while (queue.length) {
     const [trie, ancestor, i, j, visited] = queue.shift();
 
+    // I need a way to calculate the ancestor.points here
     if (trie.word) {
       ancestor.word = trie.word;
       ancestor.definition = definitions[trie.word];
+      ancestor.timeBonus = trie.word.length;
       ancestor.clueDiv = buildClueDiv(
         trie.word,
         visited,
@@ -91,7 +93,6 @@ const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
         const char = node.char;
         const nextVisited = [...visited];
         const nextTrie = trie.children[char];
-
         const nextAncestor = new AncestoryNode(
           nextI,
           nextJ,
