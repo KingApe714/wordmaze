@@ -1,3 +1,5 @@
+import { addSeconds } from "./timer.js";
+
 export const activateMatrix = (ancestoryMatrix) => {
   for (let i = 0; i < 4; i += 1) {
     for (let j = 0; j < 4; j += 1) {
@@ -119,11 +121,9 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
   const svg = document.getElementById("line-canvas");
   svg.innerHTML = "";
 
-  let node = null;
-
   for (let i = 0; i < 4; i += 1) {
     for (let j = 0; j < 4; j += 1) {
-      node = ancestoryMatrix[i][j];
+      const node = ancestoryMatrix[i][j];
 
       // here I am looking at a tile that cereates a word
       if (node.lastVisited && node.current && node.current.word) {
@@ -142,6 +142,8 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
             div.style.backgroundColor = "green";
           }
         }
+
+        addSeconds(current.timeBonus);
       }
 
       node.active = false;
@@ -152,6 +154,4 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
       node.innerGameDiv.style.backgroundColor = "";
     }
   }
-
-  return node;
 };
