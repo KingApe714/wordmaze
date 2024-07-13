@@ -51,7 +51,6 @@ body {
 }
 
 svg {
-  border: 3px solid blue;
   position: absolute;
   height: 100%;
   width: 100%;
