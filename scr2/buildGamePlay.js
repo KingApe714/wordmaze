@@ -239,9 +239,9 @@ export const gamePlay = (ancestoryMatrix) => {
   };
 
   const nullifyAllNodes = () => {
-    for (let i = 0; i < this.ancestoryMatrix.length; i += 1) {
-      for (let j = 0; j < this.ancestoryMatrix[i].length; j += 1) {
-        const node = this.ancestoryMatrix[i][j];
+    for (let i = 0; i < ancestoryMatrix.length; i += 1) {
+      for (let j = 0; j < ancestoryMatrix[i].length; j += 1) {
+        const node = ancestoryMatrix[i][j];
         node.current = null;
       }
     }
