@@ -25,7 +25,9 @@ export const gamePlay = (ancestoryMatrix) => {
     for (let i = 0; i < 4; i += 1) {
       for (let j = 0; j < 4; j += 1) {
         const node = ancestoryMatrix[i][j];
-        if (node.lastVisited && node.current) {
+
+        // here I am looking at a tile that cereates a word
+        if (node.lastVisited && node.current && node.current.word) {
           const rootNode = node.current.rootNode || node;
           const current = node.current;
 
@@ -35,8 +37,7 @@ export const gamePlay = (ancestoryMatrix) => {
 
           if (rootNode.foundWordCount === rootNode.wordCount) {
             rootNode.complete = true;
-            rootNode.innerGameDiv.style.backgroundColor =
-              "rgba(0, 128, 0, 0.5)";
+            rootNode.gameDiv.style.filter = "hue-rotate(90deg) saturate(200%)";
 
             for (const div of rootNode.clueCharContainers) {
               div.style.backgroundColor = "green";
@@ -49,7 +50,7 @@ export const gamePlay = (ancestoryMatrix) => {
         node.lastVisited = false;
         node.current = node;
         node.lines.length = 0;
-        node.innerGameDiv.classList.remove("active-inner-game-tile");
+        node.innerGameDiv.style.backgroundColor = "";
       }
     }
   });

@@ -92,10 +92,6 @@ svg {
   width: 100%;
 }
 
-.active-inner-game-tile {
-  background-color: rgba(255, 0, 0, 0.4);
-}
-
 .clue-container {
   height: 55vh;
   width: min-content;

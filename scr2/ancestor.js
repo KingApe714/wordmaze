@@ -6,6 +6,7 @@ class Ancestor {
     this.gameDiv = div;
     this.clueDiv = null;
     this.word = null;
+    this.found = false;
     this.children = new Map();
     this.neighbors = {};
 
@@ -37,13 +38,17 @@ export class AncestoryNodeRoot extends Ancestor {
 
   handleMouseDown(e) {
     e.preventDefault();
-    this.innerGameDiv.classList.add("active-inner-game-tile");
+    this.innerGameDiv.style.backgroundColor = "rgba(255, 0, 0, 0.4)";
     this.visited = true;
     this.lastVisited = true;
+
+    // highlighting logic for single letter words
+    this.highlightPath(this);
   }
 
   handleMouseOver(e) {
     e.preventDefault();
+
     if (
       this.active &&
       !this.visited &&
@@ -61,27 +66,17 @@ export class AncestoryNodeRoot extends Ancestor {
 
           const line = this.drawLine(this.innerGameDiv, nei.innerGameDiv);
           this.lines = [...nei.lines, line];
-          this.updateLine("red");
+          this.updateLine("rgba(255, 0, 0, 0.4)");
 
           const key = `${this.i},${this.j}`;
 
           if (nei.current !== null && nei.current.children.has(key)) {
             // here I know that I've moved into a tile that is a child of the last
             this.current = nei.current.children.get(key);
-
-            if (this.current.word) {
-              //this tile completes a word
-              if (!this.current.found) {
-                // check to see if it's found
-                this.updateLine("green");
-              } else {
-                // hovering over a found word
-                this.updateLine("yellow");
-              }
-            }
+            this.highlightPath(this.current);
           } else {
             // here I know that user is not spelling a word
-            this.nullifyVisitedNodes();
+            this.nullifyAllNodes();
           }
         }
       }
@@ -90,11 +85,12 @@ export class AncestoryNodeRoot extends Ancestor {
     }
   }
 
-  nullifyVisitedNodes() {
-    for (let i = 0; i < this.gameBoard.length; i += 1) {
-      for (let j = 0; j < this.gameBoard[i].length; j += 1) {
-        const node = this.gameBoard[i][j];
-        node.current = null;
+  highlightPath(node) {
+    if (node.word) {
+      if (!node.found) {
+        this.updateLine("rgba(0, 128, 0, 0.5)");
+      } else {
+        this.updateLine("rgba(255, 255, 0, 0.4)");
       }
     }
   }
@@ -102,6 +98,15 @@ export class AncestoryNodeRoot extends Ancestor {
   updateLine(color) {
     for (const line of this.lines) {
       line.setAttribute("stroke", color);
+    }
+
+    for (let i = 0; i < this.gameBoard.length; i += 1) {
+      for (let j = 0; j < this.gameBoard[i].length; j += 1) {
+        const node = this.gameBoard[i][j];
+        if (node.visited) {
+          node.innerGameDiv.style.backgroundColor = color;
+        }
+      }
     }
   }
 
@@ -130,13 +135,21 @@ export class AncestoryNodeRoot extends Ancestor {
 
     return line;
   }
+
+  nullifyAllNodes() {
+    for (let i = 0; i < this.gameBoard.length; i += 1) {
+      for (let j = 0; j < this.gameBoard[i].length; j += 1) {
+        const node = this.gameBoard[i][j];
+        node.current = null;
+      }
+    }
+  }
 }
 
 export class AncestoryNode extends Ancestor {
   constructor(i, j, char, div, root) {
     super(i, j, char, div);
     this.parent = null;
-    this.found = false;
     this.path = null;
     this.definition = null;
     this.rootNode = root;
