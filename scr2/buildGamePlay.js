@@ -76,19 +76,13 @@ export const gamePlay = (ancestoryMatrix) => {
 
     const [idx, jdx] = calculateCoords(e.touches[0]);
 
-    // this method is now successfully capturing the coordinates as I need them while the user is swiping.
-    // Now I need to ensure that we only calculate user building a word if and only if we are entering new coordinates.
-    // consider an if statement that takes current.i and idx and current.j and jdx and compares them.
-
-    if (current.i !== idx || current.j !== jdx) {
+    if (idx !== -1 && jdx !== -1 && (current.i !== idx || current.j !== jdx)) {
       console.log([idx, jdx]);
       current = ancestoryMatrix[idx][jdx];
+      console.log(current);
     }
   });
 
-  // I need to remove the discrepency from the corners. Each tile isn't absolutely 25% of the board, they are actually smaller than 25%. they are 20% of the board. this means that 2.5% above the tile and 2.5% below the tile does not have to be listened for. If I don't do this then I won't be able to able to make diagonal moves
-  // this function can handle this for me. I need to figure out how to make it do that for me and then return -1 on either the idx or the jdx or both if they are not within the bound of the tile.
-  // I may have to make it listen for a smaller distance as the swipe area is quite big
   const calculateCoords = (touchEvent) => {
     const boardData = gameBoard.getBoundingClientRect();
     const height = boardData.height;
@@ -100,13 +94,24 @@ export const gamePlay = (ancestoryMatrix) => {
     const i = touchEvent.clientY - top;
     const j = touchEvent.clientX - left;
 
+    // make sure to account for the spaces between tiles
+    // 3 - 22 | 28 - 47 | 53 - 72 | 78 - 97
     const numI = (i / height) * 100;
     const numJ = (j / width) * 100;
 
-    const idx = Math.floor((numI - 1) / 25);
-    const jdx = Math.floor((numJ - 1) / 25);
+    const idx = isValid(numI) ? Math.floor((numI - 1) / 25) : -1;
+    const jdx = isValid(numJ) ? Math.floor((numJ - 1) / 25) : -1;
 
     return [idx, jdx];
+  };
+
+  const isValid = (num) => {
+    return (
+      (num >= 3 && num <= 22) ||
+      (num >= 28 && num <= 47) ||
+      (num >= 53 && num <= 72) ||
+      (num >= 78 && num <= 97)
+    );
   };
 
   const highlightPath = (node) => {
