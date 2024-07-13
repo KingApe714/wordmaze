@@ -15,9 +15,9 @@ class Ancestor {
 }
 
 export class AncestoryNodeRoot extends Ancestor {
-  constructor(i, j, char, div, innerDiv, gameBoard) {
+  constructor(i, j, char, div, innerDiv, ancestoryMatrix) {
     super(i, j, char, div);
-    this.gameBoard = gameBoard;
+    this.ancestoryMatrix = ancestoryMatrix;
     this.innerGameDiv = innerDiv;
     this.complete = false;
     this.deadNode = false;
@@ -54,7 +54,6 @@ export class AncestoryNodeRoot extends Ancestor {
       !this.visited &&
       Object.values(this.neighbors).some((nei) => nei.lastVisited)
     ) {
-      this.innerGameDiv.classList.add("active-inner-game-tile");
       this.visited = true;
 
       // loop to find the last visited neighbor
@@ -100,9 +99,9 @@ export class AncestoryNodeRoot extends Ancestor {
       line.setAttribute("stroke", color);
     }
 
-    for (let i = 0; i < this.gameBoard.length; i += 1) {
-      for (let j = 0; j < this.gameBoard[i].length; j += 1) {
-        const node = this.gameBoard[i][j];
+    for (let i = 0; i < this.ancestoryMatrix.length; i += 1) {
+      for (let j = 0; j < this.ancestoryMatrix[i].length; j += 1) {
+        const node = this.ancestoryMatrix[i][j];
         if (node.visited) {
           node.innerGameDiv.style.backgroundColor = color;
         }
@@ -137,9 +136,9 @@ export class AncestoryNodeRoot extends Ancestor {
   }
 
   nullifyAllNodes() {
-    for (let i = 0; i < this.gameBoard.length; i += 1) {
-      for (let j = 0; j < this.gameBoard[i].length; j += 1) {
-        const node = this.gameBoard[i][j];
+    for (let i = 0; i < this.ancestoryMatrix.length; i += 1) {
+      for (let j = 0; j < this.ancestoryMatrix[i].length; j += 1) {
+        const node = this.ancestoryMatrix[i][j];
         node.current = null;
       }
     }

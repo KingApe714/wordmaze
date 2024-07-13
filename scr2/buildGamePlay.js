@@ -1,9 +1,6 @@
 export const gamePlay = (ancestoryMatrix) => {
   const gameBoard = document.querySelector(".inner-game-container");
-  // I can grab the svg from here and handle the drawing line logic from here
-  // I need to be able to key into the ancestoryMatrix with the coordinates that the touch events give me
-  // From there I should be able to work out similar logic to what I did with the AncestoryNodeRoot class
-  // Lets start by grabbing the node from the ancestory matrix given the coordinates of the touch events on the game board.
+  const svg = document.getElementById("line-canvas");
 
   gameBoard.addEventListener("mousedown", (e) => {
     e.preventDefault();
@@ -19,7 +16,6 @@ export const gamePlay = (ancestoryMatrix) => {
   gameBoard.addEventListener("mouseup", (e) => {
     e.preventDefault();
 
-    const svg = document.getElementById("line-canvas");
     svg.innerHTML = "";
 
     for (let i = 0; i < 4; i += 1) {
@@ -54,4 +50,64 @@ export const gamePlay = (ancestoryMatrix) => {
       }
     }
   });
+
+  const lines = [];
+  let current = null;
+
+  const boardData = gameBoard.getBoundingClientRect();
+  const height = boardData.height;
+  const width = boardData.width;
+
+  gameBoard.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+
+    for (let i = 0; i < 4; i += 1) {
+      for (let j = 0; j < 4; j += 1) {
+        const node = ancestoryMatrix[i][j];
+        node.active = true;
+      }
+    }
+
+    console.log(e.touches[0]);
+
+    const i = e.touches[0].clientY - top;
+    const j = e.touches[0].clientX - left;
+
+    const numI = (i / height) * 100;
+    const numJ = (j / width) * 100;
+
+    const idx = Math.floor((numI - 1) / 25);
+    const jdx = Math.floor((numJ - 1) / 25);
+
+    console.log(`idx = ${idx}, jdx = ${jdx}`);
+  });
+
+  gameBoard.addEventListener("touchmove", (e) => {
+    e.preventDefault();
+  });
+
+  const highlightPath = (node) => {
+    if (node.word) {
+      if (!node.found) {
+        updateLine("rgba(0, 128, 0, 0.5)");
+      } else {
+        updateLine("rgba(255, 255, 0, 0.4)");
+      }
+    }
+  };
+
+  const updateLine = (color) => {
+    for (const line of lines) {
+      line.setAttribute("stroke", color);
+    }
+
+    for (let i = 0; i < ancestoryMatrix.length; i += 1) {
+      for (let j = 0; j < ancestoryMatrix[i].length; j += 1) {
+        const node = ancestoryMatrix[i][j];
+        if (node.visited) {
+          node.innerGameDiv.style.backgroundColor = color;
+        }
+      }
+    }
+  };
 };
