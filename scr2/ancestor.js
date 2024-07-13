@@ -128,7 +128,7 @@ export class AncestoryNodeRoot extends Ancestor {
     line.setAttribute("x2", x2);
     line.setAttribute("y2", y2);
     line.setAttribute("stroke", "red");
-    line.setAttribute("stroke-width", "1");
+    line.setAttribute("stroke-width", "2");
 
     svg.appendChild(line);
 

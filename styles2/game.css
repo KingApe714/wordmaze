@@ -75,7 +75,7 @@ svg {
   position: relative;
   cursor: pointer;
   height: 80%;
-  width: 20%;
+  width: 20%; /* this should always be a fourth of the height */
   display: flex;
   align-items: center;
   justify-content: center;
