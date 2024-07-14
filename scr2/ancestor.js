@@ -11,7 +11,7 @@ class Ancestor {
     this.found = false;
     this.children = new Map();
     this.neighbors = {};
-    this.points = 100;
+    this.points = 0;
     this.timeBonus = 0;
 
     this.active = false;

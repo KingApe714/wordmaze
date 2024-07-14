@@ -1,4 +1,5 @@
 import { AncestoryNode } from "./ancestor.js";
+import points from './points.json' with { type: 'json' }
 
 const buildClueDiv = (word, visited, board, definition) => {
   const innerClueContainer = document.querySelector(".inner-clue-container");
@@ -54,6 +55,8 @@ const coords = [
   [0, -1],
 ];
 
+// I should find a way to scale up the points starting from 100 for 1 letter words and ending at about 50_000 for 25 letter words. the last two digits should end in zero. this should be a curve
+
 // visited has the path with all the root ancestory nodes that I need to reference
 const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
   const queue = [[trieNode, ancNode, idx, jdx, [`${idx},${jdx}`]]];
@@ -68,6 +71,7 @@ const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
       ancestor.word = trie.word;
       ancestor.definition = definitions[trie.word];
       ancestor.timeBonus = trie.word.length;
+      ancestor.points = points[trie.word.length]
       ancestor.clueDiv = buildClueDiv(
         trie.word,
         visited,

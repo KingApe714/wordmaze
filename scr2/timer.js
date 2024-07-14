@@ -3,7 +3,7 @@ let remainingSeconds = 60; // Start with 60 seconds
 
 const timerDisplay = document.querySelector(".timer");
 
-export const startTimer = () => {
+export const startTimer = (onEnd, user, gameBoard) => {
   updateTimerDisplay();
   timerInterval = setInterval(() => {
     remainingSeconds--;
@@ -11,6 +11,7 @@ export const startTimer = () => {
 
     if (remainingSeconds <= 0) {
       clearInterval(timerInterval);
+      onEnd(user, gameBoard);
     }
   }, 1000);
 };

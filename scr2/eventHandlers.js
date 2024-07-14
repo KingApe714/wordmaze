@@ -121,6 +121,8 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
   const svg = document.getElementById("line-canvas");
   svg.innerHTML = "";
 
+  const pointsCounter = document.querySelector(".points-counter");
+
   for (let i = 0; i < 4; i += 1) {
     for (let j = 0; j < 4; j += 1) {
       const node = ancestoryMatrix[i][j];
@@ -144,6 +146,8 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
         }
 
         addSeconds(current.timeBonus);
+        user.points += current.points;
+        pointsCounter.innerHTML = user.points;
       }
 
       node.active = false;
