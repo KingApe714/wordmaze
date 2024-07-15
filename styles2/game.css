@@ -169,6 +169,69 @@ svg {
   align-items: center;
 }
 
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s;
+  z-index: 2;
+}
+
+.bg-active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal {
+  font-family: "Nunito Sans", sans-serif;
+  background-color: #e2e2e2;
+  /* border-radius: 15px; */
+  position: relative;
+  height: 97%;
+  width: 95%;
+  z-index: 2;
+  overflow: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-inner {
+  height: 91%;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-image: url("../images/tile-image.jpeg"); */
+  background-color: #0077b6;
+  filter: brightness(110%);
+  border-radius: inherit;
+  padding: 15px;
+  /* box-shadow: 1px 1px 10px white inset; */
+}
+
+.modal-title {
+  width: fit-content;
+}
+
+.modal-child {
+  width: -webkit-fill-available;
+  background-color: #0077b6;
+  box-shadow: 3px 3px 10px black;
+  color: white;
+  font-weight: 300;
+  padding: 30px;
+}
+
 @media (max-width: 344px) {
   .title-container {
     height: 4vh;
