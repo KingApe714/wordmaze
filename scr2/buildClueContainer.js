@@ -1,5 +1,33 @@
 import { AncestoryNode } from "./ancestor.js";
-import points from './points.json' with { type: 'json' }
+// import points from './points.json' with { type: 'json' }
+
+const points = {
+  1: 100,
+  2: 400,
+  3: 800,
+  4: 1500,
+  5: 2200,
+  6: 3200,
+  7: 4300,
+  8: 5500,
+  9: 7000,
+  10: 8500,
+  11: 10200,
+  12: 12100,
+  13: 14100,
+  14: 16300,
+  15: 18600,
+  16: 21100,
+  17: 23700,
+  18: 26500,
+  19: 29400,
+  20: 32500,
+  21: 35700,
+  22: 39100,
+  23: 42600,
+  24: 46200,
+  25: 50000,
+};
 
 const buildClueDiv = (word, visited, board, definition) => {
   const innerClueContainer = document.querySelector(".inner-clue-container");
@@ -71,7 +99,7 @@ const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
       ancestor.word = trie.word;
       ancestor.definition = definitions[trie.word];
       ancestor.timeBonus = trie.word.length;
-      ancestor.points = points[trie.word.length]
+      ancestor.points = points[trie.word.length];
       ancestor.clueDiv = buildClueDiv(
         trie.word,
         visited,
