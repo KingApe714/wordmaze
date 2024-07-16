@@ -1,43 +1,27 @@
-export function trieNode(ch) {
-    this.ch = ch;
-    this.complete = false;
-    this.map = {};
-    this.parent = null;
-    this.words = [];
+class TrieNode {
+  constructor(char) {
+    this.char = char;
+    this.children = {};
+    this.word = null;
+  }
 }
 
-export function add(str, i, root) {
-    if (i === str.length) {
-        root.complete = true;
-        return
+export const buildTrie = (definitions) => {
+  const words = Object.keys(definitions);
+  const root = new TrieNode(null);
+
+  for (const word of words) {
+    let current = root;
+
+    for (const char of word) {
+      if (!(char in current.children)) {
+        current.children[char] = new TrieNode(char);
+      }
+      current = current.children[char];
     }
 
-    if (!root.map[str[i]]) {
-        root.map[str[i]] = new trieNode(str[i])
-        root.map[str[i]].parent = root;
-    }
+    current.word = word;
+  }
 
-    root.words.push(str);
-    add(str, i + 1, root.map[str[i]]);
-}
-
-export function search(str, i, root) {
-    if (i === str.length) 
-        return root.words;
-
-    if (!root.map[str[i]])
-        return [];
-    
-    return search(str, i+1, root.map[str[i]]);
-}
-
-export function fetchWord(currentNode) {
-    let nodeCheck = currentNode;
-    let word = '';
-    while(nodeCheck.parent !== null) {
-        word = nodeCheck.ch + word;
-        nodeCheck = nodeCheck.parent;
-    }
-    
-    return word;
-}
+  return root;
+};
