@@ -9,37 +9,40 @@
     />
 
     <title>Word Maze</title>
+    <link rel="manifest" href="/manifest.json" />
     <link rel="icon" type="image/png" href="./images/wordMazeFavicon2.png" />
     <link rel="stylesheet" href="./styles/game.css" />
   </head>
   <body>
-    <div class="modal-bg">
-      <div class="modal">
-        <div class="modal-inner">
-          <!-- <span class="modal-close">X</span> -->
-          <!-- <h1 class="modal-title"></h1>
-          <h2 class="modal-child"></h2> -->
-          This is where the contents of the end game will go
+    <div class="content">
+      <div class="modal-bg">
+        <div class="modal">
+          <div class="modal-inner">
+            <!-- <span class="modal-close">X</span> -->
+            <!-- <h1 class="modal-title"></h1>
+            <h2 class="modal-child"></h2> -->
+            This is where the contents of the end game will go
+          </div>
         </div>
       </div>
-    </div>
-    <div class="title-container">WORD MAZE</div>
-    <div class="outer-game-container">
-      <div class="game-container">
-        <div class="inner-game-container"></div>
-        <svg id="line-canvas"></svg>
+      <div class="title-container">WORD MAZE</div>
+      <div class="outer-game-container">
+        <div class="game-container">
+          <div class="inner-game-container"></div>
+          <svg id="line-canvas"></svg>
+        </div>
+        <div class="clue-container">
+          <div class="inner-clue-container"></div>
+        </div>
       </div>
-      <div class="clue-container">
-        <div class="inner-clue-container"></div>
+      <div class="control-panel">
+        <div class="points-timer-container">
+          <div class="points-counter"></div>
+          <div class="timer"></div>
+        </div>
+        <div class="definitions-container"></div>
+        <div class="fullscreen-btn">FULL SCREEN</div>
       </div>
-    </div>
-    <div class="control-panel">
-      <div class="points-timer-container">
-        <div class="points-counter"></div>
-        <div class="timer"></div>
-      </div>
-      <div class="definitions-container"></div>
-      <div class="fullscreen-btn">FULL SCREEN</div>
     </div>
     <script type="module" src="./src/main.js"></script>
   </body>
