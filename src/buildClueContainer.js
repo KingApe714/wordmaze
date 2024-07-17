@@ -172,6 +172,7 @@ export const buildAncestoryNode = async (gameBoard, root, definitions) => {
   for (const node of deadNodes) {
     for (const div of node.clueCharContainers) {
       div.style.backgroundColor = "gray";
+      div.innerHTML = node.char;
     }
   }
 };
