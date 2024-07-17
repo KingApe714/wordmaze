@@ -149,6 +149,7 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
 
           for (const div of rootNode.clueCharContainers) {
             div.style.backgroundColor = "green";
+            div.innerHTML = rootNode.char;
           }
         }
 

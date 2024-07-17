@@ -11,25 +11,25 @@ import { endRound } from "./endRound.js";
 // I need a way to capture that paths that the user creates to stringify it and use it as a key then have the value be the demerit
 // at touchend_mouseup I can check to see if we have found a word, if not, then use the line to score the demerit, and if it is a word the user found already we can
 
-const openFullscreen = () => {
-  if (document.documentElement.requestFullscreen) {
-    document.documentElement.requestFullscreen();
-  } else if (document.documentElement.mozRequestFullScreen) {
-    /* Firefox */
-    document.documentElement.mozRequestFullScreen();
-  } else if (document.documentElement.webkitRequestFullscreen) {
-    /* Chrome, Safari and Opera */
-    document.documentElement.webkitRequestFullscreen();
-  } else if (document.documentElement.msRequestFullscreen) {
-    /* IE/Edge */
-    document.documentElement.msRequestFullscreen();
-  }
-};
+// const openFullscreen = () => {
+//   if (document.documentElement.requestFullscreen) {
+//     document.documentElement.requestFullscreen();
+//   } else if (document.documentElement.mozRequestFullScreen) {
+//     /* Firefox */
+//     document.documentElement.mozRequestFullScreen();
+//   } else if (document.documentElement.webkitRequestFullscreen) {
+//     /* Chrome, Safari and Opera */
+//     document.documentElement.webkitRequestFullscreen();
+//   } else if (document.documentElement.msRequestFullscreen) {
+//     /* IE/Edge */
+//     document.documentElement.msRequestFullscreen();
+//   }
+// };
 
 // Call this function, for example, on a button click
-document
-  .querySelector(".fullscreen-btn")
-  .addEventListener("click", openFullscreen);
+// document
+//   .querySelector(".fullscreen-btn")
+//   .addEventListener("click", openFullscreen);
 
 const fetchDefinitions = async () => {
   const response = await fetch("./json/definitions.json");

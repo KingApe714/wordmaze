@@ -9,14 +9,14 @@ body {
   justify-content: space-around;
   flex-direction: column;
   border: 1px solid red;
-  /* height: 97vh; */
   height: 100%;
   overflow: hidden;
   margin: 0;
 }
 
 .content {
-  height: 85vh;
+  width: 100%;
+  border: 1px solid blue;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -40,7 +40,7 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  height: 70vh;
+  height: 66vh;
   width: 100%;
 }
 
