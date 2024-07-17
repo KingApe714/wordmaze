@@ -209,7 +209,7 @@ svg {
   background-color: #e2e2e2;
   /* border-radius: 15px; */
   position: relative;
-  height: 85vh;
+  height: 95%;
   width: 95%;
   z-index: 2;
   overflow: auto;
@@ -264,6 +264,10 @@ svg {
     height: 16vh;
     width: 85vw;
   }
+
+  .modal {
+    height: 83%;
+  }
 }
 
 @media (min-width: 345px) and (max-width: 480px) {
@@ -287,6 +291,10 @@ svg {
     height: 16vh;
     width: 85vw;
   }
+
+  .modal {
+    height: 83%;
+  }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
@@ -309,6 +317,10 @@ svg {
   .clue-container {
     height: 17vh;
     width: 85vw;
+  }
+
+  .modal {
+    height: 83%;
   }
 }
 
