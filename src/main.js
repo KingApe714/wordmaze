@@ -1,4 +1,3 @@
-// import definitions from '../src/definitions.json' with { type: "json" };
 import { buildTrie } from "./trie.js";
 import { buildBoard } from "./buildBoard.js";
 import { buildAncestoryNode } from "./buildClueContainer.js";
@@ -12,7 +11,7 @@ import { endRound } from "./endRound.js";
 // I need a way to capture that paths that the user creates to stringify it and use it as a key then have the value be the demerit
 // at touchend_mouseup I can check to see if we have found a word, if not, then use the line to score the demerit, and if it is a word the user found already we can
 const fetchDefinitions = async () => {
-  const response = await fetch("./src/definitions.json");
+  const response = await fetch("./json/definitions.json");
   const definitions = await response.json();
 
   return definitions;

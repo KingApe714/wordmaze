@@ -136,6 +136,13 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
         current.found = true;
         current.clueDiv.style.backgroundColor = "green";
 
+        // populate the clueDiv
+        for (let i = 0; i < current.word.length; i += 1) {
+          const char = current.word[i];
+          const charDiv = current.clueDiv.childNodes[i];
+          charDiv.innerHTML = char;
+        }
+
         if (rootNode.foundWordCount === rootNode.wordCount) {
           rootNode.complete = true;
           rootNode.gameDiv.style.filter = "hue-rotate(90deg) saturate(200%)";

@@ -1,33 +1,4 @@
 import { AncestoryNode } from "./ancestor.js";
-// import points from './points.json' with { type: 'json' }
-
-const points = {
-  1: 100,
-  2: 400,
-  3: 800,
-  4: 1500,
-  5: 2200,
-  6: 3200,
-  7: 4300,
-  8: 5500,
-  9: 7000,
-  10: 8500,
-  11: 10200,
-  12: 12100,
-  13: 14100,
-  14: 16300,
-  15: 18600,
-  16: 21100,
-  17: 23700,
-  18: 26500,
-  19: 29400,
-  20: 32500,
-  21: 35700,
-  22: 39100,
-  23: 42600,
-  24: 46200,
-  25: 50000,
-};
 
 const buildClueDiv = (word, visited, board, definition) => {
   const innerClueContainer = document.querySelector(".inner-clue-container");
@@ -44,7 +15,7 @@ const buildClueDiv = (word, visited, board, definition) => {
     const char = word[i];
     const charContainer = document.createElement("div");
     charContainer.className = "clue-char-container";
-    charContainer.innerHTML = char;
+    // charContainer.innerHTML = char;
     wordContainer.appendChild(charContainer);
 
     // create reference between char-clue-div and root ancestory node
@@ -83,10 +54,8 @@ const coords = [
   [0, -1],
 ];
 
-// I should find a way to scale up the points starting from 100 for 1 letter words and ending at about 50_000 for 25 letter words. the last two digits should end in zero. this should be a curve
-
 // visited has the path with all the root ancestory nodes that I need to reference
-const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
+const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions, points) => {
   const queue = [[trieNode, ancNode, idx, jdx, [`${idx},${jdx}`]]];
   const deadLeafNodes = [];
   let wordCount = 0;
@@ -94,7 +63,6 @@ const bfs = (gameBoard, ancNode, trieNode, idx, jdx, definitions) => {
   while (queue.length) {
     const [trie, ancestor, i, j, visited] = queue.shift();
 
-    // I need a way to calculate the ancestor.points here
     if (trie.word) {
       ancestor.word = trie.word;
       ancestor.definition = definitions[trie.word];
@@ -168,7 +136,9 @@ const dropDeadBranches = (leafNodes) => {
   }
 };
 
-export const buildAncestoryNode = (gameBoard, root, definitions) => {
+export const buildAncestoryNode = async (gameBoard, root, definitions) => {
+  const response = await fetch("./json/points.json");
+  const points = await response.json();
   const deadNodes = [];
 
   for (let i = 0; i < 4; i += 1) {
@@ -177,13 +147,14 @@ export const buildAncestoryNode = (gameBoard, root, definitions) => {
       const char = ancNode.char;
       const tile = ancNode.gameDiv;
       const trieNode = root.children[char];
-      const [wordCount, deadLeafNodes] = bfs(
+      const [wordCount, deadLeafNodes] = await bfs(
         gameBoard,
         ancNode,
         trieNode,
         i,
         j,
-        definitions
+        definitions,
+        points
       );
 
       ancNode.wordCount = wordCount;
