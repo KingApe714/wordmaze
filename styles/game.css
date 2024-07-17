@@ -311,8 +311,8 @@ svg {
     flex-direction: column-reverse;
   }
   .game-container {
-    height: 50vh;
-    width: 50vh;
+    height: 45vh;
+    width: 45vh;
   }
   .clue-container {
     height: 17vh;
@@ -329,11 +329,11 @@ svg {
     background-color: #999;
   }
   .game-container {
-    height: 45vh;
-    width: 45vh;
+    height: 50vh;
+    width: 50vh;
   }
   .clue-container {
-    height: 45vh;
+    height: 50vh;
   }
 }
 
@@ -342,11 +342,11 @@ svg {
     background-color: #6f6f6f;
   }
   .game-container {
-    height: 45vh;
-    width: 45vh;
+    height: 50vh;
+    width: 50vh;
   }
   .clue-container {
-    height: 45vh;
+    height: 50vh;
   }
 }
 
