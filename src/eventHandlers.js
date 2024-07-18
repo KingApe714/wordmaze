@@ -116,6 +116,7 @@ export const nullifyAllNodes = (ancestoryMatrix) => {
   }
 };
 
+// here is where I want to calculate the demerites. I need to know if this tile was previously found and the line that it created
 // take in the user here, select the control panel and add time, points and demerites here
 export const touchend_mouseup = (ancestoryMatrix, user) => {
   const svg = document.getElementById("line-canvas");
@@ -132,15 +133,25 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
         const rootNode = node.current.rootNode || node;
         const current = node.current;
 
-        if (!current.found) rootNode.foundWordCount += 1;
-        current.found = true;
-        current.clueDiv.style.backgroundColor = "green";
-
-        // populate the clueDiv
-        for (let i = 0; i < current.word.length; i += 1) {
-          const char = current.word[i];
-          const charDiv = current.clueDiv.childNodes[i];
-          charDiv.innerHTML = char;
+        if (!current.found) {
+          // here I know that I've found a new word
+          rootNode.foundWordCount += 1;
+          current.found = true;
+          current.clueDiv.style.backgroundColor = "green";
+          // populate the clueDiv
+          for (let i = 0; i < current.word.length; i += 1) {
+            const char = current.word[i];
+            const charDiv = current.clueDiv.childNodes[i];
+            charDiv.innerHTML = char;
+          }
+        } else {
+          // here I know that I am looking at a word that has been found
+          console.log("you've found this one before");
+          console.log(current.path);
+          user.demerits.foundWords.push({
+            path: current.path,
+            word: current.word,
+          });
         }
 
         if (rootNode.foundWordCount === rootNode.wordCount) {
@@ -156,6 +167,12 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
         addSeconds(current.timeBonus);
         user.points += current.points;
         pointsCounter.innerHTML = user.points;
+      } else if (node.lastVisited) {
+        // here I know that I am looking at a path that doesn't make a word
+        console.log("this is a red path");
+        console.log(node);
+        console.log(node.current);
+        // user.demerits.nonwords.push(node.current.path);
       }
 
       node.active = false;

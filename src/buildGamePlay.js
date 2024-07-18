@@ -10,15 +10,12 @@ export const gamePlay = (ancestoryMatrix, user) => {
 
   gameBoard.addEventListener("mousedown", (e) => {
     e.preventDefault();
-
     activateMatrix(ancestoryMatrix);
   });
 
   gameBoard.addEventListener("touchstart", (e) => {
     e.preventDefault();
-
     activateMatrix(ancestoryMatrix);
-
     const [idx, jdx] = calculateCoords(e.touches[0]);
 
     // it's possible that user doesn't press on a tile
@@ -30,22 +27,19 @@ export const gamePlay = (ancestoryMatrix, user) => {
 
   gameBoard.addEventListener("mouseup", (e) => {
     e.preventDefault();
-
     touchend_mouseup(ancestoryMatrix, user);
   });
 
   gameBoard.addEventListener("touchend", (e) => {
     e.preventDefault();
-
     touchend_mouseup(ancestoryMatrix, user);
   });
 
   gameBoard.addEventListener("touchmove", (e) => {
     e.preventDefault();
-
     const [idx, jdx] = calculateCoords(e.touches[0]);
 
-    if (idx !== -1 && jdx !== -1) {
+    if (idx >= 0 && jdx >= 0) {
       const node = ancestoryMatrix[idx][jdx];
       touchmove_mouseover(node);
     }

@@ -35,7 +35,7 @@ body {
 }
 
 .outer-game-container {
-  border: 1px solid purple;
+  border: 1px solid green;
   display: flex;
   flex-direction: row;
   align-items: center;

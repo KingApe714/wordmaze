@@ -44,8 +44,8 @@ const initGame = async () => {
   const user = {
     points: 0,
     demerits: {
-      nonwords: {},
-      foundWords: {},
+      nonwords: [],
+      foundWords: [],
     },
   };
 
