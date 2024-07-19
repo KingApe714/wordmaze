@@ -107,6 +107,7 @@ svg {
 
 .dead-game-tile {
   filter: brightness(70%);
+  color: white;
 }
 
 .inner-game-tile {
