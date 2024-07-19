@@ -16,6 +16,9 @@ export const endRound = (user, ancestoryMatrix) => {
   // I need to first create the board to display to the user
   // then I need to display the heat levels for each of the tiles
 
+  // for board completion I need to take wordCount and divide it by foundWordCount
+  // this will give me the percentage I need to take from the background color
+
   const gameBoard = document.createElement("div");
   gameBoard.className = "end-game-board";
 
@@ -24,10 +27,25 @@ export const endRound = (user, ancestoryMatrix) => {
     innerRow.className = "end-board-inner-row";
 
     for (let j = 0; j < 4; j += 1) {
-      const tile = document.createElement("div");
       const node = ancestoryMatrix[i][j];
+      const tile = document.createElement("div");
       tile.innerHTML = node.char;
-      tile.className = "end-game-tile";
+      tile.className = "game-tile";
+
+      const innerTile = document.createElement("div");
+      innerTile.className = "inner-game-tile";
+
+      if (node.complete) {
+        innerTile.classList.add("found-inner-game-tile");
+      } else if (node.deadNode) {
+        tile.classList.add("dead-game-tile");
+      } else {
+        const percentage = node.foundWordCount / node.wordCount;
+        const shading = 0.35 * percentage;
+        innerTile.style.backgroundColor = `rgba(0, 230, 65, ${shading})`;
+      }
+
+      tile.appendChild(innerTile);
       innerRow.appendChild(tile);
 
       console.log(node);

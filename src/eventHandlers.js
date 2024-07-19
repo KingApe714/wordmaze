@@ -159,7 +159,8 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
 
         if (rootNode.foundWordCount === rootNode.wordCount) {
           rootNode.complete = true;
-          rootNode.gameDiv.style.filter = "hue-rotate(90deg) saturate(200%)";
+          rootNode.innerGameDiv.classList.add("found-inner-game-tile");
+          // rootNode.gameDiv.style.filter = "hue-rotate(90deg) saturate(200%)";
 
           for (const div of rootNode.clueCharContainers) {
             div.style.backgroundColor = "green";
