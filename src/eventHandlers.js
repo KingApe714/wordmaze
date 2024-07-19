@@ -39,6 +39,8 @@ export const touchmove_mouseover = (node) => {
 
         const key = `${node.i},${node.j}`;
 
+        node.currentPath = [...nei.currentPath, [node.i, node.j]];
+
         if (nei.current !== null && nei.current.children.has(key)) {
           // here I know that I've moved into a tile that is a child of the last
           node.current = nei.current.children.get(key);
@@ -116,6 +118,7 @@ export const nullifyAllNodes = (ancestoryMatrix) => {
   }
 };
 
+// I need a neat way to grab the path for the non-words when the user mouses up
 // here is where I want to calculate the demerites. I need to know if this tile was previously found and the line that it created
 // take in the user here, select the control panel and add time, points and demerites here
 export const touchend_mouseup = (ancestoryMatrix, user) => {
@@ -171,8 +174,8 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
         // here I know that I am looking at a path that doesn't make a word
         console.log("this is a red path");
         console.log(node);
-        console.log(node.current);
-        // user.demerits.nonwords.push(node.current.path);
+        console.log(node.currentPath);
+        user.demerits.nonwords.push(node.currentPath);
       }
 
       node.active = false;
@@ -181,6 +184,7 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
       node.current = node;
       node.lines.length = 0;
       node.innerGameDiv.style.backgroundColor = "";
+      node.currentPath = [[node.i, node.j]];
     }
   }
 };

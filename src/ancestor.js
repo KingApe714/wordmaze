@@ -30,9 +30,9 @@ export class AncestoryNodeRoot extends Ancestor {
     this.clueCharContainers = [];
     this.visited = false;
     this.lastVisited = false;
-    // I may need to change how current referals to itself for space complesity reasons
     this.current = this; // this represents the ancestoryNode we are currently at
     this.lines = [];
+    this.currentPath = [[i, j]];
 
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.gameDiv.addEventListener("mousedown", this.handleMouseDown);
