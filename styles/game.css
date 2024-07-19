@@ -293,6 +293,10 @@ svg {
     width: 85vw;
   }
 
+  .inner-clue-container {
+    height: 93%;
+  }
+
   .modal {
     height: 83%;
   }
@@ -321,6 +325,10 @@ svg {
   .clue-container {
     height: 16vh;
     width: 85vw;
+  }
+
+  .inner-clue-container {
+    height: 93%;
   }
 
   .modal {
@@ -353,6 +361,10 @@ svg {
     width: 85vw;
   }
 
+  .inner-clue-container {
+    height: 93%;
+  }
+
   .modal {
     height: 83%;
   }
@@ -372,6 +384,10 @@ svg {
   .clue-container {
     height: 50vh;
   }
+
+  .inner-clue-container {
+    height: 97%;
+  }
 }
 
 @media (min-width: 1025px) and (max-width: 1200px) {
@@ -385,10 +401,18 @@ svg {
   .clue-container {
     height: 50vh;
   }
+
+  .inner-clue-container {
+    height: 97%;
+  }
 }
 
 @media (min-width: 1201px) {
   body {
     background-color: #2d333f;
+  }
+
+  .inner-clue-container {
+    height: 97%;
   }
 }
