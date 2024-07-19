@@ -13,12 +13,6 @@ export const endRound = (user, ancestoryMatrix) => {
   modalInner.innerHTML += user.demerits.foundWords;
 
   // from here i want to display to the user all of the board data and their points and demerites
-  // I need to first create the board to display to the user
-  // then I need to display the heat levels for each of the tiles
-
-  // for board completion I need to take wordCount and divide it by foundWordCount
-  // this will give me the percentage I need to take from the background color
-
   const gameBoard = document.createElement("div");
   gameBoard.className = "end-game-board";
 
@@ -30,7 +24,7 @@ export const endRound = (user, ancestoryMatrix) => {
       const node = ancestoryMatrix[i][j];
       const tile = document.createElement("div");
       tile.innerHTML = node.char;
-      tile.className = "game-tile";
+      tile.className = "game-tile end-game-tile";
 
       const innerTile = document.createElement("div");
       innerTile.className = "inner-game-tile";

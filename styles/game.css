@@ -262,8 +262,8 @@ svg {
   align-items: center;
   justify-content: space-around;
   border: 1px solid yellow;
-  height: 40vh;
-  width: 40vh;
+  height: 25vh;
+  width: 25vh;
 }
 
 .end-board-inner-row {
@@ -275,16 +275,10 @@ svg {
   height: 25%;
 }
 
-.end-game-tile {
-  background-image: url(../images/tile-image.jpeg);
-  border: 1px solid red;
-  height: 80%;
-  width: 20%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
+/* .end-game-tile {
+  border-radius: 6px;
+  font-size: 3vh;
+} */
 
 .end-game-inner-tile {
   position: absolute;
@@ -326,6 +320,11 @@ svg {
   .modal-inner {
     margin: 10px;
   }
+
+  .end-game-tile {
+    border-radius: 6px;
+    font-size: 3vh;
+  }
 }
 
 @media (min-width: 345px) and (max-width: 480px) {
@@ -364,6 +363,11 @@ svg {
   .modal-inner {
     margin: 10px;
   }
+
+  .end-game-tile {
+    border-radius: 6px;
+    font-size: 3vh;
+  }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
@@ -397,6 +401,11 @@ svg {
   }
   .modal-inner {
     margin: 10px;
+  }
+
+  .end-game-tile {
+    border-radius: 6px;
+    font-size: 3vh;
   }
 }
 
