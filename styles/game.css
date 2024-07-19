@@ -231,7 +231,7 @@ svg {
 }
 
 .modal-inner {
-  height: -webkit-fill-available;
+  height: 96.5%;
   width: -webkit-fill-available;
   margin: 20px;
   display: flex;
