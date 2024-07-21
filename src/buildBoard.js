@@ -102,9 +102,9 @@ export const buildBoard = (root) => {
     for (let j = 0; j < 4; j += 1) {
       const char = currentMatrix[i][j];
       const tile = document.createElement("div");
-      tile.className = "game-tile";
+      tile.className = `game-tile piece-${i}-${j}`;
       tile.innerHTML = char;
-      tile.style.backgroundImage = `url(../images/piece_${i}_${j}.jpg)`;
+      // tile.style.backgroundImage = `url(../images/piece_${i}_${j}.jpg)`;
 
       const innerTile = document.createElement("div");
       innerTile.className = `inner-game-tile`;
