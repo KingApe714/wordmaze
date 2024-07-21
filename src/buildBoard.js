@@ -104,6 +104,7 @@ export const buildBoard = (root) => {
       const tile = document.createElement("div");
       tile.className = "game-tile";
       tile.innerHTML = char;
+      tile.style.backgroundImage = `url(../images/piece_${i}_${j}.jpg)`;
 
       const innerTile = document.createElement("div");
       innerTile.className = `inner-game-tile`;

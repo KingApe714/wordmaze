@@ -84,7 +84,7 @@ svg {
 }
 
 .game-tile {
-  background-image: url(../images/tile-image.jpeg);
+  /* background-image: url(../images/piece_0_0.jpg); */
   box-shadow: 0.1vh 0.1vh 1.3vh white inset, -0.3vh 0.3vh 1.3vh;
   font-family: "Lato", sans-serif;
   filter: brightness(130%);
