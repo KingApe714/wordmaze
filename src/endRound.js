@@ -24,7 +24,7 @@ export const endRound = (user, ancestoryMatrix) => {
       const node = ancestoryMatrix[i][j];
       const tile = document.createElement("div");
       tile.innerHTML = node.char;
-      tile.className = "game-tile end-game-tile";
+      tile.className = `${node.gameDiv.className} end-game-tile`;
 
       const innerTile = document.createElement("div");
       innerTile.className = "inner-game-tile";
