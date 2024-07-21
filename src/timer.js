@@ -1,5 +1,5 @@
 let timerInterval;
-let remainingSeconds = 10; // Start with 60 seconds
+let remainingSeconds = 60; // Start with 60 seconds
 
 const timerDisplay = document.querySelector(".timer");
 

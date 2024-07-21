@@ -89,10 +89,45 @@ const findBoard = (root) => {
   return { currentMatrix, foundWords };
 };
 
+const generateRandomCombinations = (rows, cols) => {
+  const combos = [];
+
+  // Generate all possible combos of (i, j)
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      combos.push([i, j]);
+    }
+  }
+
+  // Shuffle the combos array to get random combos
+  for (let k = combos.length - 1; k > 0; k--) {
+    const randomIndex = Math.floor(Math.random() * (k + 1));
+    [combos[k], combos[randomIndex]] = [combos[randomIndex], combos[k]];
+  }
+
+  const res = [];
+  let inner = [];
+
+  for (let i = 0; i < combos.length; i += 1) {
+    inner.push(combos[i]);
+
+    if (i !== 0 && i % 4 === 3) {
+      res.push(inner);
+      inner = [];
+    }
+  }
+
+  // console.log(combos);
+  return res;
+};
+
 export const buildBoard = (root) => {
   const { currentMatrix, foundWords } = findBoard(root);
   const innerGameContainer = document.querySelector(".inner-game-container");
+  const combos = generateRandomCombinations(4, 4);
   const gameBoard = [];
+
+  // console.log(combos);
 
   for (let i = 0; i < 4; i += 1) {
     const row = document.createElement("div");
@@ -102,7 +137,8 @@ export const buildBoard = (root) => {
     for (let j = 0; j < 4; j += 1) {
       const char = currentMatrix[i][j];
       const tile = document.createElement("div");
-      tile.className = `game-tile piece-${i}-${j}`;
+      const [idx, jdx] = combos[i][j];
+      tile.className = `game-tile piece-${idx}-${jdx}`;
       tile.innerHTML = char;
       // tile.style.backgroundImage = `url(../images/piece_${i}_${j}.jpg)`;
 
