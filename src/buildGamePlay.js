@@ -3,6 +3,7 @@ import {
   activateMatrix,
   touchmove_mouseover,
   touchend_mouseup,
+  debounce,
 } from "./eventHandlers.js";
 
 export const gamePlay = (ancestoryMatrix, user) => {
@@ -35,15 +36,35 @@ export const gamePlay = (ancestoryMatrix, user) => {
     touchend_mouseup(ancestoryMatrix, user);
   });
 
-  gameBoard.addEventListener("touchmove", (e) => {
+  // I need to debounce the amount of time this event is fired
+  // I need to learn debounce and request animation frame for this.
+  // this is the FUCKING SOLUTION!!!
+
+  const handleTouchMove = (e) => {
+    // console.log("fire");
     e.preventDefault();
+
     const [idx, jdx] = calculateCoords(e.touches[0]);
 
     if (idx >= 0 && jdx >= 0) {
       const node = ancestoryMatrix[idx][jdx];
-      touchmove_mouseover(node);
+      requestAnimationFrame(() => {
+        touchmove_mouseover(node);
+      });
     }
-  });
+  };
+
+  gameBoard.addEventListener("touchmove", debounce(handleTouchMove, 0.5));
+
+  // gameBoard.addEventListener("touchmove", (e) => {
+  //   e.preventDefault();
+  //   const [idx, jdx] = calculateCoords(e.touches[0]);
+
+  //   if (idx >= 0 && jdx >= 0) {
+  //     const node = ancestoryMatrix[idx][jdx];
+  //     touchmove_mouseover(node);
+  //   }
+  // });
 
   const calculateCoords = (touchEvent) => {
     const boardData = gameBoard.getBoundingClientRect();

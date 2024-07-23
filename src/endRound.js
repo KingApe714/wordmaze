@@ -1,7 +1,7 @@
 export const endRound = (user, ancestoryMatrix) => {
-  console.log(user.points);
-  console.log(user);
-  console.log(ancestoryMatrix);
+  // console.log(user.points);
+  // console.log(user);
+  // console.log(ancestoryMatrix);
   // const modalBtn = document.querySelector(".modal-button");
   const modalBg = document.querySelector(".modal-bg");
   // const modalClose = document.querySelector(".modal-close");
@@ -42,7 +42,7 @@ export const endRound = (user, ancestoryMatrix) => {
       tile.appendChild(innerTile);
       innerRow.appendChild(tile);
 
-      console.log(node);
+      // console.log(node);
     }
 
     gameBoard.appendChild(innerRow);

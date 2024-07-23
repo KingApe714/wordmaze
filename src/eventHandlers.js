@@ -55,6 +55,14 @@ export const touchmove_mouseover = (node) => {
   }
 };
 
+export const debounce = (func, wait) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+};
+
 export const drawLine = (div1, div2) => {
   const svg = document.getElementById("line-canvas");
 
@@ -149,8 +157,8 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
           }
         } else {
           // here I know that I am looking at a word that has been found
-          console.log("you've found this one before");
-          console.log(current.path);
+          // console.log("you've found this one before");
+          // console.log(current.path);
           user.demerits.foundWords.push({
             path: current.path,
             word: current.word,
@@ -173,9 +181,9 @@ export const touchend_mouseup = (ancestoryMatrix, user) => {
         pointsCounter.innerHTML = user.points;
       } else if (node.lastVisited) {
         // here I know that I am looking at a path that doesn't make a word
-        console.log("this is a red path");
-        console.log(node);
-        console.log(node.currentPath);
+        // console.log("this is a red path");
+        // console.log(node);
+        // console.log(node.currentPath);
         user.demerits.nonwords.push(node.currentPath);
       }
 
