@@ -96,22 +96,43 @@ const setUpNeighbors = (matrix, idx, jdx) => {
   }
 };
 
+const handleDeadNodes = (deadNodes) => {
+  for (const node of deadNodes) {
+    node.gameTile.classList.add("dead-game-tile");
+    const char = node.char;
+
+    node.deadNode = true;
+    for (const div of node.clueCharDivs) {
+      div.innerHTML = char;
+      div.classList.add("dead-game-tile");
+    }
+  }
+};
+
 export const buildBoard = (root, definitions) => {
   const { ancestoryMatrix, dictionary } = buildRootMatrix(root, definitions);
   const paths = new Map();
+  const deadNodes = [];
 
   for (let i = 0; i < 4; i += 1) {
     const innerRow = document.createElement("div");
     innerRow.className = "game-row";
 
     for (let j = 0; j < 4; j += 1) {
-      const char = ancestoryMatrix[i][j].char;
+      const node = ancestoryMatrix[i][j];
+      const char = node.char;
       const trieNode = root.children[char];
-      bfs(i, j, trieNode, ancestoryMatrix, dictionary, paths);
 
+      bfs(i, j, trieNode, ancestoryMatrix, dictionary, paths);
       setUpNeighbors(ancestoryMatrix, i, j);
+
+      console.log(node);
+      if (node.wordCount === 0) {
+        deadNodes.push(node);
+      }
     }
   }
 
+  handleDeadNodes(deadNodes);
   return { ancestoryMatrix, paths };
 };
