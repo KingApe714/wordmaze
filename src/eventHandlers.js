@@ -130,16 +130,7 @@ export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
             const root = node.root;
             root.wordCount -= 1;
 
-            if (root.wordCount === 0) {
-              // here I know that this tile has been completed
-              root.complete = true;
-              root.innerGameTile.classList.add("found-inner-game-tile");
-
-              for (const div of root.clueCharDivs) {
-                div.style.backgroundColor = "green";
-                div.innerHTML = root.char;
-              }
-            }
+            completeCheck(root);
           } else {
             // here I know that this word has been found before
             user.demerits.foundWords.push(node.path);
@@ -150,15 +141,32 @@ export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
         }
       }
 
-      node.active = false;
-      node.visited = false;
-      node.lastVisited = false;
-      node.lines.length = 0;
-      node.innerGameTile.style.backgroundColor = "";
-      node.path = [`${node.idx},${node.jdx}`];
-      node.root = node;
+      deactivateNode(node);
     }
   }
+};
+
+const completeCheck = (root) => {
+  if (root.wordCount === 0) {
+    // here I know that this tile has been completed
+    root.complete = true;
+    root.innerGameTile.classList.add("found-inner-game-tile");
+
+    for (const div of root.clueCharDivs) {
+      div.style.backgroundColor = "green";
+      div.innerHTML = root.char;
+    }
+  }
+};
+
+const deactivateNode = (node) => {
+  node.active = false;
+  node.visited = false;
+  node.lastVisited = false;
+  node.lines.length = 0;
+  node.innerGameTile.style.backgroundColor = "";
+  node.path = [`${node.idx},${node.jdx}`];
+  node.root = node;
 };
 
 export const debounce = (func, wait) => {
