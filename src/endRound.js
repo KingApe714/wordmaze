@@ -1,4 +1,4 @@
-export const endRound = (user, ancestoryMatrix) => {
+export const endRound = (user, ancestoryMatrix, paths) => {
   // console.log(user.points);
   // console.log(user);
   // console.log(ancestoryMatrix);

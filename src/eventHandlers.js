@@ -9,16 +9,16 @@ export const activateMatrix = (ancestoryMatrix) => {
   }
 };
 
-export const activateRootNode = (node) => {
-  node.innerGameDiv.style.backgroundColor = "rgba(255, 0, 0, 0.4)";
+export const activateRootNode = (node, paths) => {
+  node.innerGameTile.style.backgroundColor = "rgba(255, 0, 0, 0.4)";
   node.visited = true;
   node.lastVisited = true;
 
   // highlighting logic for single letter words
-  highlightPath(node, node);
+  highlightPath(node, paths);
 };
 
-export const touchmove_mouseover = (node) => {
+export const touchmove_mousemove = (node, paths) => {
   if (
     node.active &&
     !node.visited &&
@@ -33,37 +33,49 @@ export const touchmove_mouseover = (node) => {
       if (nei.lastVisited) {
         nei.lastVisited = false;
 
-        const line = drawLine(node.innerGameDiv, nei.innerGameDiv);
+        node.root = nei.root;
+        node.path = [...nei.path, `${node.idx},${node.jdx}`];
+
+        const line = drawLine(node.innerGameTile, nei.innerGameTile);
         node.lines = [...nei.lines, line];
         updateLine(node, "rgba(255, 0, 0, 0.4)");
-
-        const key = `${node.i},${node.j}`;
-
-        node.currentPath = [...nei.currentPath, [node.i, node.j]];
-
-        if (nei.current !== null && nei.current.children.has(key)) {
-          // here I know that I've moved into a tile that is a child of the last
-          node.current = nei.current.children.get(key);
-          highlightPath(node, node.current);
-        } else {
-          // here I know that user is not spelling a word
-          nullifyAllNodes(node.ancestoryMatrix);
-        }
+        highlightPath(node, paths);
       }
     }
+
     node.lastVisited = true;
   }
 };
 
-export const debounce = (func, wait) => {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
+const highlightPath = (node, paths) => {
+  const key = node.path.join("-");
+  if (paths.has(key)) {
+    if (!paths.get(key).found) {
+      updateLine(node, "rgba(0, 128, 0, 0.5)");
+    } else {
+      updateLine(node, "rgba(255, 255, 0, 0.4)");
+    }
+  }
 };
 
-export const drawLine = (div1, div2) => {
+const updateLine = (node, color) => {
+  for (const line of node.lines) {
+    line.setAttribute("stroke", color);
+  }
+
+  const len = node.path.length;
+  const path = node.path.slice(0, len - 1).reverse();
+  let current = node;
+
+  for (const coord of path) {
+    current.innerGameTile.style.backgroundColor = color;
+    current = current.neighbors[coord];
+  }
+
+  current.innerGameTile.style.backgroundColor = color;
+};
+
+const drawLine = (div1, div2) => {
   const svg = document.getElementById("line-canvas");
 
   const rect1 = div1.getBoundingClientRect();
@@ -89,111 +101,70 @@ export const drawLine = (div1, div2) => {
   return line;
 };
 
-export const highlightPath = (node) => {
-  const current = node.current;
-  if (current.word) {
-    if (!current.found) {
-      updateLine(node, "rgba(0, 128, 0, 0.5)");
-    } else {
-      updateLine(node, "rgba(255, 255, 0, 0.4)");
-    }
-  }
-};
-
-export const updateLine = (node, color) => {
-  for (const line of node.lines) {
-    line.setAttribute("stroke", color);
-  }
-
-  const ancestoryMatrix = node.ancestoryMatrix;
-
-  for (let i = 0; i < ancestoryMatrix.length; i += 1) {
-    for (let j = 0; j < ancestoryMatrix[i].length; j += 1) {
-      const _node = ancestoryMatrix[i][j];
-      if (_node.visited) {
-        _node.innerGameDiv.style.backgroundColor = color;
-      }
-    }
-  }
-};
-
-export const nullifyAllNodes = (ancestoryMatrix) => {
-  for (let i = 0; i < ancestoryMatrix.length; i += 1) {
-    for (let j = 0; j < ancestoryMatrix[i].length; j += 1) {
-      const node = ancestoryMatrix[i][j];
-      node.current = null;
-    }
-  }
-};
-
-// I need a neat way to grab the path for the non-words when the user mouses up
-// here is where I want to calculate the demerites. I need to know if this tile was previously found and the line that it created
-// take in the user here, select the control panel and add time, points and demerites here
-export const touchend_mouseup = (ancestoryMatrix, user) => {
+export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
+  const pointsCounter = document.querySelector(".points-counter");
   const svg = document.getElementById("line-canvas");
   svg.innerHTML = "";
-
-  const pointsCounter = document.querySelector(".points-counter");
 
   for (let i = 0; i < 4; i += 1) {
     for (let j = 0; j < 4; j += 1) {
       const node = ancestoryMatrix[i][j];
 
-      // here I am looking at a tile that cereates a word
-      if (node.lastVisited && node.current && node.current.word) {
-        const rootNode = node.current.rootNode || node;
-        const current = node.current;
+      if (node.lastVisited) {
+        const key = node.path.join("-");
 
-        if (!current.found) {
-          // here I know that I've found a new word
-          rootNode.foundWordCount += 1;
-          current.found = true;
-          current.clueDiv.style.backgroundColor = "green";
-          // populate the clueDiv
-          for (let i = 0; i < current.word.length; i += 1) {
-            const char = current.word[i];
-            const charDiv = current.clueDiv.childNodes[i];
-            charDiv.innerHTML = char;
+        if (paths.has(key)) {
+          // here I know that I've found a word
+          const obj = paths.get(key);
+          if (!obj.found) {
+            // here I know that this is a word that hasn't been found before
+            addSeconds(node.path.length);
+            obj.found = true;
+            obj.clueWord.style.backgroundColor = "green";
+
+            const pointsKey = node.path.length;
+            const p = points[pointsKey];
+            user.points += p;
+            pointsCounter.innerHTML = user.points;
+
+            const root = node.root;
+            root.wordCount -= 1;
+
+            if (root.wordCount === 0) {
+              // here I know that this tile has been completed
+              root.complete = true;
+              root.innerGameTile.classList.add("found-inner-game-tile");
+
+              for (const div of root.clueCharDivs) {
+                div.style.backgroundColor = "green";
+                div.innerHTML = root.char;
+              }
+            }
+          } else {
+            // here I know that this word has been found before
+            user.demerits.foundWords.push(node.path);
           }
         } else {
-          // here I know that I am looking at a word that has been found
-          // console.log("you've found this one before");
-          // console.log(current.path);
-          user.demerits.foundWords.push({
-            path: current.path,
-            word: current.word,
-          });
+          // here I know that I am looking at a nonword
+          user.demerits.nonwords.push(node.path);
         }
-
-        if (rootNode.foundWordCount === rootNode.wordCount) {
-          rootNode.complete = true;
-          rootNode.innerGameDiv.classList.add("found-inner-game-tile");
-          // rootNode.gameDiv.style.filter = "hue-rotate(90deg) saturate(200%)";
-
-          for (const div of rootNode.clueCharContainers) {
-            div.style.backgroundColor = "green";
-            div.innerHTML = rootNode.char;
-          }
-        }
-
-        addSeconds(current.timeBonus);
-        user.points += current.points;
-        pointsCounter.innerHTML = user.points;
-      } else if (node.lastVisited) {
-        // here I know that I am looking at a path that doesn't make a word
-        // console.log("this is a red path");
-        // console.log(node);
-        // console.log(node.currentPath);
-        user.demerits.nonwords.push(node.currentPath);
       }
 
       node.active = false;
       node.visited = false;
       node.lastVisited = false;
-      node.current = node;
       node.lines.length = 0;
-      node.innerGameDiv.style.backgroundColor = "";
-      node.currentPath = [[node.i, node.j]];
+      node.innerGameTile.style.backgroundColor = "";
+      node.path = [`${node.idx},${node.jdx}`];
+      node.root = node;
     }
   }
+};
+
+export const debounce = (func, wait) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
 };

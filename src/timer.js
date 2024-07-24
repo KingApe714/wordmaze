@@ -3,7 +3,7 @@ let remainingSeconds = 30; // Start with 60 seconds
 
 const timerDisplay = document.querySelector(".timer");
 
-export const startTimer = (onEnd, user, gameBoard) => {
+export const startTimer = (onEnd, user, ancestoryMatrix, paths) => {
   updateTimerDisplay();
   timerInterval = setInterval(() => {
     remainingSeconds--;
@@ -11,7 +11,7 @@ export const startTimer = (onEnd, user, gameBoard) => {
 
     if (remainingSeconds <= 0) {
       clearInterval(timerInterval);
-      onEnd(user, gameBoard);
+      onEnd(user, ancestoryMatrix, paths);
     }
   }, 1000);
 };

@@ -1,72 +1,76 @@
 import {
   activateRootNode,
   activateMatrix,
-  touchmove_mouseover,
+  touchmove_mousemove,
   touchend_mouseup,
   debounce,
 } from "./eventHandlers.js";
 
-export const gamePlay = (ancestoryMatrix, user) => {
+export const gamePlay = (ancestoryMatrix, user, paths, points) => {
   const gameBoard = document.querySelector(".inner-game-container");
 
-  gameBoard.addEventListener("mousedown", (e) => {
-    e.preventDefault();
+  const activatePlay = (event) => {
     activateMatrix(ancestoryMatrix);
-  });
 
-  gameBoard.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    activateMatrix(ancestoryMatrix);
-    const [idx, jdx] = calculateCoords(e.touches[0]);
+    const [idx, jdx] = calculateCoords(event);
 
     // it's possible that user doesn't press on a tile
     if (idx >= 0 && jdx >= 0) {
       const root = ancestoryMatrix[idx][jdx];
-      activateRootNode(root);
+      activateRootNode(root, paths);
     }
+  };
+
+  gameBoard.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    activatePlay(e);
+  });
+
+  gameBoard.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    activatePlay(e.touches[0]);
   });
 
   gameBoard.addEventListener("mouseup", (e) => {
     e.preventDefault();
-    touchend_mouseup(ancestoryMatrix, user);
+    touchend_mouseup(ancestoryMatrix, user, paths, points);
   });
 
   gameBoard.addEventListener("touchend", (e) => {
     e.preventDefault();
-    touchend_mouseup(ancestoryMatrix, user);
+    touchend_mouseup(ancestoryMatrix, user, paths, points);
   });
 
-  // I need to debounce the amount of time this event is fired
-  // I need to learn debounce and request animation frame for this.
-  // this is the FUCKING SOLUTION!!!
-
-  const handleTouchMove = (e) => {
-    // console.log("fire");
-    e.preventDefault();
-
-    const [idx, jdx] = calculateCoords(e.touches[0]);
+  const handleMove = (event, paths) => {
+    const [idx, jdx] = calculateCoords(event);
 
     if (idx >= 0 && jdx >= 0) {
       const node = ancestoryMatrix[idx][jdx];
       requestAnimationFrame(() => {
-        touchmove_mouseover(node);
+        touchmove_mousemove(node, paths);
       });
     }
   };
 
-  gameBoard.addEventListener("touchmove", debounce(handleTouchMove, 0.5));
+  const handleMouseMove = (e, paths) => {
+    e.preventDefault();
+    handleMove(e, paths);
+  };
 
-  // gameBoard.addEventListener("touchmove", (e) => {
-  //   e.preventDefault();
-  //   const [idx, jdx] = calculateCoords(e.touches[0]);
+  const handleMouseMoveWrapper = (e) => handleMouseMove(e, paths);
 
-  //   if (idx >= 0 && jdx >= 0) {
-  //     const node = ancestoryMatrix[idx][jdx];
-  //     touchmove_mouseover(node);
-  //   }
-  // });
+  gameBoard.addEventListener("mousemove", debounce(handleMouseMoveWrapper, 2));
 
-  const calculateCoords = (touchEvent) => {
+  const handleTouchMove = (e, paths) => {
+    e.preventDefault();
+    handleMove(e.touches[0], paths);
+  };
+
+  const handleTouchMoveWrapper = (e) => handleTouchMove(e, paths);
+
+  gameBoard.addEventListener("touchmove", debounce(handleTouchMoveWrapper, 2));
+
+  const calculateCoords = (event) => {
     const boardData = gameBoard.getBoundingClientRect();
     const height = boardData.height;
     const width = boardData.width;
@@ -74,8 +78,8 @@ export const gamePlay = (ancestoryMatrix, user) => {
     const top = boardData.top;
     const left = boardData.left;
 
-    const i = touchEvent.clientY - top;
-    const j = touchEvent.clientX - left;
+    const i = event.clientY - top;
+    const j = event.clientX - left;
 
     // make sure to account for the spaces between tiles
     // 3 - 22 | 28 - 47 | 53 - 72 | 78 - 97

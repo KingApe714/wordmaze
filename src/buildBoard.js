@@ -1,26 +1,31 @@
-import { AncestoryNodeRoot } from "./ancestor.js";
+import { buildRootMatrix } from "./buildMatrix.js";
 
-const generateChar = () =>
-  "AABCDEEFGHIIJKLMNOOPQRSSTUUVWXYZ"[Math.floor(Math.random() * 32)];
+const buildClueDiv = (word, visited, ancMatrix, definition, paths) => {
+  const innerClueContainer = document.querySelector(".inner-clue-container");
+  const definitionsContainer = document.querySelector(".definitions-container");
+  const wordContainer = document.createElement("div");
 
-const generateMatrix = () => {
-  return [
-    [generateChar(), generateChar(), generateChar(), generateChar()],
-    [generateChar(), generateChar(), generateChar(), generateChar()],
-    [generateChar(), generateChar(), generateChar(), generateChar()],
-    [generateChar(), generateChar(), generateChar(), generateChar()],
-  ];
-};
+  wordContainer.className = "clue-word-container";
+  wordContainer.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    definitionsContainer.innerHTML = definition;
+  });
 
-const isValid = (i, j, visited, board, trie) => {
-  return (
-    i >= 0 &&
-    i < 4 &&
-    j >= 0 &&
-    j < 4 &&
-    !visited.includes(`${i},${j}`) &&
-    board[i][j] in trie.children
-  );
+  for (let i = 0; i < word.length; i += 1) {
+    const char = word[i];
+    const charContainer = document.createElement("div");
+    charContainer.className = "clue-char-container";
+    charContainer.innerHTML = char;
+    wordContainer.appendChild(charContainer);
+
+    // create reference between char-clue-div and root ancestory node
+    const [idx, jdx] = visited[i].split(",");
+    const rootAncestor = ancMatrix[idx][jdx];
+    rootAncestor.clueCharDivs.push(charContainer);
+  }
+
+  paths.set(visited.join("-"), { found: false, clueWord: wordContainer });
+  innerClueContainer.appendChild(wordContainer);
 };
 
 const coords = [
@@ -34,134 +39,79 @@ const coords = [
   [0, -1],
 ];
 
-const bfs = (matrix, root, idx, jdx) => {
-  const queue = [[root, idx, jdx, [`${idx},${jdx}`]]];
-  const foundWords = [];
+const isValid = (i, j, visited, board, trie) => {
+  return (
+    i >= 0 &&
+    i < 4 &&
+    j >= 0 &&
+    j < 4 &&
+    !visited.includes(`${i},${j}`) &&
+    board[i][j].char in trie.children
+  );
+};
+
+const isInbounds = (i, j) => {
+  return i >= 0 && i < 4 && j >= 0 && j < 4;
+};
+
+const bfs = (i, j, trieNode, ancMatrix, dictionary, paths) => {
+  const queue = [[i, j, trieNode, [`${i},${j}`]]];
 
   while (queue.length) {
-    const [trie, i, j, visited] = queue.shift();
+    const [idx, jdx, trie, visited] = queue.shift();
 
-    if (trie.word && trie.word.length >= 3) {
-      foundWords.push(trie.word);
+    if (trie.word) {
+      const word = trie.word;
+      const definition = dictionary.get(word);
+      buildClueDiv(word, visited, ancMatrix, definition, paths);
+      ancMatrix[i][j].wordCount += 1;
     }
 
     for (const [deltaI, deltaJ] of coords) {
-      const [nextI, nextJ] = [i + deltaI, j + deltaJ];
+      const [nextI, nextJ] = [idx + deltaI, jdx + deltaJ];
 
-      if (isValid(nextI, nextJ, visited, matrix, trie)) {
-        const char = matrix[nextI][nextJ];
-        const nextVisited = [...visited];
+      if (isValid(nextI, nextJ, visited, ancMatrix, trie)) {
+        const nextVisited = [...visited, `${nextI},${nextJ}`];
+        const char = ancMatrix[nextI][nextJ].char;
         const nextTrie = trie.children[char];
 
-        nextVisited.push(`${nextI},${nextJ}`);
-        queue.push([nextTrie, nextI, nextJ, nextVisited]);
+        queue.push([nextI, nextJ, nextTrie, nextVisited]);
       }
     }
   }
-
-  return foundWords;
 };
 
-const boardCheck = (board, root) => {
-  const words = [];
+const setUpNeighbors = (matrix, idx, jdx) => {
+  const node = matrix[idx][jdx];
+
+  for (const [deltaI, deltaJ] of coords) {
+    const [nextI, nextJ] = [idx + deltaI, jdx + deltaJ];
+
+    if (isInbounds(nextI, nextJ)) {
+      const key = `${nextI},${nextJ}`;
+      const nei = matrix[nextI][nextJ];
+
+      node.neighbors[key] = nei;
+    }
+  }
+};
+
+export const buildBoard = (root, definitions) => {
+  const { ancestoryMatrix, dictionary } = buildRootMatrix(root, definitions);
+  const paths = new Map();
 
   for (let i = 0; i < 4; i += 1) {
-    for (let j = 0; j < 4; j += 1) {
-      const char = board[i][j];
-      const node = root.children[char];
-      const currentFound = bfs(board, node, i, j);
-      words.push(...currentFound);
-    }
-  }
-
-  return words;
-};
-
-const findBoard = (root) => {
-  let currentMatrix = generateMatrix();
-  let foundWords = boardCheck(currentMatrix, root);
-
-  while (foundWords.length < 70) {
-    currentMatrix = generateMatrix();
-    foundWords = boardCheck(currentMatrix, root);
-  }
-
-  return { currentMatrix, foundWords };
-};
-
-const generateRandomCombinations = (rows, cols) => {
-  const combos = [];
-
-  // Generate all possible combos of (i, j)
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      combos.push([i, j]);
-    }
-  }
-
-  // Shuffle the combos array to get random combos
-  for (let k = combos.length - 1; k > 0; k--) {
-    const randomIndex = Math.floor(Math.random() * (k + 1));
-    [combos[k], combos[randomIndex]] = [combos[randomIndex], combos[k]];
-  }
-
-  const res = [];
-  let inner = [];
-
-  for (let i = 0; i < combos.length; i += 1) {
-    inner.push(combos[i]);
-
-    if (i !== 0 && i % 4 === 3) {
-      res.push(inner);
-      inner = [];
-    }
-  }
-
-  // console.log(combos);
-  return res;
-};
-
-export const buildBoard = (root) => {
-  const { currentMatrix, foundWords } = findBoard(root);
-  const innerGameContainer = document.querySelector(".inner-game-container");
-  const combos = generateRandomCombinations(4, 4);
-  const gameBoard = [];
-
-  // console.log(combos);
-
-  for (let i = 0; i < 4; i += 1) {
-    const row = document.createElement("div");
-    row.className = "game-row";
-    const inner = [];
+    const innerRow = document.createElement("div");
+    innerRow.className = "game-row";
 
     for (let j = 0; j < 4; j += 1) {
-      const char = currentMatrix[i][j];
-      const tile = document.createElement("div");
-      const [idx, jdx] = combos[i][j];
-      tile.className = `game-tile piece-${idx}-${jdx}`;
-      tile.innerHTML = char;
-      // tile.style.backgroundImage = `url(../images/piece_${i}_${j}.jpg)`;
+      const char = ancestoryMatrix[i][j].char;
+      const trieNode = root.children[char];
+      bfs(i, j, trieNode, ancestoryMatrix, dictionary, paths);
 
-      const innerTile = document.createElement("div");
-      innerTile.className = `inner-game-tile`;
-      tile.appendChild(innerTile);
-
-      const node = new AncestoryNodeRoot(
-        i,
-        j,
-        char,
-        tile,
-        innerTile,
-        gameBoard
-      );
-
-      inner.push(node);
-      row.appendChild(tile);
+      setUpNeighbors(ancestoryMatrix, i, j);
     }
-
-    innerGameContainer.appendChild(row);
-    gameBoard.push(inner);
   }
 
-  return gameBoard;
+  return { ancestoryMatrix, paths };
 };
