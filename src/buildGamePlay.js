@@ -45,9 +45,9 @@ export const gamePlay = (ancestoryMatrix, user, paths, points) => {
 
     if (idx >= 0 && jdx >= 0) {
       const node = ancestoryMatrix[idx][jdx];
-      requestAnimationFrame(() => {
-        touchmove_mousemove(node, paths, user, ancestoryMatrix);
-      });
+      // requestAnimationFrame(() => {
+      touchmove_mousemove(node, paths, user, ancestoryMatrix);
+      // });
     }
   };
 

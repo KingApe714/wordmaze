@@ -27,6 +27,7 @@ const initGame = async () => {
     activeBoard: false,
     lastVisitedTile: null,
     firstVisitedTile: null,
+    visited: 1n,
     lines: [],
     path: [],
     points: 0,

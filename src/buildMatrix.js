@@ -143,6 +143,8 @@ const buildGameTile = (combo, char) => {
   return [gameTile, innerTile];
 };
 
+const visitIDs = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53];
+
 export const buildRootMatrix = (root, definitions) => {
   const [charMatrix, foundWords] = findBoard(root);
   const dictionary = findDictionary(foundWords, definitions);
@@ -162,7 +164,8 @@ export const buildRootMatrix = (root, definitions) => {
       const [gameTile, innerTile] = buildGameTile(combos[i][j], char);
       innerRow.appendChild(gameTile);
 
-      const node = new Ancestor(i, j, char, gameTile, innerTile);
+      const visitID = BigInt(visitIDs[i * 4 + j]);
+      const node = new Ancestor(i, j, char, gameTile, innerTile, visitID);
       inner.push(node);
     }
 

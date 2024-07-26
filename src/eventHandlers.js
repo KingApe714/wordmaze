@@ -1,11 +1,10 @@
 import { addSeconds } from "./timer.js";
 
 export const activateRootNode = (node, paths, user, ancestoryMatrix) => {
-  node.visited = true;
-
   const coords = `${node.idx},${node.jdx}`;
   user.firstVisitedTile = coords;
   user.lastVisitedTile = coords;
+  user.visited *= node.visitID;
   user.path.push(coords);
 
   // highlighting logic for single letter words
@@ -13,15 +12,16 @@ export const activateRootNode = (node, paths, user, ancestoryMatrix) => {
 };
 
 export const touchmove_mousemove = (node, paths, user, ancestoryMatrix) => {
+  const visited = user.visited % node.visitID === 0n;
   const key = user.lastVisitedTile;
 
-  if (user.activeBoard && !node.visited && key in node.neighbors) {
-    node.visited = true;
-    const nei = node.neighbors[key];
+  if (user.activeBoard && !visited && key in node.neighbors) {
+    user.visited *= node.visitID;
 
     const coords = `${node.idx},${node.jdx}`;
     user.path.push(coords);
 
+    const nei = node.neighbors[key];
     const line = drawLine(node.innerGameTile, nei.innerGameTile);
     user.lines.push(line);
     highlightPath(user, paths, ancestoryMatrix);
@@ -51,6 +51,7 @@ const updateLine = (user, color, ancestoryMatrix) => {
     const [idx, jdx] = path[i].split(",");
     const innerGameTile = ancestoryMatrix[idx][jdx].innerGameTile;
     innerGameTile.style.backgroundColor = color;
+
     if (lines[i]) {
       const line = lines[i];
       line.setAttribute("stroke", color);
@@ -85,7 +86,6 @@ const drawLine = (div1, div2) => {
 };
 
 export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
-  const pointsCounter = document.querySelector(".points-counter");
   const svg = document.getElementById("line-canvas");
   svg.innerHTML = "";
 
@@ -97,13 +97,7 @@ export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
     if (!obj.found) {
       // here I know that this is a word that hasn't been found before
       addSeconds(user.path.length);
-      obj.found = true;
-      obj.clueWord.style.backgroundColor = "green";
-
-      const pointsKey = user.path.length;
-      const p = points[pointsKey];
-      user.points += p;
-      pointsCounter.innerHTML = user.points;
+      awardPoints(obj, user, points);
 
       const [idx, jdx] = user.firstVisitedTile.split(",");
       const root = ancestoryMatrix[idx][jdx];
@@ -122,6 +116,20 @@ export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
   deactivateBoard(user, ancestoryMatrix);
 };
 
+const awardPoints = (obj, user, points) => {
+  const pointsCounter = document.querySelector(".points-counter");
+  obj.found = true;
+  obj.clueWord.style.backgroundColor = "green";
+
+  const pointsKey = user.path.length;
+  const p = points[pointsKey];
+  user.points += p;
+  pointsCounter.innerHTML = user.points;
+};
+
+// consider having the class name preselected for the clue divs as well
+// I could have these thrown into the user as well
+// Then I just add or remove whatever I need from that css class
 const completeCheck = (root) => {
   if (root.wordCount === 0) {
     // here I know that this tile has been completed
@@ -135,16 +143,20 @@ const completeCheck = (root) => {
   }
 };
 
+// consider having the class name preselected
+// I could throw just the class into the user object
+// Then I could simply add or remove whatever I need from there
 const deactivateBoard = (user, ancestoryMatrix) => {
   for (const coords of user.path) {
     const [idx, jdx] = coords.split(",");
     const node = ancestoryMatrix[idx][jdx];
-    node.visited = false;
     node.innerGameTile.style.backgroundColor = "";
   }
 
   user.activeBoard = false;
   user.lastVisitedTile = null;
+  user.firstVisitedTile = null;
+  user.visited = 1n;
   user.lines.length = 0;
   user.path.length = 0;
 };
