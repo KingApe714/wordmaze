@@ -277,10 +277,6 @@ svg {
     height: 93%;
   }
 
-  .game-tile {
-    border-radius: 10px;
-  }
-
   .modal {
     height: 83%;
   }
@@ -318,10 +314,6 @@ svg {
 
   .inner-clue-container {
     height: 93%;
-  }
-
-  .game-tile {
-    border-radius: 15px;
   }
 
   .modal {

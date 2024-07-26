@@ -15,9 +15,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
+  border-radius: 25%;
   font-size: 4.2vh;
   text-shadow: 0px 0.5px white;
+}
+
+.inner-game-tile {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+}
+
+.found-inner-game-tile {
+  background-color: rgba(0, 230, 65, 0.45);
+  box-shadow: white -1px 3px 10px;
+}
+
+.dead-game-tile {
+  filter: brightness(70%);
+  color: white;
 }
 
 .piece-0-0 {
@@ -67,21 +84,4 @@
 }
 .piece-3-3 {
   background-image: url(../images/piece_3_3.jpg);
-}
-
-.found-inner-game-tile {
-  background-color: rgba(0, 230, 65, 0.45);
-  box-shadow: white -1px 3px 10px;
-}
-
-.dead-game-tile {
-  filter: brightness(70%);
-  color: white;
-}
-
-.inner-game-tile {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  border-radius: inherit;
 }

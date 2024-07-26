@@ -143,7 +143,10 @@ const buildGameTile = (combo, char) => {
   return [gameTile, innerTile];
 };
 
-const visitIDs = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53];
+const visitIDs = [
+  2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
+  73, 79, 83, 89, 97,
+];
 
 export const buildRootMatrix = (root, definitions) => {
   const [charMatrix, foundWords] = findBoard(root);
@@ -173,5 +176,6 @@ export const buildRootMatrix = (root, definitions) => {
     innerGameContainer.appendChild(innerRow);
   }
 
+  console.log(ancestoryMatrix);
   return { ancestoryMatrix, dictionary };
 };

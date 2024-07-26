@@ -16,8 +16,6 @@ export const touchmove_mousemove = (node, paths, user, ancestoryMatrix) => {
   const key = user.lastVisitedTile;
 
   if (user.activeBoard && !visited && key in node.neighbors) {
-    user.visited *= node.visitID;
-
     const coords = `${node.idx},${node.jdx}`;
     user.path.push(coords);
 
@@ -27,6 +25,7 @@ export const touchmove_mousemove = (node, paths, user, ancestoryMatrix) => {
     highlightPath(user, paths, ancestoryMatrix);
 
     user.lastVisitedTile = coords;
+    user.visited *= node.visitID;
   }
 };
 
@@ -98,11 +97,7 @@ export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
       // here I know that this is a word that hasn't been found before
       addSeconds(user.path.length);
       awardPoints(obj, user, points);
-
-      const [idx, jdx] = user.firstVisitedTile.split(",");
-      const root = ancestoryMatrix[idx][jdx];
-      root.wordCount -= 1;
-      completeCheck(root);
+      handleRootNode(user, ancestoryMatrix);
     } else {
       // here I know that this word has been found before
       user.demerits.foundWords.push(user.path.slice());
@@ -130,12 +125,18 @@ const awardPoints = (obj, user, points) => {
 // consider having the class name preselected for the clue divs as well
 // I could have these thrown into the user as well
 // Then I just add or remove whatever I need from that css class
-const completeCheck = (root) => {
+const handleRootNode = (user, ancestoryMatrix) => {
+  const [idx, jdx] = user.firstVisitedTile.split(",");
+  const root = ancestoryMatrix[idx][jdx];
+  root.wordCount -= 1;
+
   if (root.wordCount === 0) {
     // here I know that this tile has been completed
     root.complete = true;
     root.innerGameTile.classList.add("found-inner-game-tile");
 
+    // there's some styling logic that I a missing here for this tile
+    // the background image should be the same as the root node that it references
     for (const div of root.clueCharDivs) {
       div.style.backgroundColor = "green";
       div.innerHTML = root.char;
