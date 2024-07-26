@@ -1,6 +1,6 @@
 export const endRound = (user, ancestoryMatrix, paths) => {
   // console.log(user.points);
-  // console.log(user);
+  console.log(user);
   // console.log(ancestoryMatrix);
   // const modalBtn = document.querySelector(".modal-button");
   const modalBg = document.querySelector(".modal-bg");

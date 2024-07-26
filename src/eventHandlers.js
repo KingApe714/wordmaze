@@ -1,78 +1,61 @@
 import { addSeconds } from "./timer.js";
 
-export const activateMatrix = (ancestoryMatrix) => {
-  for (let i = 0; i < 4; i += 1) {
-    for (let j = 0; j < 4; j += 1) {
-      const node = ancestoryMatrix[i][j];
-      node.active = true;
-    }
-  }
-};
-
-export const activateRootNode = (node, paths) => {
-  node.innerGameTile.style.backgroundColor = "rgba(255, 0, 0, 0.4)";
+export const activateRootNode = (node, paths, user, ancestoryMatrix) => {
   node.visited = true;
-  node.lastVisited = true;
+
+  const coords = `${node.idx},${node.jdx}`;
+  user.firstVisitedTile = coords;
+  user.lastVisitedTile = coords;
+  user.path.push(coords);
 
   // highlighting logic for single letter words
-  highlightPath(node, paths);
+  highlightPath(user, paths, ancestoryMatrix);
 };
 
-export const touchmove_mousemove = (node, paths) => {
-  if (
-    node.active &&
-    !node.visited &&
-    Object.values(node.neighbors).some((nei) => nei.lastVisited)
-  ) {
+export const touchmove_mousemove = (node, paths, user, ancestoryMatrix) => {
+  const key = user.lastVisitedTile;
+
+  if (user.activeBoard && !node.visited && key in node.neighbors) {
     node.visited = true;
+    const nei = node.neighbors[key];
 
-    // loop to find the last visited neighbor
-    for (const key in node.neighbors) {
-      const nei = node.neighbors[key];
+    const coords = `${node.idx},${node.jdx}`;
+    user.path.push(coords);
 
-      if (nei.lastVisited) {
-        nei.lastVisited = false;
+    const line = drawLine(node.innerGameTile, nei.innerGameTile);
+    user.lines.push(line);
+    highlightPath(user, paths, ancestoryMatrix);
 
-        node.root = nei.root;
-        node.path = [...nei.path, `${node.idx},${node.jdx}`];
-
-        const line = drawLine(node.innerGameTile, nei.innerGameTile);
-        node.lines = [...nei.lines, line];
-        updateLine(node, "rgba(255, 0, 0, 0.4)");
-        highlightPath(node, paths);
-      }
-    }
-
-    node.lastVisited = true;
+    user.lastVisitedTile = coords;
   }
 };
 
-const highlightPath = (node, paths) => {
-  const key = node.path.join("-");
+const highlightPath = (user, paths, ancestoryMatrix) => {
+  const key = user.path.join("-");
   if (paths.has(key)) {
     if (!paths.get(key).found) {
-      updateLine(node, "rgba(0, 128, 0, 0.5)");
+      updateLine(user, "rgba(0, 128, 0, 0.5)", ancestoryMatrix);
     } else {
-      updateLine(node, "rgba(255, 255, 0, 0.4)");
+      updateLine(user, "rgba(255, 255, 0, 0.4)", ancestoryMatrix);
     }
+  } else {
+    updateLine(user, "rgba(255, 0, 0, 0.4)", ancestoryMatrix);
   }
 };
 
-const updateLine = (node, color) => {
-  for (const line of node.lines) {
-    line.setAttribute("stroke", color);
+const updateLine = (user, color, ancestoryMatrix) => {
+  const path = user.path;
+  const lines = user.lines;
+
+  for (let i = 0; i < path.length; i += 1) {
+    const [idx, jdx] = path[i].split(",");
+    const innerGameTile = ancestoryMatrix[idx][jdx].innerGameTile;
+    innerGameTile.style.backgroundColor = color;
+    if (lines[i]) {
+      const line = lines[i];
+      line.setAttribute("stroke", color);
+    }
   }
-
-  const len = node.path.length;
-  const path = node.path.slice(0, len - 1).reverse();
-  let current = node;
-
-  for (const coord of path) {
-    current.innerGameTile.style.backgroundColor = color;
-    current = current.neighbors[coord];
-  }
-
-  current.innerGameTile.style.backgroundColor = color;
 };
 
 const drawLine = (div1, div2) => {
@@ -93,7 +76,7 @@ const drawLine = (div1, div2) => {
   line.setAttribute("y1", y1);
   line.setAttribute("x2", x2);
   line.setAttribute("y2", y2);
-  line.setAttribute("stroke", "red");
+  line.setAttribute("stroke", "rgba(255, 0, 0, 0.4)");
   line.setAttribute("stroke-width", "2");
 
   svg.appendChild(line);
@@ -106,44 +89,37 @@ export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
   const svg = document.getElementById("line-canvas");
   svg.innerHTML = "";
 
-  for (let i = 0; i < 4; i += 1) {
-    for (let j = 0; j < 4; j += 1) {
-      const node = ancestoryMatrix[i][j];
+  const key = user.path.join("-");
 
-      if (node.lastVisited) {
-        const key = node.path.join("-");
+  if (paths.has(key)) {
+    // here I know that I've found a word
+    const obj = paths.get(key);
+    if (!obj.found) {
+      // here I know that this is a word that hasn't been found before
+      addSeconds(user.path.length);
+      obj.found = true;
+      obj.clueWord.style.backgroundColor = "green";
 
-        if (paths.has(key)) {
-          // here I know that I've found a word
-          const obj = paths.get(key);
-          if (!obj.found) {
-            // here I know that this is a word that hasn't been found before
-            addSeconds(node.path.length);
-            obj.found = true;
-            obj.clueWord.style.backgroundColor = "green";
+      const pointsKey = user.path.length;
+      const p = points[pointsKey];
+      user.points += p;
+      pointsCounter.innerHTML = user.points;
 
-            const pointsKey = node.path.length;
-            const p = points[pointsKey];
-            user.points += p;
-            pointsCounter.innerHTML = user.points;
-
-            const root = node.root;
-            root.wordCount -= 1;
-
-            completeCheck(root);
-          } else {
-            // here I know that this word has been found before
-            user.demerits.foundWords.push(node.path);
-          }
-        } else {
-          // here I know that I am looking at a nonword
-          user.demerits.nonwords.push(node.path);
-        }
-      }
-
-      deactivateNode(node);
+      const [idx, jdx] = user.firstVisitedTile.split(",");
+      const root = ancestoryMatrix[idx][jdx];
+      root.wordCount -= 1;
+      completeCheck(root);
+    } else {
+      // here I know that this word has been found before
+      user.demerits.foundWords.push(user.path.slice());
     }
+  } else {
+    // here I know that I am looking at a nonword
+    user.demerits.nonwords.push(user.path.slice());
   }
+
+  // from here I need to deactivate the nodes
+  deactivateBoard(user, ancestoryMatrix);
 };
 
 const completeCheck = (root) => {
@@ -159,14 +135,18 @@ const completeCheck = (root) => {
   }
 };
 
-const deactivateNode = (node) => {
-  node.active = false;
-  node.visited = false;
-  node.lastVisited = false;
-  node.lines.length = 0;
-  node.innerGameTile.style.backgroundColor = "";
-  node.path = [`${node.idx},${node.jdx}`];
-  node.root = node;
+const deactivateBoard = (user, ancestoryMatrix) => {
+  for (const coords of user.path) {
+    const [idx, jdx] = coords.split(",");
+    const node = ancestoryMatrix[idx][jdx];
+    node.visited = false;
+    node.innerGameTile.style.backgroundColor = "";
+  }
+
+  user.activeBoard = false;
+  user.lastVisitedTile = null;
+  user.lines.length = 0;
+  user.path.length = 0;
 };
 
 export const debounce = (func, wait) => {

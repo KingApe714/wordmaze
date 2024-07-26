@@ -1,6 +1,5 @@
 import {
   activateRootNode,
-  activateMatrix,
   touchmove_mousemove,
   touchend_mouseup,
   debounce,
@@ -10,14 +9,14 @@ export const gamePlay = (ancestoryMatrix, user, paths, points) => {
   const gameBoard = document.querySelector(".inner-game-container");
 
   const activatePlay = (event) => {
-    activateMatrix(ancestoryMatrix);
+    user.activeBoard = true;
 
     const [idx, jdx] = calculateCoords(event);
 
     // it's possible that user doesn't press on a tile
     if (idx >= 0 && jdx >= 0) {
       const root = ancestoryMatrix[idx][jdx];
-      activateRootNode(root, paths);
+      activateRootNode(root, paths, user, ancestoryMatrix);
     }
   };
 
@@ -47,7 +46,7 @@ export const gamePlay = (ancestoryMatrix, user, paths, points) => {
     if (idx >= 0 && jdx >= 0) {
       const node = ancestoryMatrix[idx][jdx];
       requestAnimationFrame(() => {
-        touchmove_mousemove(node, paths);
+        touchmove_mousemove(node, paths, user, ancestoryMatrix);
       });
     }
   };
@@ -59,7 +58,10 @@ export const gamePlay = (ancestoryMatrix, user, paths, points) => {
 
   const handleMouseMoveWrapper = (e) => handleMouseMove(e, paths);
 
-  gameBoard.addEventListener("mousemove", debounce(handleMouseMoveWrapper, 2));
+  gameBoard.addEventListener(
+    "mousemove",
+    debounce(handleMouseMoveWrapper, 0.02)
+  );
 
   const handleTouchMove = (e, paths) => {
     e.preventDefault();
@@ -68,7 +70,10 @@ export const gamePlay = (ancestoryMatrix, user, paths, points) => {
 
   const handleTouchMoveWrapper = (e) => handleTouchMove(e, paths);
 
-  gameBoard.addEventListener("touchmove", debounce(handleTouchMoveWrapper, 2));
+  gameBoard.addEventListener(
+    "touchmove",
+    debounce(handleTouchMoveWrapper, 0.02)
+  );
 
   const calculateCoords = (event) => {
     const boardData = gameBoard.getBoundingClientRect();

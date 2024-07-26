@@ -24,6 +24,11 @@ const initGame = async () => {
   const root = buildTrie(definitions);
   const { ancestoryMatrix, paths } = buildBoard(root, definitions);
   const user = {
+    activeBoard: false,
+    lastVisitedTile: null,
+    firstVisitedTile: null,
+    lines: [],
+    path: [],
     points: 0,
     demerits: {
       nonwords: [],

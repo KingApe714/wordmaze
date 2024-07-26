@@ -126,7 +126,6 @@ export const buildBoard = (root, definitions) => {
       bfs(i, j, trieNode, ancestoryMatrix, dictionary, paths);
       setUpNeighbors(ancestoryMatrix, i, j);
 
-      console.log(node);
       if (node.wordCount === 0) {
         deadNodes.push(node);
       }

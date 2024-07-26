@@ -7,14 +7,9 @@ export class Ancestor {
     this.innerGameTile = innerDiv;
     this.wordCount = 0;
     this.clueCharDivs = [];
-    this.active = false;
     this.visited = false;
-    this.lastVisited = false;
     this.neighbors = {};
-    this.path = [`${idx},${jdx}`];
-    this.lines = [];
     this.complete = false;
     this.deadNode = false;
-    this.root = this;
   }
 }
