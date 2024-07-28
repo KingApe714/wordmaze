@@ -27,13 +27,16 @@
   border-radius: inherit;
 }
 
+.active-inner-game-tile {
+}
+
 .found-inner-game-tile {
   background-color: rgba(0, 230, 65, 0.45);
   box-shadow: white -1px 3px 10px;
 }
 
 .dead-game-tile {
-  filter: brightness(70%);
+  filter: brightness(70%) !important;
   color: white;
 }
 

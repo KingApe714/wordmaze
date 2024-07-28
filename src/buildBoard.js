@@ -8,23 +8,21 @@ const buildClueDiv = (word, visited, ancMatrix, definition, paths) => {
   wordContainer.className = "clue-word-container";
   wordContainer.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    definitionsContainer.innerHTML = definition;
+    definitionsContainer.innerHTML = definition || null;
   });
 
   for (let i = 0; i < word.length; i += 1) {
-    const char = word[i];
-    const charContainer = document.createElement("div");
-    charContainer.className = "clue-char-container";
-    charContainer.innerHTML = char;
-    wordContainer.appendChild(charContainer);
-
     // create reference between char-clue-div and root ancestory node
     const [idx, jdx] = visited[i].split(",");
     const rootAncestor = ancMatrix[idx][jdx];
+    const charContainer = document.createElement("div");
+    charContainer.className = "clue-char-container";
+
+    wordContainer.appendChild(charContainer);
     rootAncestor.clueCharDivs.push(charContainer);
   }
 
-  paths.set(visited.join("-"), { found: false, clueWord: wordContainer });
+  paths.set(visited.join("-"), { found: false, wordContainer, word });
   innerClueContainer.appendChild(wordContainer);
 };
 
@@ -103,7 +101,10 @@ const handleDeadNodes = (deadNodes) => {
 
     node.deadNode = true;
     for (const div of node.clueCharDivs) {
-      div.innerHTML = char;
+      div.style.backgroundImage = window.getComputedStyle(
+        node.gameTile
+      ).backgroundImage;
+      div.innerText = char;
       div.classList.add("dead-game-tile");
     }
   }

@@ -42,6 +42,7 @@ const highlightPath = (user, paths, ancestoryMatrix) => {
   }
 };
 
+// I'm wondering if there is a way to update this line without the loop
 const updateLine = (user, color, ancestoryMatrix) => {
   const path = user.path;
   const lines = user.lines;
@@ -96,7 +97,7 @@ export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
     if (!obj.found) {
       // here I know that this is a word that hasn't been found before
       addSeconds(user.path.length);
-      awardPoints(obj, user, points);
+      awardPoints(obj, user, points, ancestoryMatrix);
       handleRootNode(user, ancestoryMatrix);
     } else {
       // here I know that this word has been found before
@@ -111,10 +112,19 @@ export const touchend_mouseup = (ancestoryMatrix, user, paths, points) => {
   deactivateBoard(user, ancestoryMatrix);
 };
 
-const awardPoints = (obj, user, points) => {
+// here is where I need to manipulate the content of the clueDiv
+const awardPoints = (obj, user, points, ancestoryMatrix) => {
   const pointsCounter = document.querySelector(".points-counter");
   obj.found = true;
-  obj.clueWord.style.backgroundColor = "green";
+
+  const charDivs = obj.wordContainer.childNodes;
+  const word = obj.word;
+
+  for (let i = 0; i < word.length; i += 1) {
+    const char = word[i];
+    const div = charDivs[i];
+    div.innerHTML = char;
+  }
 
   const pointsKey = user.path.length;
   const p = points[pointsKey];
@@ -122,9 +132,6 @@ const awardPoints = (obj, user, points) => {
   pointsCounter.innerHTML = user.points;
 };
 
-// consider having the class name preselected for the clue divs as well
-// I could have these thrown into the user as well
-// Then I just add or remove whatever I need from that css class
 const handleRootNode = (user, ancestoryMatrix) => {
   const [idx, jdx] = user.firstVisitedTile.split(",");
   const root = ancestoryMatrix[idx][jdx];
@@ -134,19 +141,15 @@ const handleRootNode = (user, ancestoryMatrix) => {
     // here I know that this tile has been completed
     root.complete = true;
     root.innerGameTile.classList.add("found-inner-game-tile");
-
-    // there's some styling logic that I a missing here for this tile
-    // the background image should be the same as the root node that it references
     for (const div of root.clueCharDivs) {
-      div.style.backgroundColor = "green";
-      div.innerHTML = root.char;
+      div.style.backgroundImage = window.getComputedStyle(
+        root.gameTile
+      ).backgroundImage;
+      div.innerText = root.char;
     }
   }
 };
 
-// consider having the class name preselected
-// I could throw just the class into the user object
-// Then I could simply add or remove whatever I need from there
 const deactivateBoard = (user, ancestoryMatrix) => {
   for (const coords of user.path) {
     const [idx, jdx] = coords.split(",");

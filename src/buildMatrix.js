@@ -158,16 +158,15 @@ export const buildRootMatrix = (root, definitions) => {
   for (let i = 0; i < 4; i += 1) {
     const innerRow = document.createElement("div");
     innerRow.className = "game-row";
-
     const inner = [];
 
     for (let j = 0; j < 4; j += 1) {
       const char = charMatrix[i][j];
-
       const [gameTile, innerTile] = buildGameTile(combos[i][j], char);
       innerRow.appendChild(gameTile);
 
-      const visitID = BigInt(visitIDs[i * 4 + j]);
+      const idx = i * 4 + j;
+      const visitID = BigInt(visitIDs[idx]);
       const node = new Ancestor(i, j, char, gameTile, innerTile, visitID);
       inner.push(node);
     }
@@ -176,6 +175,5 @@ export const buildRootMatrix = (root, definitions) => {
     innerGameContainer.appendChild(innerRow);
   }
 
-  console.log(ancestoryMatrix);
   return { ancestoryMatrix, dictionary };
 };

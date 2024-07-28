@@ -37,8 +37,17 @@ const initGame = async () => {
     },
   };
 
+  const arr = [];
+
+  for (const [key, val] of paths) {
+    arr.push(val.word);
+  }
+
+  console.log(arr);
+
   gamePlay(ancestoryMatrix, user, paths, points);
   startTimer(endRound, user, ancestoryMatrix, paths);
 };
 
+// console.log(document.styleSheets[2].cssRules);
 initGame();
