@@ -1,4 +1,5 @@
 .clue-char-container {
+  background-color: tan;
   position: relative;
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
