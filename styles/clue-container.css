@@ -1,4 +1,5 @@
 .clue-char-container {
+  position: relative;
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
@@ -20,10 +21,11 @@
 }
 
 .inner-clue-char-container {
+  background-color: rgba(0, 230, 65, 0.45);
   border-radius: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 .clue-container {

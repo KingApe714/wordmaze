@@ -123,7 +123,7 @@ const awardPoints = (obj, user, points, ancestoryMatrix) => {
   for (let i = 0; i < word.length; i += 1) {
     const char = word[i];
     const div = charDivs[i];
-    div.innerHTML = char;
+    if (!div.innerHTML) div.innerHTML = char;
   }
 
   const pointsKey = user.path.length;
@@ -142,10 +142,12 @@ const handleRootNode = (user, ancestoryMatrix) => {
     root.complete = true;
     root.innerGameTile.classList.add("found-inner-game-tile");
     for (const div of root.clueCharDivs) {
-      div.style.backgroundImage = window.getComputedStyle(
-        root.gameTile
-      ).backgroundImage;
+      div.classList.add(root.piece);
       div.innerText = root.char;
+
+      const inner = document.createElement("div");
+      inner.className = "inner-clue-char-container";
+      div.appendChild(inner);
     }
   }
 };

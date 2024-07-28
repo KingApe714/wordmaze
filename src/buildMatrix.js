@@ -167,7 +167,16 @@ export const buildRootMatrix = (root, definitions) => {
 
       const idx = i * 4 + j;
       const visitID = BigInt(visitIDs[idx]);
-      const node = new Ancestor(i, j, char, gameTile, innerTile, visitID);
+      const piece = `piece-${i}-${j}`;
+      const node = new Ancestor(
+        i,
+        j,
+        char,
+        gameTile,
+        innerTile,
+        visitID,
+        piece
+      );
       inner.push(node);
     }
 
