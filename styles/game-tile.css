@@ -30,9 +30,9 @@
 .active-inner-game-tile {
 }
 
-.found-inner-game-tile {
-  background-color: rgba(0, 230, 65, 0.45);
-  box-shadow: white -1px 3px 10px;
+.found-game-tile {
+  filter: brightness(1) saturate(8.5) sepia(0.5) hue-rotate(90deg) contrast(0.9);
+  box-shadow: 0.1vh 0.1vh 0.3vh white inset, white -1px 3px 10px;
 }
 
 .dead-game-tile {

@@ -21,12 +21,9 @@
   margin: 0.3vh;
 }
 
-.inner-clue-char-container {
-  background-color: rgba(0, 230, 65, 0.45);
-  border-radius: inherit;
-  position: absolute;
-  height: 100%;
-  width: 100%;
+.found-clue-char {
+  filter: brightness(1) saturate(8.5) sepia(0.5) hue-rotate(90deg) contrast(0.9);
+  box-shadow: 0.1vh 0.1vh 0.3vh white inset, white -0.01vh 0.01vh 0.5vh;
 }
 
 .clue-container {

@@ -140,14 +140,16 @@ const handleRootNode = (user, ancestoryMatrix) => {
   if (root.wordCount === 0) {
     // here I know that this tile has been completed
     root.complete = true;
-    root.innerGameTile.classList.add("found-inner-game-tile");
+    root.gameTile.classList.add("found-game-tile");
+
+    // this loop, even though it's making each indivdual div look how I want it its making the delay far worse on mobile.
     for (const div of root.clueCharDivs) {
-      div.classList.add(root.piece);
+      div.classList.add(root.piece, "found-clue-char");
       div.innerText = root.char;
 
-      const inner = document.createElement("div");
-      inner.className = "inner-clue-char-container";
-      div.appendChild(inner);
+      // const inner = document.createElement("div");
+      // inner.className = "inner-clue-char-container";
+      // div.appendChild(inner);
     }
   }
 };
