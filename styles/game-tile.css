@@ -27,7 +27,10 @@
   border-radius: inherit;
 }
 
-.active-inner-game-tile {
+/* this is more or less the tile that I'm going for on the found game tile */
+.found-inner-game-tile {
+  background-color: rgba(0, 230, 65, 0.45);
+  box-shadow: white -1px 3px 10px;
 }
 
 .found-game-tile {

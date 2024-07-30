@@ -12,6 +12,15 @@ const generateMatrix = () => {
   ];
 };
 
+const genMatrix = () => {
+  return [
+    ["D", "P", "C", "J"],
+    ["J", "E", "X", "O"],
+    ["B", "I", "O", "Z"],
+    ["N", "I", "T", "Q"],
+  ];
+};
+
 const isValid = (i, j, visited, board, trie) => {
   return (
     i >= 0 &&
@@ -41,14 +50,15 @@ const bfs = (matrix, root, idx, jdx) => {
   while (queue.length) {
     const [trie, i, j, visited] = queue.shift();
 
-    if (trie.word) {
+    if (trie && trie.word) {
+      // bring back from testing
       foundWords.push(trie.word);
     }
 
     for (const [deltaI, deltaJ] of coords) {
       const [nextI, nextJ] = [i + deltaI, j + deltaJ];
 
-      if (isValid(nextI, nextJ, visited, matrix, trie)) {
+      if (trie && isValid(nextI, nextJ, visited, matrix, trie)) {
         const char = matrix[nextI][nextJ];
         const nextVisited = [...visited];
         const nextTrie = trie.children[char];
@@ -109,11 +119,11 @@ const generateRandomCombinations = (rows, cols) => {
 };
 
 const findBoard = (root) => {
-  let charMatrix = generateMatrix();
+  let charMatrix = genMatrix();
   let foundWords = boardCheck(charMatrix, root);
 
   while (foundWords.length < 85) {
-    charMatrix = generateMatrix();
+    charMatrix = genMatrix();
     foundWords = boardCheck(charMatrix, root);
   }
 

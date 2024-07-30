@@ -18,6 +18,10 @@ const buildClueDiv = (word, visited, ancMatrix, definition, paths) => {
     const charContainer = document.createElement("div");
     charContainer.className = "clue-char-container";
 
+    const innerChar = document.createElement("div");
+    innerChar.className = "inner-clue-char";
+    charContainer.appendChild(innerChar);
+
     wordContainer.appendChild(charContainer);
     rootAncestor.clueCharDivs.push(charContainer);
   }
@@ -58,7 +62,7 @@ const bfs = (i, j, trieNode, ancMatrix, dictionary, paths) => {
   while (queue.length) {
     const [idx, jdx, trie, visited] = queue.shift();
 
-    if (trie.word) {
+    if (trie && trie.word) {
       const word = trie.word;
       const definition = dictionary.get(word);
       buildClueDiv(word, visited, ancMatrix, definition, paths);
@@ -68,7 +72,7 @@ const bfs = (i, j, trieNode, ancMatrix, dictionary, paths) => {
     for (const [deltaI, deltaJ] of coords) {
       const [nextI, nextJ] = [idx + deltaI, jdx + deltaJ];
 
-      if (isValid(nextI, nextJ, visited, ancMatrix, trie)) {
+      if (trie && isValid(nextI, nextJ, visited, ancMatrix, trie)) {
         const nextVisited = [...visited, `${nextI},${nextJ}`];
         const char = ancMatrix[nextI][nextJ].char;
         const nextTrie = trie.children[char];

@@ -42,7 +42,9 @@ const highlightPath = (user, paths, ancestoryMatrix) => {
   }
 };
 
-// I'm wondering if there is a way to update this line without the loop
+// lets work in the animation logic to make sure that mobile can handle it
+// there should be the grow logic for when we've found a word
+// and there should be the shrink logic for when we aren't looking at a word
 const updateLine = (user, color, ancestoryMatrix) => {
   const path = user.path;
   const lines = user.lines;
@@ -123,7 +125,10 @@ const awardPoints = (obj, user, points, ancestoryMatrix) => {
   for (let i = 0; i < word.length; i += 1) {
     const char = word[i];
     const div = charDivs[i];
-    if (!div.innerHTML) div.innerHTML = char;
+    const inner = div.childNodes[0];
+    inner.innerHTML = char;
+    // if (!div.innerHTML)
+    // div.innerHTML = char;
   }
 
   const pointsKey = user.path.length;
@@ -140,12 +145,15 @@ const handleRootNode = (user, ancestoryMatrix) => {
   if (root.wordCount === 0) {
     // here I know that this tile has been completed
     root.complete = true;
-    root.gameTile.classList.add("found-game-tile");
+    root.innerGameTile.classList.add("found-inner-game-tile");
+    // root.gameTile.classList.add("found-game-tile");
 
     // this loop, even though it's making each indivdual div look how I want it its making the delay far worse on mobile.
     for (const div of root.clueCharDivs) {
-      div.classList.add(root.piece, "found-clue-char");
-      div.innerText = root.char;
+      div.classList.add(root.piece);
+      const inner = div.childNodes[0];
+      inner.classList.add("found-inner-clue-char");
+      inner.innerText = root.char;
 
       // const inner = document.createElement("div");
       // inner.className = "inner-clue-char-container";

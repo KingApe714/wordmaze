@@ -23,5 +23,6 @@ export const buildTrie = (definitions) => {
     current.word = word;
   }
 
+  console.log(root);
   return root;
 };

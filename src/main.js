@@ -5,7 +5,7 @@ import { startTimer } from "./timer.js";
 import { endRound } from "./endRound.js";
 
 const fetchDefinitions = async () => {
-  const response = await fetch("./json/definitions.json");
+  const response = await fetch("./json/test.json");
   const definitions = await response.json();
 
   return definitions;
@@ -20,6 +20,7 @@ const fetchPoints = async () => {
 
 const initGame = async () => {
   const definitions = await fetchDefinitions();
+  console.log(definitions);
   const points = await fetchPoints();
   const root = buildTrie(definitions);
   const { ancestoryMatrix, paths } = buildBoard(root, definitions);
